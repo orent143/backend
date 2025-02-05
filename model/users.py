@@ -26,11 +26,10 @@ async def read_user(
     if user:
         return {"id": user[0], "username": user[1]}
     raise HTTPException(status_code=404, detail="User not found")
-
 @UsersRouter.post("/users/", response_model=dict)
 async def create_user(
-    username: str = Form(...), 
-    password: str = Form(...), 
+    username: str = Form(...),  # Expect 'username' from FormData
+    password: str = Form(...),  # Expect 'password' from FormData
     db=Depends(get_db)
 ):
     # Hash the password using bcrypt
@@ -45,6 +44,7 @@ async def create_user(
     db[1].commit()
 
     return {"id": new_user_id, "username": username}
+
 
 @UsersRouter.put("/users/{user_id}", response_model=dict)
 async def update_user(
