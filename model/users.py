@@ -6,7 +6,7 @@ UsersRouter = APIRouter(tags=["Users"])
 
 # CRUD operations
 
-@UsersRouter.get("/users/", response_model=list)
+@UsersRouter.get("/", response_model=list)
 async def read_users(
     db=Depends(get_db)
 ):

@@ -23,7 +23,7 @@ async def create_supplier(
     return {"id": new_supplier_id, "suppliername": suppliername}
 
 # Read all suppliers
-@SupplierRouter.get("/suppliers/", response_model=List[dict])
+@SupplierRouter.get("/", response_model=List[dict])
 async def read_suppliers(db=Depends(get_db)):
     query = "SELECT id, suppliername, contactinfo, email FROM suppliers"
     db[0].execute(query)

@@ -19,13 +19,15 @@ async def create_category(
     new_category_id = db[0].fetchone()[0]
     return {"id": new_category_id, "CategoryName": CategoryName}
 
-# Read all categories
-@CategoryRouter.get("/categories/", response_model=List[dict])
+# FastAPI router includes `/api/categories`
+@CategoryRouter.get("/", response_model=List[dict])
 async def read_categories(db=Depends(get_db)):
     query = "SELECT id, CategoryName FROM categories"
     db[0].execute(query)
     categories = [{"id": category[0], "CategoryName": category[1]} for category in db[0].fetchall()]
     return categories
+
+
 
 # Read a specific category
 @CategoryRouter.get("/categories/{category_id}", response_model=dict)
