@@ -71,7 +71,7 @@ async def read_inventory_product(
     raise HTTPException(status_code=404, detail="Product not found")
 
 
-@InventoryRouter.post("/inventoryproduct/", response_model=dict)
+@InventoryRouter.post("/inventoryproduct/")
 async def create_inventory_product(
     ProductName: str = Form(...),
     Quantity: int = Form(...),
@@ -82,34 +82,24 @@ async def create_inventory_product(
     db=Depends(get_db)
 ):
     try:
-        # Ensure CategoryID and SupplierID exist
-        if CategoryID:
-            db[0].execute("SELECT id FROM categories WHERE id = %s", (CategoryID,))
-            if not db[0].fetchone():
-                raise HTTPException(status_code=400, detail="Invalid CategoryID")
-
-        if SupplierID:
-            db[0].execute("SELECT id FROM suppliers WHERE id = %s", (SupplierID,))
-            if not db[0].fetchone():
-                raise HTTPException(status_code=400, detail="Invalid SupplierID")
-
-        # Insert the new product
-        query = """
-        INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status) 
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
-        db[0].execute(query, (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status))
+        db[0].execute(
+            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status) VALUES (%s, %s, %s, %s, %s, %s)",
+            (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status)
+        )
         db[1].commit()
 
-        # Retrieve the last inserted ID
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_product_id = db[0].fetchone()[0]
 
-        # Create inventory summary after adding a product
-        summary = get_inventory_summary(db)
-
-        return {"id": new_product_id, "ProductName": ProductName, "Quantity": Quantity, "UnitPrice": UnitPrice, 
-                "CategoryID": CategoryID, "SupplierID": SupplierID, "Status": Status, "inventory_summary": summary}
+        return {
+            "id": new_product_id,
+            "ProductName": ProductName,
+            "Quantity": Quantity,
+            "UnitPrice": UnitPrice,
+            "CategoryID": CategoryID,
+            "SupplierID": SupplierID,
+            "Status": Status,
+        }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
