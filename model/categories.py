@@ -5,6 +5,7 @@ from .db import get_db
 
 CategoryRouter = APIRouter(tags=["Categories"])
 
+
 # Create a category
 @CategoryRouter.post("/categories/", response_model=dict)
 async def create_category(
@@ -41,11 +42,9 @@ async def read_category(category_id: int, db=Depends(get_db)):
 
 # Update a category
 @CategoryRouter.put("/categories/{category_id}", response_model=dict)
-async def update_category(
-    category_id: int,
-    CategoryName: str = Form(...),
-    db=Depends(get_db)
-):
+async def update_category(category_id: int, CategoryName: str = Form(...), db=Depends(get_db)):
+    print(f"Updating category with ID: {category_id}")  # Debugging line
+
     query_check_category = "SELECT id FROM categories WHERE id = %s"
     db[0].execute(query_check_category, (category_id,))
     category = db[0].fetchone()
