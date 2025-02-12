@@ -60,15 +60,20 @@ async def update_category(category_id: int, CategoryName: str = Form(...), db=De
 # Delete a category
 @CategoryRouter.delete("/categories/{category_id}", response_model=dict)
 async def delete_category(category_id: int, db=Depends(get_db)):
+    print(f"Received DELETE request for category ID: {category_id}")  # Debugging log
+    
     query_check_category = "SELECT id FROM categories WHERE id = %s"
     db[0].execute(query_check_category, (category_id,))
     category = db[0].fetchone()
 
     if not category:
+        print(f"Category ID {category_id} not found")  # Debugging log
         raise HTTPException(status_code=404, detail="Category not found")
 
     query_delete_category = "DELETE FROM categories WHERE id = %s"
     db[0].execute(query_delete_category, (category_id,))
     db[1].commit()
+
+    print(f"Category ID {category_id} deleted successfully")  # Debugging log
     return {"message": "Category deleted successfully"}
 

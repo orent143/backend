@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2025 at 12:49 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Feb 11, 2025 at 08:43 AM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -30,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `CategoryName` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `categories`
@@ -39,7 +40,10 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `CategoryName`) VALUES
 (1, 'Ice Coffee'),
 (2, 'Hot Coffee'),
-(3, 'string');
+(3, 'Mga Pan'),
+(4, 'Juice'),
+(5, 'string'),
+(6, 'asashkghasuijha');
 
 -- --------------------------------------------------------
 
@@ -55,24 +59,24 @@ CREATE TABLE `inventoryproduct` (
   `CategoryID (FK)` int(11) DEFAULT NULL,
   `SupplierID (FK)` int(11) DEFAULT NULL,
   `Status` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inventoryproduct`
 --
 
 INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`) VALUES
-(1, 'Cafe Latte', 19, 100.00, 2, 2, 'In Stock'),
-(4, 'Matcha Latte', 20, 160.00, 2, 2, 'In Stock'),
-(5, 'Crossiant', 11, 25.00, 4, 5, 'In Stock'),
-(6, 'Spanish Latte', 10, 120.00, 2, 1, 'In Stock'),
-(7, 'Cafe Americano', 20, 70.00, 2, 1, 'In Stock'),
-(8, 'Cafe Mocha', 15, 120.00, 1, 2, 'In Stock'),
-(9, 'Cafe Americano', 20, 125.00, 1, 1, 'In Stock'),
-(15, 'Caramel Macchiato', 20, 100.00, 2, 2, 'In Stock'),
-(23, 'Cafe Americano', 1, 11.00, 1, 1, 'In Stock'),
-(24, 'SDw', 1, 1.00, 1, 1, 'Low Stock'),
-(25, 'lakakakkakak', 1, 111.00, 3, 1, 'In Stock');
+(1, 'Cafe Latte', 19, '100.00', 2, 2, 'In Stock'),
+(4, 'Matcha Latte', 20, '160.00', 2, 2, 'In Stock'),
+(5, 'Crossiant', 11, '25.00', 4, 5, 'In Stock'),
+(6, 'Spanish Latte', 10, '120.00', 2, 1, 'In Stock'),
+(7, 'Cafe Americano', 20, '70.00', 2, 1, 'In Stock'),
+(8, 'Cafe Mocha', 15, '120.00', 1, 2, 'In Stock'),
+(9, 'Cafe Americano', 20, '125.00', 1, 1, 'In Stock'),
+(15, 'Caramel Macchiato', 20, '100.00', 2, 2, 'In Stock'),
+(23, 'Cafe Americano', 1, '11.00', 1, 1, 'In Stock'),
+(24, 'zackkkk', 1, '1000.00', 1, 1, 'In Stock'),
+(26, 'yuchi', 1, '1.00', 4, 2, 'Low Stock');
 
 -- --------------------------------------------------------
 
@@ -85,7 +89,7 @@ CREATE TABLE `suppliers` (
   `suppliername` varchar(100) NOT NULL,
   `contactinfo` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `suppliers`
@@ -105,7 +109,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
@@ -157,13 +161,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `inventoryproduct`
 --
 ALTER TABLE `inventoryproduct`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `suppliers`

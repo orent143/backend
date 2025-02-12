@@ -9,18 +9,23 @@ SupplierRouter = APIRouter(tags=["Suppliers"])
 # Create a supplier
 @SupplierRouter.post("/suppliers/", response_model=dict)
 async def create_supplier(
-    suppliername: str = Form(...),
-    contactinfo: str = Form(...),
-    email: str = Form(...),
+    suppliername: str = Form(..., min_length=1, max_length=255),  
+    contactinfo: str = Form(..., min_length=1, max_length=20),    
+    email: str = Form(...),  # Keep email as a simple string
     db=Depends(get_db)
 ):
-    query = "INSERT INTO suppliers (suppliername, contactinfo, email) VALUES (%s, %s, %s)"
-    db[0].execute(query, (suppliername, contactinfo, email))
-    db[1].commit()  # Ensure changes are committed
-    
-    db[0].execute("SELECT LAST_INSERT_ID()")
-    new_supplier_id = db[0].fetchone()[0]
-    return {"id": new_supplier_id, "suppliername": suppliername}
+    try:
+        query = "INSERT INTO suppliers (suppliername, contactinfo, email) VALUES (%s, %s, %s)"
+        db[0].execute(query, (suppliername.strip(), contactinfo.strip(), email.strip()))
+        db[1].commit()
+        
+        db[0].execute("SELECT LAST_INSERT_ID()")
+        new_supplier_id = db[0].fetchone()[0]
+
+        return {"id": new_supplier_id, "suppliername": suppliername, "contactinfo": contactinfo, "email": email}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 # Read all suppliers
 @SupplierRouter.get("/", response_model=List[dict])
