@@ -11,31 +11,36 @@ class ProductUpdate(BaseModel):
     Quantity: Optional[int] = None
     UnitPrice: Optional[float] = None
     CategoryID: Optional[int] = None
-    SupplierID: Optional[int] = None
-    Status: Optional[str] = None
-# CRUD operations for inventoryproduct
+
+# Function to determine stock status
+def determine_status(quantity: int) -> str:
+    if quantity == 0:
+        return "Out of Stock"
+    elif quantity <= 10:
+        return "Low Stock"
+    else:
+        return "In Stock"
 
 # Function to get inventory summary
 def get_inventory_summary(db):
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice FROM inventoryproduct")
+    products = db[0].fetchall()
+
     low_stock_items = []
     out_of_stock_items = []
     total_value = 0
 
-    # Fetch all products
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, Status FROM inventoryproduct")
-    products = db[0].fetchall()
-
-    # Categorize products based on stock level
     for product in products:
-        if product[2] == 0:
-            out_of_stock_items.append(product)
-        elif product[2] <= 10:
-            low_stock_items.append(product)
-        
-        total_value += product[2] * product[3]  # Quantity * UnitPrice
+        status = determine_status(product[2])
 
-    # Summary
-    summary = {
+        if status == "Out of Stock":
+            out_of_stock_items.append(product)
+        elif status == "Low Stock":
+            low_stock_items.append(product)
+
+        total_value += product[2] * product[3]
+
+    return {
         "date": datetime.now().strftime("%Y-%m-%d"),
         "total_items": len(products),
         "total_value": total_value,
@@ -43,31 +48,38 @@ def get_inventory_summary(db):
         "out_of_stock_count": len(out_of_stock_items)
     }
 
-    return summary
-
-
 @InventoryRouter.get("/", response_model=list)
-async def read_inventory_products(
-    db=Depends(get_db)
-):
-    query = "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status FROM inventoryproduct"
-    db[0].execute(query)
-    products = [{"id": product[0], "ProductName": product[1], "Quantity": product[2], "UnitPrice": product[3],
-                 "CategoryID": product[4], "SupplierID": product[5], "Status": product[6]} for product in db[0].fetchall()]
-    return products
+async def read_inventory_products(db=Depends(get_db)):
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct")
+    products = db[0].fetchall()
 
+    return [
+        {
+            "id": product[0],
+            "ProductName": product[1],
+            "Quantity": product[2],
+            "UnitPrice": product[3],
+            "CategoryID": product[4],
+            "Status": determine_status(product[2])
+        }
+        for product in products
+    ]
 
 @InventoryRouter.get("/inventoryproduct/{product_id}", response_model=dict)
-async def read_inventory_product(
-    product_id: int, 
-    db=Depends(get_db)
-):
-    query = "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status FROM inventoryproduct WHERE id = %s"
-    db[0].execute(query, (product_id,))
+async def read_inventory_product(product_id: int, db=Depends(get_db)):
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct WHERE id = %s", (product_id,))
     product = db[0].fetchone()
+
     if product:
-        return {"id": product[0], "ProductName": product[1], "Quantity": product[2], "UnitPrice": product[3],
-                "CategoryID": product[4], "SupplierID": product[5], "Status": product[6]}
+        return {
+            "id": product[0],
+            "ProductName": product[1],
+            "Quantity": product[2],
+            "UnitPrice": product[3],
+            "CategoryID": product[4],
+            "Status": determine_status(product[2])
+        }
+    
     raise HTTPException(status_code=404, detail="Product not found")
 
 
@@ -77,14 +89,14 @@ async def create_inventory_product(
     Quantity: int = Form(...),
     UnitPrice: float = Form(...),
     CategoryID: Optional[int] = Form(None),
-    SupplierID: Optional[int] = Form(None),
-    Status: str = Form(...),
     db=Depends(get_db)
 ):
     try:
+        Status = determine_status(Quantity)
+
         db[0].execute(
-            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status) VALUES (%s, %s, %s, %s, %s, %s)",
-            (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status)
+             "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Status) VALUES (%s, %s, %s, %s, %s)",
+             (ProductName, Quantity, UnitPrice, CategoryID, Status)
         )
         db[1].commit()
 
@@ -97,7 +109,6 @@ async def create_inventory_product(
             "Quantity": Quantity,
             "UnitPrice": UnitPrice,
             "CategoryID": CategoryID,
-            "SupplierID": SupplierID,
             "Status": Status,
         }
 
@@ -105,20 +116,13 @@ async def create_inventory_product(
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
-async def update_inventory_product(
-    product_id: int,
-    product_data: ProductUpdate,
-    db=Depends(get_db)
-):
-    # Check if the product exists
-    query_check_product = "SELECT id FROM inventoryproduct WHERE id = %s"
-    db[0].execute(query_check_product, (product_id,))
+async def update_inventory_product(product_id: int, product_data: ProductUpdate, db=Depends(get_db)):
+    db[0].execute("SELECT id, Quantity FROM inventoryproduct WHERE id = %s", (product_id,))
     product = db[0].fetchone()
 
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    # Build dynamic update query
     update_fields = []
     update_values = []
 
@@ -130,6 +134,10 @@ async def update_inventory_product(
         update_fields.append("Quantity = %s")
         update_values.append(product_data.Quantity)
 
+        Status = determine_status(product_data.Quantity)
+        update_fields.append("Status = %s")
+        update_values.append(Status)
+
     if product_data.UnitPrice is not None:
         update_fields.append("UnitPrice = %s")
         update_values.append(product_data.UnitPrice)
@@ -137,14 +145,6 @@ async def update_inventory_product(
     if product_data.CategoryID is not None:
         update_fields.append("`CategoryID (FK)` = %s")
         update_values.append(product_data.CategoryID)
-
-    if product_data.SupplierID is not None:
-        update_fields.append("`SupplierID (FK)` = %s")
-        update_values.append(product_data.SupplierID)
-
-    if product_data.Status is not None:
-        update_fields.append("Status = %s")
-        update_values.append(product_data.Status)
 
     if not update_fields:
         raise HTTPException(status_code=400, detail="No fields provided for update")
@@ -157,32 +157,42 @@ async def update_inventory_product(
 
     return {"message": "Product updated successfully"}
 
-
-
 @InventoryRouter.delete("/inventoryproduct/{product_id}", response_model=dict)
-async def delete_inventory_product(
-    product_id: int,
-    db=Depends(get_db)
-):
+async def delete_inventory_product(product_id: int, db=Depends(get_db)):
     try:
-        # Check if the product exists
-        query_check_product = "SELECT id FROM inventoryproduct WHERE id = %s"
-        db[0].execute(query_check_product, (product_id,))
+        db[0].execute("SELECT id FROM inventoryproduct WHERE id = %s", (product_id,))
         product = db[0].fetchone()
 
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
-        # Delete the product
-        query_delete_product = "DELETE FROM inventoryproduct WHERE id = %s"
-        db[0].execute(query_delete_product, (product_id,))
-        db[1].commit()  # Ensure changes are committed
+        db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
+        db[1].commit()
 
-        # Create inventory summary after deleting a product
         summary = get_inventory_summary(db)
 
         return {"message": "Product deleted successfully", "inventory_summary": summary}
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    
     finally:
         db[0].close()
+
+# New endpoint to fetch inventory products for menu items
+@InventoryRouter.get("/menuitems", response_model=list)
+async def fetch_menu_items(db=Depends(get_db)):
+    try:
+        db[0].execute("SELECT id, ProductName, UnitPrice FROM inventoryproduct WHERE Quantity > 0")
+        products = db[0].fetchall()
+
+        return [
+            {
+                "id": product[0],
+                "name": product[1],
+                "price": float(product[2])  # Ensure price is returned as a float
+            }
+            for product in products
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching menu items: {str(e)}")
