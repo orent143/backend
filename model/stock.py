@@ -153,3 +153,45 @@ async def delete_stock(
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     finally:
         db[0].close()
+
+# ✅ Get Low Stock
+@StockRouter.post("/stocks/low_stock")
+async def get_low_stock(db=Depends(get_db)):
+    try:
+        # Fetch low stock items (Quantity <= 10)
+        query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status FROM stocks WHERE Quantity <= 10"
+        db[0].execute(query)
+        low_stock_items = db[0].fetchall()
+
+        # If low stock items exist, insert them into stock_reports table
+        if low_stock_items:
+            # Record the current timestamp for the report date
+            report_date = datetime.now()
+
+            for item in low_stock_items:
+                # Insert each low stock item into the stock_reports table
+                db[0].execute(
+                    "INSERT INTO stock_reports (ReportDate, StockID, StockName, Quantity, CostPrice, SupplierID, Status) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (report_date, item[0], item[1], item[2], item[3], item[4], item[5])
+                )
+            
+            db[1].commit()
+
+            # Return the low stock items
+            return [
+                {
+                    "StockID": item[0],
+                    "StockName": item[1],
+                    "Quantity": item[2],
+                    "CostPrice": item[3],
+                    "SupplierID": item[4],
+                    "Status": item[5]
+                }
+                for item in low_stock_items
+            ]
+        else:
+            return {"message": "No low stock items found"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching low stock items: {str(e)}")
