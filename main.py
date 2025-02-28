@@ -7,6 +7,7 @@ from model.createproduct import CreateProductRouter  # Import the router for pro
 from model.createorder import CreateOrderRouter
 from model.ordersummary import OrderSummaryRouter
 from model.sales import SalesRouter
+from model.reports import ReportRouter
 from model.categories import CategoryRouter  # Import the router for categories
 from model.suppliers import SupplierRouter  # Import the router for suppliers
 
@@ -30,6 +31,7 @@ app.include_router(CreateProductRouter, prefix="/api/createproduct", tags=["Crea
 app.include_router(CategoryRouter, prefix="/api/categories")
 app.include_router(SupplierRouter, prefix="/api/suppliers", tags=["Suppliers"])
 app.include_router(SalesRouter, prefix="/api/sales", tags=["Sales"])
+app.include_router(ReportRouter, prefix="/api/reports", tags=["Reports"])
 app.include_router(CreateOrderRouter, prefix="/api/createorder", tags=["CreateOrders"])
 app.include_router(OrderSummaryRouter, prefix="/api/ordersummary", tags=["OrdersSummary"])
 

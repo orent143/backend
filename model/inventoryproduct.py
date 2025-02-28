@@ -21,33 +21,6 @@ def determine_status(quantity: int) -> str:
     else:
         return "In Stock"
 
-# Function to get inventory summary
-def get_inventory_summary(db):
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice FROM inventoryproduct")
-    products = db[0].fetchall()
-
-    low_stock_items = []
-    out_of_stock_items = []
-    total_value = 0
-
-    for product in products:
-        status = determine_status(product[2])
-
-        if status == "Out of Stock":
-            out_of_stock_items.append(product)
-        elif status == "Low Stock":
-            low_stock_items.append(product)
-
-        total_value += product[2] * product[3]
-
-    return {
-        "date": datetime.now().strftime("%Y-%m-%d"),
-        "total_items": len(products),
-        "total_value": total_value,
-        "low_stock_count": len(low_stock_items),
-        "out_of_stock_count": len(out_of_stock_items)
-    }
-
 @InventoryRouter.get("/", response_model=list)
 async def read_inventory_products(db=Depends(get_db)):
     db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct")
@@ -81,7 +54,6 @@ async def read_inventory_product(product_id: int, db=Depends(get_db)):
         }
     
     raise HTTPException(status_code=404, detail="Product not found")
-
 
 @InventoryRouter.post("/inventoryproduct/")
 async def create_inventory_product(
@@ -169,30 +141,49 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
         db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
         db[1].commit()
 
-        summary = get_inventory_summary(db)
-
-        return {"message": "Product deleted successfully", "inventory_summary": summary}
+        return {"message": "Product deleted successfully"}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
-    finally:
-        db[0].close()
-
-# New endpoint to fetch inventory products for menu items
-@InventoryRouter.get("/menuitems", response_model=list)
-async def fetch_menu_items(db=Depends(get_db)):
+@InventoryRouter.post("/inventorysummary", response_model=list)
+async def post_inventory_summary(db=Depends(get_db)):
     try:
-        db[0].execute("SELECT id, ProductName, UnitPrice FROM inventoryproduct WHERE Quantity > 0")
+        report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Include time
+
+        # Insert a new report entry
+        db[0].execute(
+            "INSERT INTO reports (ReportType, ReportName, ReportDate) VALUES (%s, %s, %s)",
+            ("Daily", "Inventory Summary", report_date)
+        )
+        db[1].commit()
+
+        # Fetch all inventory products
+        db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct")
         products = db[0].fetchall()
+
+        # Store inventory snapshot with accurate timestamps
+        for product in products:
+            product_id, product_name, quantity, unit_price, category_id = product
+            status = determine_status(quantity if quantity is not None else 0)
+
+            db[0].execute(
+                "INSERT INTO inventory_reports (ReportDate, ProductID, ProductName, Quantity, UnitPrice, CategoryID, Status) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (report_date, product_id, product_name, quantity, unit_price, category_id, status)
+            )
+
+        db[1].commit()
 
         return [
             {
                 "id": product[0],
-                "name": product[1],
-                "price": float(product[2])  # Ensure price is returned as a float
+                "ProductName": product[1],
+                "Quantity": product[2],
+                "UnitPrice": product[3],
+                "CategoryID": product[4],
+                "Status": determine_status(product[2] if product[2] is not None else 0),
             }
             for product in products
         ]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching menu items: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating inventory summary: {str(e)}")
