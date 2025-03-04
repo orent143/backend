@@ -166,7 +166,7 @@ async def get_low_stock(db=Depends(get_db)):
         # If low stock items exist, insert them into stock_reports table
         if low_stock_items:
             # Record the current timestamp for the report date
-            report_date = datetime.now()
+            report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
 
             for item in low_stock_items:
                 # Insert each low stock item into the stock_reports table
