@@ -21,6 +21,17 @@ def determine_status(quantity: int) -> str:
     else:
         return "In Stock"
 
+def log_activity(db, icon: str, title: str, status: str):
+    try:
+        db[0].execute(
+            "INSERT INTO activity_logs (icon, title, time, status) VALUES (%s, %s, NOW(), %s)",
+            (icon, title, status),
+        )
+        db[1].commit()
+    except Exception as e:
+        print(f"Failed to log activity: {e}")
+
+
 @InventoryRouter.get("/", response_model=list)
 async def read_inventory_products(db=Depends(get_db)):
     db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct")
@@ -37,6 +48,18 @@ async def read_inventory_products(db=Depends(get_db)):
         }
         for product in products
     ]
+
+
+@InventoryRouter.get("/inventoryproduct/total", response_model=dict)
+async def get_total_products(db=Depends(get_db)):
+    try:
+        db[0].execute("SELECT COUNT(*) FROM inventoryproduct")
+        total_products = db[0].fetchone()[0]
+
+        return {"total_products": total_products}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching total products: {str(e)}")
 
 @InventoryRouter.get("/inventoryproduct/{product_id}", response_model=dict)
 async def read_inventory_product(product_id: int, db=Depends(get_db)):
@@ -67,13 +90,16 @@ async def create_inventory_product(
         Status = determine_status(Quantity)
 
         db[0].execute(
-             "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Status) VALUES (%s, %s, %s, %s, %s)",
-             (ProductName, Quantity, UnitPrice, CategoryID, Status)
+            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Status) VALUES (%s, %s, %s, %s, %s)",
+            (ProductName, Quantity, UnitPrice, CategoryID, Status)
         )
         db[1].commit()
 
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_product_id = db[0].fetchone()[0]
+
+        # Log Activity
+        log_activity(db, "pi pi-box", f"New product added: {ProductName}", "Success")
 
         return {
             "id": new_product_id,
@@ -89,7 +115,7 @@ async def create_inventory_product(
 
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
 async def update_inventory_product(product_id: int, product_data: ProductUpdate, db=Depends(get_db)):
-    db[0].execute("SELECT id, Quantity FROM inventoryproduct WHERE id = %s", (product_id,))
+    db[0].execute("SELECT ProductName FROM inventoryproduct WHERE id = %s", (product_id,))
     product = db[0].fetchone()
 
     if not product:
@@ -127,12 +153,15 @@ async def update_inventory_product(product_id: int, product_data: ProductUpdate,
     db[0].execute(update_query, tuple(update_values))
     db[1].commit()
 
+    # Log Activity
+    log_activity(db, "pi pi-pencil", f"Product updated: {product[0]}", "Success")
+
     return {"message": "Product updated successfully"}
 
 @InventoryRouter.delete("/inventoryproduct/{product_id}", response_model=dict)
 async def delete_inventory_product(product_id: int, db=Depends(get_db)):
     try:
-        db[0].execute("SELECT id FROM inventoryproduct WHERE id = %s", (product_id,))
+        db[0].execute("SELECT ProductName FROM inventoryproduct WHERE id = %s", (product_id,))
         product = db[0].fetchone()
 
         if not product:
@@ -141,10 +170,14 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
         db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
         db[1].commit()
 
+        # Log Activity
+        log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Warning")
+
         return {"message": "Product deleted successfully"}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
     
 @InventoryRouter.post("/inventorysummary", response_model=list)
 async def post_inventory_summary(db=Depends(get_db)):
@@ -174,6 +207,9 @@ async def post_inventory_summary(db=Depends(get_db)):
 
         db[1].commit()
 
+        # Log Activity
+        log_activity(db, "pi pi-chart-line", "Inventory summary generated", "Success")
+
         return [
             {
                 "id": product[0],
@@ -187,3 +223,19 @@ async def post_inventory_summary(db=Depends(get_db)):
         ]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating inventory summary: {str(e)}")
+
+@InventoryRouter.get("/activity_logs", response_model=list)
+async def get_activity_logs(db=Depends(get_db)):
+    db[0].execute("SELECT id, icon, title, time, status FROM activity_logs ORDER BY time DESC LIMIT 10")
+    logs = db[0].fetchall()
+
+    return [
+        {
+            "id": log[0],
+            "icon": log[1],
+            "title": log[2],
+            "time": log[3].strftime("%Y-%m-%d %H:%M:%S"),
+            "status": log[4]
+        }
+        for log in logs
+    ]

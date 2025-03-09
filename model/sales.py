@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from pydantic import BaseModel
 from model.db import get_db
+from datetime import datetime
 
 SalesRouter = APIRouter(tags=["Sales"])
 
@@ -24,15 +25,24 @@ class SalesUpdateRequest(BaseModel):
 async def get_sales_data(db=Depends(get_db)):
     try:
         cursor = db[0]
+        today = datetime.now().date()  # Get today's date
+
+        # Fetch and aggregate sales per product for today, maintaining inventory order
         cursor.execute("""
             SELECT 
                 ip.ProductName, ip.Quantity, ip.UnitPrice, 
-                COALESCE(s.quantity_sold, 0) AS items_sold, 
-                COALESCE(s.remitted, 0) AS remitted
+                COALESCE(SUM(s.quantity_sold), 0) AS total_items_sold, 
+                COALESCE(SUM(s.remitted), 0) AS total_remitted
             FROM inventoryproduct ip
-            LEFT JOIN sales s ON ip.id = s.product_id
-        """)
+            LEFT JOIN sales s ON ip.id = s.product_id AND DATE(s.created_at) = %s  
+            GROUP BY ip.id, ip.ProductName, ip.Quantity, ip.UnitPrice
+            ORDER BY ip.id ASC
+        """, (today,))
+
         sales_data = cursor.fetchall()
+
+        if not sales_data:
+            return []  # Return empty list if no products match
 
         return [
             {
@@ -44,8 +54,10 @@ async def get_sales_data(db=Depends(get_db)):
             }
             for row in sales_data
         ]
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
 
 # Update Sales when an order is created or completed
 @SalesRouter.post("/sales/update")
@@ -68,8 +80,8 @@ async def update_sales(sales_update: SalesUpdateRequest, db=Depends(get_db)):
 
         # Update Sales Table
         cursor.execute("""
-            INSERT INTO sales (product_id, quantity_sold, remitted)
-            VALUES (%s, %s, %s)
+            INSERT INTO sales (product_id, quantity_sold, remitted, created_at)
+            VALUES (%s, %s, %s, NOW())
             ON DUPLICATE KEY UPDATE 
                 quantity_sold = quantity_sold + VALUES(quantity_sold), 
                 remitted = remitted + VALUES(remitted)
