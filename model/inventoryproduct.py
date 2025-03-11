@@ -12,7 +12,6 @@ class ProductUpdate(BaseModel):
     UnitPrice: Optional[float] = None
     CategoryID: Optional[int] = None
 
-# Function to determine stock status
 def determine_status(quantity: int) -> str:
     if quantity == 0:
         return "Out of Stock"
@@ -98,7 +97,6 @@ async def create_inventory_product(
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_product_id = db[0].fetchone()[0]
 
-        # Log Activity
         log_activity(db, "pi pi-box", f"New product added: {ProductName}", "Success")
 
         return {
@@ -153,7 +151,6 @@ async def update_inventory_product(product_id: int, product_data: ProductUpdate,
     db[0].execute(update_query, tuple(update_values))
     db[1].commit()
 
-    # Log Activity
     log_activity(db, "pi pi-pencil", f"Product updated: {product[0]}", "Success")
 
     return {"message": "Product updated successfully"}
@@ -170,7 +167,6 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
         db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
         db[1].commit()
 
-        # Log Activity
         log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Warning")
 
         return {"message": "Product deleted successfully"}
@@ -184,18 +180,15 @@ async def post_inventory_summary(db=Depends(get_db)):
     try:
         report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Include time
 
-        # Insert a new report entry
         db[0].execute(
             "INSERT INTO reports (ReportType, ReportName, ReportDate) VALUES (%s, %s, %s)",
             ("Daily", "Inventory Summary", report_date)
         )
         db[1].commit()
 
-        # Fetch all inventory products
         db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct")
         products = db[0].fetchall()
 
-        # Store inventory snapshot with accurate timestamps
         for product in products:
             product_id, product_name, quantity, unit_price, category_id = product
             status = determine_status(quantity if quantity is not None else 0)
@@ -207,7 +200,6 @@ async def post_inventory_summary(db=Depends(get_db)):
 
         db[1].commit()
 
-        # Log Activity
         log_activity(db, "pi pi-chart-line", "Inventory summary generated", "Success")
 
         return [

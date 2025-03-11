@@ -14,7 +14,6 @@ def log_activity(db, icon: str, title: str, status: str):
         print(f"Error logging activity: {str(e)}")
 
 
-# Create a supplier
 @SupplierRouter.post("/suppliers/", response_model=dict)
 async def create_supplier(
     suppliername: str = Form(..., min_length=1, max_length=255),  
@@ -37,7 +36,6 @@ async def create_supplier(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
-# Read all suppliers
 @SupplierRouter.get("/", response_model=List[dict])
 async def read_suppliers(db=Depends(get_db)):
     query = "SELECT id, suppliername, contactinfo, email FROM suppliers"
@@ -45,7 +43,6 @@ async def read_suppliers(db=Depends(get_db)):
     suppliers = [{"id": supplier[0], "suppliername": supplier[1], "contactinfo": supplier[2], "email": supplier[3]} for supplier in db[0].fetchall()]
     return suppliers
 
-# Read a specific supplier
 @SupplierRouter.get("/suppliers/{supplier_id}", response_model=dict)
 async def read_supplier(supplier_id: int, db=Depends(get_db)):
     query = "SELECT id, suppliername, contactinfo, email FROM suppliers WHERE id = %s"
