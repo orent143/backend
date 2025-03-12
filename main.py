@@ -1,7 +1,7 @@
+import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-import os
 
 # Import routers
 from model.auth import AuthRouter
@@ -29,10 +29,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Ensure the uploads directory exists
+# Ensure the uploads directories exist
 os.makedirs("uploads/profile_pics", exist_ok=True)
+os.makedirs("uploads/products", exist_ok=True)  # Ensure product uploads directory exists
 
-# Mount static files for serving profile pictures
+# Mount static files for serving profile pictures and products
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Include CRUD routes from modules
@@ -48,3 +49,4 @@ app.include_router(SalesRouter, prefix="/api/sales", tags=["Sales"])
 app.include_router(ReportRouter, prefix="/api/reports", tags=["Reports"])
 app.include_router(CreateOrderRouter, prefix="/api/orders", tags=["Orders"])
 app.include_router(OrderSummaryRouter, prefix="/api/ordersummary", tags=["Order Summary"])
+

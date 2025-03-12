@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query 
 from typing import Dict, List, Optional
 from datetime import datetime
 from model.db import get_db
@@ -21,14 +21,14 @@ def generate_inventory_report(db, report_date: Optional[str] = None) -> Dict:
 
     if report_date:
         db[0].execute("""
-            SELECT ReportID, ProductID, ProductName, Quantity, UnitPrice, CategoryID, Status, ReportDate
+            SELECT ReportID, ProductID, ProductName, Quantity, UnitPrice, CategoryID, Status, ReportDate, Image
             FROM inventory_reports
             WHERE DATE(ReportDate) = %s
             ORDER BY ReportDate DESC
         """, (report_date,))
     else:
         db[0].execute("""
-            SELECT ReportID, ProductID, ProductName, Quantity, UnitPrice, CategoryID, Status, ReportDate
+            SELECT ReportID, ProductID, ProductName, Quantity, UnitPrice, CategoryID, Status, ReportDate, Image
             FROM inventory_reports
             ORDER BY ReportDate DESC
         """)
@@ -56,7 +56,8 @@ def generate_inventory_report(db, report_date: Optional[str] = None) -> Dict:
                 "UnitPrice": float(product[4]),
                 "CategoryID": product[5],
                 "Status": product[6],
-                "ReportDate": product[7].strftime("%Y-%m-%d %H:%M:%S")
+                "ReportDate": product[7].strftime("%Y-%m-%d %H:%M:%S"),
+                "Image": f"/uploads/products/{product[8]}" if product[8] else None,
             }
             for product in products
         ]

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2025 at 11:36 AM
+-- Generation Time: Mar 12, 2025 at 01:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -85,7 +85,50 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (58, 'pi pi-trash', 'Product deleted: iuyfuygo', '2025-03-10 22:35:54', 'Warning'),
 (59, 'pi pi-trash', 'Product deleted: OrenttTESTT', '2025-03-10 22:35:57', 'Warning'),
 (60, 'pi pi-trash', 'Product deleted: Orentt', '2025-03-10 22:35:58', 'Warning'),
-(61, 'pi pi-trash', 'Product deleted: QWQ', '2025-03-10 22:35:59', 'Warning');
+(61, 'pi pi-trash', 'Product deleted: QWQ', '2025-03-10 22:35:59', 'Warning'),
+(62, 'pi pi-box', 'New product added: string', '2025-03-11 20:02:44', 'Success'),
+(63, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 20:30:02', 'Success'),
+(64, 'pi pi-pencil', 'Product updated: Matcha Latte', '2025-03-11 21:07:49', 'Success'),
+(65, 'pi pi-pencil', 'Product updated: Crossiant', '2025-03-11 21:08:10', 'Success'),
+(66, 'pi pi-pencil', 'Product updated: Spanish Latte', '2025-03-11 21:12:13', 'Success'),
+(67, 'pi pi-pencil', 'Product updated: Cafe Americano', '2025-03-11 21:12:37', 'Success'),
+(68, 'pi pi-pencil', 'Product updated: Cafe Americano', '2025-03-11 21:13:19', 'Success'),
+(69, 'pi pi-pencil', 'Product updated: Spanish Latte', '2025-03-11 21:15:22', 'Success'),
+(70, 'pi pi-pencil', 'Product updated: string', '2025-03-11 21:16:11', 'Success'),
+(71, 'pi pi-pencil', 'Product updated: Matcha Latte', '2025-03-11 21:22:52', 'Success'),
+(72, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 21:23:17', 'Success'),
+(73, 'pi pi-pencil', 'Product updated: Crossiant', '2025-03-11 21:24:10', 'Success'),
+(74, 'pi pi-pencil', 'Product updated: Cafe Mocha', '2025-03-11 21:26:57', 'Success'),
+(75, 'pi pi-pencil', 'Product updated: Cafe Mocha', '2025-03-11 21:27:56', 'Success'),
+(76, 'pi pi-pencil', 'Product updated: Caramel Macchiato', '2025-03-11 21:29:20', 'Success'),
+(77, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-11 21:41:53', 'Success'),
+(78, 'pi pi-trash', 'Product deleted: Matcha Latte', '2025-03-11 21:44:16', 'Warning'),
+(79, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 21:44:28', 'Success'),
+(80, 'pi pi-trash', 'Product deleted: Cafe Latte', '2025-03-11 21:44:51', 'Warning'),
+(81, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-11 21:45:02', 'Success'),
+(82, 'pi pi-box', 'New product added: Vanilla Latte', '2025-03-11 21:55:32', 'Success'),
+(83, 'pi pi-pencil', 'Product updated: Vanilla Latte', '2025-03-11 21:55:38', 'Success'),
+(84, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 21:59:37', 'Success'),
+(85, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:03:04', 'Success'),
+(86, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:20:13', 'Success'),
+(87, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:20:46', 'Success'),
+(88, 'pi pi-trash', 'Product deleted: Cafe Americano', '2025-03-11 23:35:03', 'Warning'),
+(89, 'pi pi-trash', 'Product deleted: Vanilla Latte', '2025-03-11 23:35:05', 'Warning'),
+(90, 'pi pi-trash', 'Product deleted: Lemon', '2025-03-11 23:35:07', 'Warning'),
+(91, 'pi pi-trash', 'Product deleted: Mango', '2025-03-11 23:35:09', 'Warning'),
+(92, 'pi pi-trash', 'Product deleted: Wintermelon', '2025-03-11 23:35:12', 'Warning'),
+(93, 'pi pi-trash', 'Product deleted: 3in1', '2025-03-11 23:35:14', 'Warning'),
+(94, 'pi pi-trash', 'Product deleted: Green Tea', '2025-03-11 23:35:16', 'Warning'),
+(95, 'pi pi-trash', 'Product deleted: Black Tea', '2025-03-11 23:35:18', 'Warning'),
+(96, 'pi pi-trash', 'Product deleted: Cafe Mocha', '2025-03-11 23:35:21', 'Warning'),
+(97, 'pi pi-trash', 'Product deleted: Kopiko', '2025-03-11 23:35:23', 'Warning'),
+(98, 'pi pi-trash', 'Product deleted: Nescafe', '2025-03-11 23:35:25', 'Warning'),
+(99, 'pi pi-trash', 'Product deleted: Ham & Cheese', '2025-03-11 23:36:03', 'Warning'),
+(100, 'pi pi-trash', 'Product deleted: Orange', '2025-03-11 23:36:06', 'Warning'),
+(101, 'pi pi-trash', 'Product deleted: TESTTT', '2025-03-11 23:36:08', 'Warning'),
+(102, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 23:49:07', 'Success'),
+(103, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-12 00:00:53', 'Success'),
+(104, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 00:01:08', 'Success');
 
 -- --------------------------------------------------------
 
@@ -128,34 +171,27 @@ CREATE TABLE `inventoryproduct` (
   `Status` varchar(20) DEFAULT NULL,
   `StockID` int(11) DEFAULT NULL,
   `StockQuantity` int(11) DEFAULT NULL,
-  `ReportDate` datetime DEFAULT current_timestamp()
+  `ReportDate` datetime DEFAULT current_timestamp(),
+  `Image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventoryproduct`
 --
 
-INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`, `StockID`, `StockQuantity`, `ReportDate`) VALUES
-(4, 'Matcha Latte', 6, 160.00, 2, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(5, 'Crossiant', 12, 25.00, 4, 5, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(6, 'Spanish Latte', 2, 120.00, 2, 1, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(7, 'Cafe Americano', 12, 70.00, 2, 1, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(8, 'Cafe Mocha', 12, 120.00, 1, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(15, 'Caramel Macchiato', 14, 100.00, 2, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(23, 'Cafe Americano', 9, 11.00, 1, 1, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(28, 'Vanilla Latte', 14, 120.00, 1, NULL, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(29, 'Cafe Mocha', 6, 40.00, 1, NULL, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(40, 'Nescafe', 1, 40.00, 7, NULL, NULL, NULL, NULL, '2025-02-26 22:44:31'),
-(41, 'Kopiko', 11, 50.00, 7, NULL, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(42, '3in1', 7, 20.00, 7, NULL, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(43, 'Wintermelon', 10, 80.00, 4, NULL, NULL, NULL, NULL, '2025-02-26 22:44:31'),
-(44, 'Orange', 15, 20.00, 4, NULL, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(45, 'Lemon', 5, 20.00, 4, NULL, NULL, NULL, NULL, '2025-02-26 22:44:31'),
-(46, 'Mango', 11, 20.00, 4, NULL, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(48, 'Green Tea', 11, 70.00, 10, NULL, 'In Stock', NULL, NULL, '2025-02-26 22:44:31'),
-(49, 'Black Tea', 11, 70.00, 10, NULL, NULL, NULL, NULL, '2025-02-26 22:44:31'),
-(51, 'Ham & Cheese', 11, 90.00, 3, NULL, 'In Stock', NULL, NULL, '2025-02-27 00:03:54'),
-(67, 'TESTTT', 1, 11.00, 3, NULL, 'Low Stock', NULL, NULL, '2025-03-08 23:06:47');
+INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`, `StockID`, `StockQuantity`, `ReportDate`, `Image`) VALUES
+(4, 'Matcha Latte', 6, 160.00, 3, 2, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31', 'Matcha_Latte_1741813669.png'),
+(5, 'Crossiant', 121, 25.00, 4, 5, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Crossiant_1741813690.png'),
+(6, 'Matcha Latte', 0, 1.00, 1, 1, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31', 'string_1741814171.png'),
+(7, 'Cafe Americano', 12, 70.00, 5, 1, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Cafe_Americano_1741813999.png'),
+(8, 'Cafe Mocha', 12, 120.00, 1, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Cafe_Mocha_1741814876.png'),
+(15, 'Caramel Macchiato', 14, 100.00, 9, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Caramel_Macchiato_1741814960.png'),
+(74, 'string', 11, 11.00, 1, 1, 'In Stock', NULL, NULL, '2025-03-11 20:02:44', 'string_1741809764.png'),
+(75, 'Cafe Latte', 1, 1.00, 1, NULL, 'Low Stock', NULL, NULL, '2025-03-11 20:30:02', 'Cafe_Latte_1741811402.png'),
+(76, 'Cafe Latte', 1, 1.00, 3, NULL, 'Low Stock', NULL, NULL, '2025-03-11 21:23:17', 'Cafe_Latte_1741814597.png'),
+(79, 'Matcha Latte', 11, 11.00, 3, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:45:02', 'Matcha_Latte_1741815902.png'),
+(80, 'Vanilla Latte', 11, 1.00, 15, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:55:32', 'Vanilla_Latte_1741816532.png'),
+(81, 'Cafe Latte', 11, 11.00, 7, NULL, 'In Stock', NULL, NULL, '2025-03-12 00:00:53', 'Cafe_Latte_1741824068.png');
 
 -- --------------------------------------------------------
 
@@ -171,125 +207,26 @@ CREATE TABLE `inventory_reports` (
   `Quantity` int(11) NOT NULL,
   `UnitPrice` decimal(10,2) NOT NULL,
   `CategoryID` int(11) NOT NULL,
-  `Status` varchar(50) NOT NULL
+  `Status` varchar(50) NOT NULL,
+  `Image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventory_reports`
 --
 
-INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID`, `Status`) VALUES
-(1, '2025-02-27 01:20:58', 4, 'Matcha Latte', 14, 160.00, 2, 'In Stock'),
-(2, '2025-02-27 01:20:58', 5, 'Crossiant', 21, 25.00, 4, 'In Stock'),
-(3, '2025-02-27 01:20:58', 6, 'Spanish Latte', 5, 120.00, 2, 'Low Stock'),
-(4, '2025-02-27 01:20:58', 7, 'Cafe Americano', 14, 70.00, 2, 'In Stock'),
-(5, '2025-02-27 01:20:58', 8, 'Cafe Mocha', 13, 120.00, 1, 'In Stock'),
-(6, '2025-02-27 01:20:58', 9, 'Cafe Americano', 20, 125.00, 1, 'In Stock'),
-(7, '2025-02-27 01:20:58', 15, 'Caramel Macchiato', 15, 100.00, 2, 'In Stock'),
-(8, '2025-02-27 01:20:58', 23, 'Cafe Americano', 9, 11.00, 1, 'Low Stock'),
-(9, '2025-02-27 01:20:58', 28, 'Vanilla Latte', 14, 120.00, 1, 'In Stock'),
-(10, '2025-02-27 01:20:58', 29, 'Cafe Mocha', 6, 40.00, 1, 'Low Stock'),
-(11, '2025-02-27 01:20:58', 40, 'Nescafe', 1, 40.00, 7, 'Low Stock'),
-(12, '2025-02-27 01:20:58', 41, 'Kopiko', 11, 50.00, 7, 'In Stock'),
-(13, '2025-02-27 01:20:58', 42, '3in1', 7, 20.00, 7, 'Low Stock'),
-(14, '2025-02-27 01:20:58', 43, 'Wintermelon', 10, 80.00, 4, 'Low Stock'),
-(15, '2025-02-27 01:20:58', 44, 'Orange', 15, 20.00, 4, 'In Stock'),
-(16, '2025-02-27 01:20:58', 45, 'Lemon', 5, 20.00, 4, 'Low Stock'),
-(17, '2025-02-27 01:20:58', 46, 'Mango', 11, 20.00, 4, 'In Stock'),
-(18, '2025-02-27 01:20:58', 48, 'Green Tea', 11, 70.00, 10, 'In Stock'),
-(19, '2025-02-27 01:20:58', 49, 'Black Tea', 11, 70.00, 10, 'In Stock'),
-(20, '2025-02-27 01:20:58', 51, 'Ham & Cheese', 11, 90.00, 3, 'In Stock'),
-(21, '2025-02-27 01:20:58', 52, 'Cheesy Egg Drop', 7, 90.00, 3, 'Low Stock'),
-(22, '2025-02-27 01:20:58', 53, 'asas', 11, 11.00, 3, 'In Stock'),
-(23, '2025-02-27 01:20:58', 54, '11111', 111, 111.00, 4, 'In Stock'),
-(24, '2025-02-27 01:20:58', 55, 'John Doe', 111, 11.00, 3, 'In Stock'),
-(25, '2025-02-27 01:20:58', 56, '444', 1, 1.00, 5, 'Low Stock'),
-(26, '2025-02-26 12:11:00', 4, 'Matcha Latte', 14, 160.00, 2, 'In Stock'),
-(27, '2025-02-26 12:11:00', 5, 'Crossiant', 21, 25.00, 4, 'In Stock'),
-(28, '2025-02-26 12:11:00', 6, 'Spanish Latte', 5, 120.00, 2, 'Low Stock'),
-(29, '2025-02-26 12:11:00', 7, 'Cafe Americano', 14, 70.00, 2, 'In Stock'),
-(30, '2025-02-26 12:11:00', 8, 'Cafe Mocha', 13, 120.00, 1, 'In Stock'),
-(31, '2025-02-26 12:11:00', 9, 'Cafe Americano', 20, 125.00, 1, 'In Stock'),
-(32, '2025-02-26 12:11:00', 15, 'Caramel Macchiato', 15, 100.00, 2, 'In Stock'),
-(33, '2025-02-26 12:11:00', 23, 'Cafe Americano', 9, 11.00, 1, 'Low Stock'),
-(34, '2025-02-26 12:11:00', 28, 'Vanilla Latte', 14, 120.00, 1, 'In Stock'),
-(35, '2025-02-26 12:11:00', 29, 'Cafe Mocha', 6, 40.00, 1, 'Low Stock'),
-(36, '2025-02-26 12:11:00', 40, 'Nescafe', 1, 40.00, 7, 'Low Stock'),
-(37, '2025-02-26 12:11:00', 41, 'Kopiko', 11, 50.00, 7, 'In Stock'),
-(38, '2025-02-26 12:11:00', 42, '3in1', 7, 20.00, 7, 'Low Stock'),
-(39, '2025-02-26 12:11:00', 43, 'Wintermelon', 10, 80.00, 4, 'Low Stock'),
-(40, '2025-02-26 12:11:00', 44, 'Orange', 15, 20.00, 4, 'In Stock'),
-(41, '2025-02-26 12:11:00', 45, 'Lemon', 5, 20.00, 4, 'Low Stock'),
-(42, '2025-02-26 12:11:00', 46, 'Mango', 11, 20.00, 4, 'In Stock'),
-(43, '2025-02-26 12:11:00', 48, 'Green Tea', 11, 70.00, 10, 'In Stock'),
-(44, '2025-02-26 12:11:00', 49, 'Black Tea', 11, 70.00, 10, 'In Stock'),
-(45, '2025-02-26 12:11:00', 51, 'Ham & Cheese', 11, 90.00, 3, 'In Stock'),
-(46, '2025-02-28 05:13:23', 4, 'Matcha Latte', 14, 160.00, 2, 'In Stock'),
-(47, '2025-02-28 05:13:23', 5, 'Crossiant', 21, 25.00, 4, 'In Stock'),
-(48, '2025-02-28 05:13:23', 6, 'Spanish Latte', 5, 120.00, 2, 'Low Stock'),
-(49, '2025-02-28 05:13:23', 7, 'Cafe Americano', 14, 70.00, 2, 'In Stock'),
-(50, '2025-02-28 05:13:23', 8, 'Cafe Mocha', 13, 120.00, 1, 'In Stock'),
-(51, '2025-02-28 05:13:23', 9, 'Cafe Americano', 20, 125.00, 1, 'In Stock'),
-(52, '2025-02-28 05:13:23', 15, 'Caramel Macchiato', 15, 100.00, 2, 'In Stock'),
-(53, '2025-02-28 05:13:23', 23, 'Cafe Americano', 9, 11.00, 1, 'Low Stock'),
-(54, '2025-02-28 05:13:23', 28, 'Vanilla Latte', 14, 120.00, 1, 'In Stock'),
-(55, '2025-02-28 05:13:23', 29, 'Cafe Mocha', 6, 40.00, 1, 'Low Stock'),
-(56, '2025-02-28 05:13:23', 40, 'Nescafe', 1, 40.00, 7, 'Low Stock'),
-(57, '2025-02-28 05:13:23', 41, 'Kopiko', 11, 50.00, 7, 'In Stock'),
-(58, '2025-02-28 05:13:23', 42, '3in1', 7, 20.00, 7, 'Low Stock'),
-(59, '2025-02-28 05:13:23', 43, 'Wintermelon', 10, 80.00, 4, 'Low Stock'),
-(60, '2025-02-28 05:13:23', 44, 'Orange', 15, 20.00, 4, 'In Stock'),
-(61, '2025-02-28 05:13:23', 45, 'Lemon', 5, 20.00, 4, 'Low Stock'),
-(62, '2025-02-28 05:13:23', 46, 'Mango', 11, 20.00, 4, 'In Stock'),
-(63, '2025-02-28 05:13:23', 48, 'Green Tea', 11, 70.00, 10, 'In Stock'),
-(64, '2025-02-28 05:13:23', 49, 'Black Tea', 11, 70.00, 10, 'In Stock'),
-(65, '2025-02-28 05:13:23', 51, 'Ham & Cheese', 11, 90.00, 3, 'In Stock'),
-(66, '2025-02-28 05:13:23', 57, 'asa', 1, 11.00, 5, 'Low Stock'),
-(67, '2025-03-08 19:08:30', 4, 'Matcha Latte', 6, 160.00, 2, 'Low Stock'),
-(68, '2025-03-08 19:08:30', 5, 'Crossiant', 12, 25.00, 4, 'In Stock'),
-(69, '2025-03-08 19:08:30', 6, 'Spanish Latte', 2, 120.00, 2, 'Low Stock'),
-(70, '2025-03-08 19:08:30', 7, 'Cafe Americano', 12, 70.00, 2, 'In Stock'),
-(71, '2025-03-08 19:08:30', 8, 'Cafe Mocha', 12, 120.00, 1, 'In Stock'),
-(72, '2025-03-08 19:08:30', 9, 'Cafe Americano', 20, 125.00, 1, 'In Stock'),
-(73, '2025-03-08 19:08:30', 15, 'Caramel Macchiato', 14, 100.00, 2, 'In Stock'),
-(74, '2025-03-08 19:08:30', 23, 'Cafe Americano', 9, 11.00, 1, 'Low Stock'),
-(75, '2025-03-08 19:08:30', 28, 'Vanilla Latte', 14, 120.00, 1, 'In Stock'),
-(76, '2025-03-08 19:08:30', 29, 'Cafe Mocha', 6, 40.00, 1, 'Low Stock'),
-(77, '2025-03-08 19:08:30', 40, 'Nescafe', 1, 40.00, 7, 'Low Stock'),
-(78, '2025-03-08 19:08:30', 41, 'Kopiko', 11, 50.00, 7, 'In Stock'),
-(79, '2025-03-08 19:08:30', 42, '3in1', 7, 20.00, 7, 'Low Stock'),
-(80, '2025-03-08 19:08:30', 43, 'Wintermelon', 10, 80.00, 4, 'Low Stock'),
-(81, '2025-03-08 19:08:30', 44, 'Orange', 15, 20.00, 4, 'In Stock'),
-(82, '2025-03-08 19:08:30', 45, 'Lemon', 5, 20.00, 4, 'Low Stock'),
-(83, '2025-03-08 19:08:30', 46, 'Mango', 11, 20.00, 4, 'In Stock'),
-(84, '2025-03-08 19:08:30', 48, 'Green Tea', 11, 70.00, 10, 'In Stock'),
-(85, '2025-03-08 19:08:30', 49, 'Black Tea', 11, 70.00, 10, 'In Stock'),
-(86, '2025-03-08 19:08:30', 51, 'Ham & Cheese', 11, 90.00, 3, 'In Stock'),
-(87, '2025-03-08 19:08:30', 57, 'asa', 1, 11.00, 5, 'Low Stock'),
-(88, '2025-03-08 19:08:30', 60, 'TESTTTT', 1, 11.00, 4, 'Low Stock'),
-(89, '2025-03-08 22:13:23', 4, 'Matcha Latte', 6, 160.00, 2, 'Low Stock'),
-(90, '2025-03-08 22:13:23', 5, 'Crossiant', 12, 25.00, 4, 'In Stock'),
-(91, '2025-03-08 22:13:23', 6, 'Spanish Latte', 2, 120.00, 2, 'Low Stock'),
-(92, '2025-03-08 22:13:23', 7, 'Cafe Americano', 12, 70.00, 2, 'In Stock'),
-(93, '2025-03-08 22:13:23', 8, 'Cafe Mocha', 12, 120.00, 1, 'In Stock'),
-(94, '2025-03-08 22:13:23', 9, 'Cafe Americano', 20, 125.00, 1, 'In Stock'),
-(95, '2025-03-08 22:13:23', 15, 'Caramel Macchiato', 14, 100.00, 2, 'In Stock'),
-(96, '2025-03-08 22:13:23', 23, 'Cafe Americano', 9, 11.00, 1, 'Low Stock'),
-(97, '2025-03-08 22:13:23', 28, 'Vanilla Latte', 14, 120.00, 1, 'In Stock'),
-(98, '2025-03-08 22:13:23', 29, 'Cafe Mocha', 6, 40.00, 1, 'Low Stock'),
-(99, '2025-03-08 22:13:23', 40, 'Nescafe', 1, 40.00, 7, 'Low Stock'),
-(100, '2025-03-08 22:13:23', 41, 'Kopiko', 11, 50.00, 7, 'In Stock'),
-(101, '2025-03-08 22:13:23', 42, '3in1', 7, 20.00, 7, 'Low Stock'),
-(102, '2025-03-08 22:13:23', 43, 'Wintermelon', 10, 80.00, 4, 'Low Stock'),
-(103, '2025-03-08 22:13:23', 44, 'Orange', 15, 20.00, 4, 'In Stock'),
-(104, '2025-03-08 22:13:23', 45, 'Lemon', 5, 20.00, 4, 'Low Stock'),
-(105, '2025-03-08 22:13:23', 46, 'Mango', 11, 20.00, 4, 'In Stock'),
-(106, '2025-03-08 22:13:23', 48, 'Green Tea', 11, 70.00, 10, 'In Stock'),
-(107, '2025-03-08 22:13:23', 49, 'Black Tea', 11, 70.00, 10, 'In Stock'),
-(108, '2025-03-08 22:13:23', 51, 'Ham & Cheese', 11, 90.00, 3, 'In Stock'),
-(109, '2025-03-08 22:13:23', 60, 'TESTTTT', 1, 11.00, 4, 'Low Stock'),
-(110, '2025-03-08 22:13:23', 61, 'ljguihop', 11, 11.00, 3, 'In Stock'),
-(111, '2025-03-08 22:13:23', 62, 'string', 11, 11.00, 1, 'In Stock');
+INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID`, `Status`, `Image`) VALUES
+(1, '2025-03-11 23:49:07', 4, 'Matcha Latte', 6, 160.00, 3, 'Low Stock', 'Matcha_Latte_1741813669.png'),
+(2, '2025-03-11 23:49:07', 5, 'Crossiant', 121, 25.00, 4, 'In Stock', 'Crossiant_1741813690.png'),
+(3, '2025-03-11 23:49:07', 6, 'Matcha Latte', 0, 1.00, 1, 'Out of Stock', 'string_1741814171.png'),
+(4, '2025-03-11 23:49:07', 7, 'Cafe Americano', 12, 70.00, 5, 'In Stock', 'Cafe_Americano_1741813999.png'),
+(5, '2025-03-11 23:49:07', 8, 'Cafe Mocha', 12, 120.00, 1, 'In Stock', 'Cafe_Mocha_1741814876.png'),
+(6, '2025-03-11 23:49:07', 15, 'Caramel Macchiato', 14, 100.00, 9, 'In Stock', 'Caramel_Macchiato_1741814960.png'),
+(7, '2025-03-11 23:49:07', 74, 'string', 11, 11.00, 1, 'In Stock', 'string_1741809764.png'),
+(8, '2025-03-11 23:49:07', 75, 'Cafe Latte', 1, 1.00, 1, 'Low Stock', 'Cafe_Latte_1741811402.png'),
+(9, '2025-03-11 23:49:07', 76, 'Cafe Latte', 1, 1.00, 3, 'Low Stock', 'Cafe_Latte_1741814597.png'),
+(10, '2025-03-11 23:49:07', 79, 'Matcha Latte', 11, 11.00, 3, 'In Stock', 'Matcha_Latte_1741815902.png'),
+(11, '2025-03-11 23:49:07', 80, 'Vanilla Latte', 11, 1.00, 15, 'In Stock', 'Vanilla_Latte_1741816532.png');
 
 -- --------------------------------------------------------
 
@@ -323,7 +260,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`OrderID`, `CustomerName`, `TableNumber`, `OrderDate`, `TotalAmount`, `OrderStatus`) VALUES
-(1, 'qwq', 1, '2025-03-08 12:42:16', 230.00, 'Completed');
+(1, 'qwq', 1, '2025-03-08 12:42:16', 230.00, 'Completed'),
+(2, 'jj', 2, '2025-03-12 10:54:08', 1.00, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -368,7 +306,8 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`) VALUES
 (1, 1, 4, 1),
-(2, 1, 7, 1);
+(2, 1, 7, 1),
+(3, 2, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -389,7 +328,15 @@ CREATE TABLE `reports` (
 
 INSERT INTO `reports` (`ReportID`, `ReportType`, `ReportName`, `ReportDate`) VALUES
 (1, 'Daily', 'Inventory Summary', '2025-03-08 19:08:30'),
-(2, 'Daily', 'Inventory Summary', '2025-03-08 22:13:23');
+(2, 'Daily', 'Inventory Summary', '2025-03-08 22:13:23'),
+(3, 'Daily', 'Inventory Summary', '2025-03-11 21:59:37'),
+(4, 'Daily', 'Inventory Summary', '2025-03-11 22:03:04'),
+(5, 'Daily', 'Inventory Summary', '2025-03-11 22:10:23'),
+(6, 'Daily', 'Inventory Summary', '2025-03-11 22:11:06'),
+(7, 'Daily', 'Inventory Summary', '2025-03-11 22:11:22'),
+(8, 'Daily', 'Inventory Summary', '2025-03-11 22:20:13'),
+(9, 'Daily', 'Inventory Summary', '2025-03-11 22:20:46'),
+(10, 'Daily', 'Inventory Summary', '2025-03-11 23:49:07');
 
 -- --------------------------------------------------------
 
@@ -415,7 +362,8 @@ CREATE TABLE `sales` (
 
 INSERT INTO `sales` (`id`, `product_id`, `product_name`, `quantity_sold`, `unit_price`, `remitted`, `sale_date`, `created_at`) VALUES
 (1, 4, '', 1, 0.00, 160.00, '2025-03-08 12:42:16', '2025-03-08 12:42:16'),
-(2, 7, '', 1, 0.00, 70.00, '2025-03-08 12:42:16', '2025-03-08 12:42:16');
+(2, 7, '', 1, 0.00, 70.00, '2025-03-08 12:42:16', '2025-03-08 12:42:16'),
+(3, 6, '', 1, 0.00, 1.00, '2025-03-12 10:54:08', '2025-03-12 10:54:08');
 
 -- --------------------------------------------------------
 
@@ -658,7 +606,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -670,13 +618,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `inventoryproduct`
 --
 ALTER TABLE `inventoryproduct`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `inventory_reports`
 --
 ALTER TABLE `inventory_reports`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `menu_items`
@@ -688,7 +636,7 @@ ALTER TABLE `menu_items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_history`
@@ -700,19 +648,19 @@ ALTER TABLE `order_history`
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `stocks`
