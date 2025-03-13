@@ -1,12 +1,16 @@
-from fastapi import Depends, HTTPException, APIRouter, Form
+from fastapi import Depends, HTTPException, APIRouter, Form, UploadFile, File, Request
 from typing import List, Optional
 from pydantic import BaseModel
 from model.db import get_db
+import os
+import shutil
 from datetime import datetime
+
+UPLOAD_DIR = "uploads/stocks"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 StockRouter = APIRouter(tags=["Stocks"])
 
-# Pydantic Model for Stock Update
 class StockUpdate(BaseModel):
     StockName: Optional[str] = None
     Quantity: Optional[int] = None
@@ -31,81 +35,166 @@ def log_activity(db, icon: str, title: str, status: str):
         db[1].commit()
     except Exception as e:
         print(f"Failed to log activity: {e}")
-
+        
 # ✅ Get All Stocks
 @StockRouter.get("/", response_model=list)
-async def read_stocks(db=Depends(get_db)):
-    query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status FROM stocks"
+async def read_stocks(request: Request, db=Depends(get_db)):
+    base_url = str(request.base_url)
+    query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status, Image FROM stocks"
     db[0].execute(query)
-    stocks = [{"StockID": stock[0], "StockName": stock[1], "Quantity": stock[2], "CostPrice": stock[3],
-               "SupplierID": stock[4], "Status": stock[5]} for stock in db[0].fetchall()]
+    stocks = [
+        {
+            "StockID": stock[0],
+            "StockName": stock[1],
+            "Quantity": stock[2],
+            "CostPrice": stock[3],
+            "SupplierID": stock[4],
+            "Status": stock[5],
+            "Image": f"{base_url}uploads/stocks/{stock[6]}" if stock[6] else None
+        }
+        for stock in db[0].fetchall()
+    ]
     return stocks
 
-# ✅ Get Stock by ID
+
 @StockRouter.get("/stocks/{stock_id}", response_model=dict)
-async def read_stock(stock_id: int, db=Depends(get_db)):
-    query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status FROM stocks WHERE StockID = %s"
+async def read_stock(stock_id: int, request: Request, db=Depends(get_db)):
+    base_url = str(request.base_url)
+    query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status, Image FROM stocks WHERE StockID = %s"
     db[0].execute(query, (stock_id,))
     stock = db[0].fetchone()
     if stock:
-        return {"StockID": stock[0], "StockName": stock[1], "Quantity": stock[2], "CostPrice": stock[3],
-                "SupplierID": stock[4], "Status": stock[5]}
+        return {
+            "StockID": stock[0],
+            "StockName": stock[1],
+            "Quantity": stock[2],
+            "CostPrice": stock[3],
+            "SupplierID": stock[4],
+            "Status": stock[5],
+            "Image": f"{base_url}uploads/stocks/{stock[6]}" if stock[6] else None
+        }
     raise HTTPException(status_code=404, detail="Stock not found")
 
 # ✅ Create Stock (Status is determined automatically)
 @StockRouter.post("/stocks/")
 async def create_stock(
+    request: Request,
     StockName: str = Form(...),
     Quantity: int = Form(...),
     CostPrice: float = Form(...),
     SupplierID: Optional[int] = Form(None),
-    db=Depends(get_db)
+    Image: Optional[UploadFile] = File(None),
+    db=Depends(get_db),
 ):
     try:
         Status = determine_stock_status(Quantity)
+        image_filename = None
+
+        if Image:
+            file_extension = Image.filename.split(".")[-1]
+            image_filename = f"{StockName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+            file_path = os.path.join(UPLOAD_DIR, image_filename)
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(Image.file, buffer)
+
         db[0].execute(
-            "INSERT INTO stocks (StockName, Quantity, CostPrice, SupplierID, Status) VALUES (%s, %s, %s, %s, %s)",
-            (StockName, Quantity, CostPrice, SupplierID, Status)
+            "INSERT INTO stocks (StockName, Quantity, CostPrice, SupplierID, Status, Image) VALUES (%s, %s, %s, %s, %s, %s)",
+            (StockName, Quantity, CostPrice, SupplierID, Status, image_filename)
         )
         db[1].commit()
+
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_stock_id = db[0].fetchone()[0]
-        log_activity(db, "pi pi-box", f"New Stock added: {StockName} ", "Success")
-        return {"StockID": new_stock_id, "StockName": StockName, "Quantity": Quantity, "CostPrice": CostPrice, "SupplierID": SupplierID, "Status": Status}
+
+        log_activity(db, "pi pi-box", f"New Stock added: {StockName}", "Success")
+
+        base_url = str(request.base_url)
+        image_url = f"{base_url}uploads/stocks/{image_filename}" if image_filename else None
+
+        return {
+            "StockID": new_stock_id,
+            "StockName": StockName,
+            "Quantity": Quantity,
+            "CostPrice": CostPrice,
+            "SupplierID": SupplierID,
+            "Status": Status,
+            "Image": image_url
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 @StockRouter.put("/stocks/{stock_id}", response_model=dict)
-async def update_stock(stock_id: int, stock_data: StockUpdate, db=Depends(get_db)):
-    db[0].execute("SELECT StockName FROM stocks WHERE StockID = %s", (stock_id,))
+async def update_stock(
+    stock_id: int,
+    StockName: Optional[str] = Form(None),
+    Quantity: Optional[int] = Form(None),
+    CostPrice: Optional[float] = Form(None),
+    SupplierID: Optional[int] = Form(None),
+    Image: Optional[UploadFile] = File(None),
+    db=Depends(get_db),
+):
+    db[0].execute("SELECT StockName, Image FROM stocks WHERE StockID = %s", (stock_id,))
     stock = db[0].fetchone()
     if not stock:
         raise HTTPException(status_code=404, detail="Stock not found")
+
     update_fields = []
     update_values = []
-    if stock_data.StockName is not None:
+
+    if StockName:
         update_fields.append("StockName = %s")
-        update_values.append(stock_data.StockName)
-    if stock_data.Quantity is not None:
+        update_values.append(StockName)
+
+    if Quantity is not None:
         update_fields.append("Quantity = %s")
-        update_values.append(stock_data.Quantity)
-        Status = determine_stock_status(stock_data.Quantity)
+        update_values.append(Quantity)
+        Status = determine_stock_status(Quantity)
         update_fields.append("Status = %s")
         update_values.append(Status)
-    if stock_data.CostPrice is not None:
+
+    if CostPrice is not None:
         update_fields.append("CostPrice = %s")
-        update_values.append(stock_data.CostPrice)
-    if stock_data.SupplierID is not None:
+        update_values.append(CostPrice)
+
+    if SupplierID is not None:
         update_fields.append("SupplierID = %s")
-        update_values.append(stock_data.SupplierID)
+        update_values.append(SupplierID)
+
+    image_filename = None
+    if Image:
+        file_extension = Image.filename.split(".")[-1]
+        image_filename = f"{StockName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+        file_path = os.path.join(UPLOAD_DIR, image_filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(Image.file, buffer)
+        update_fields.append("Image = %s")
+        update_values.append(image_filename)
+
     if not update_fields:
         raise HTTPException(status_code=400, detail="No fields provided for update")
+
     update_query = f"UPDATE stocks SET {', '.join(update_fields)} WHERE StockID = %s"
     update_values.append(stock_id)
+
     db[0].execute(update_query, tuple(update_values))
     db[1].commit()
-    log_activity(db, "pi pi-pencil", f"Stock updated: {stock[0]}", "Success")
-    return {"message": "Stock updated successfully"}
+
+    log_activity(db, "pi pi-pencil", f"Stock updated: {stock[0]}", "Updated")
+
+    base_url = str(Request.base_url)
+    image_url = f"{base_url}uploads/stocks/{image_filename}" if image_filename else None
+
+    return {
+        "message": "Stock updated successfully",
+        "StockID": stock_id,
+        "StockName": StockName or stock[0],
+        "Quantity": Quantity,
+        "CostPrice": CostPrice,
+        "SupplierID": SupplierID,
+        "Status": determine_stock_status(Quantity) if Quantity is not None else None,
+        "Image": image_url,
+    }
+
 
 # ✅ Delete Stock
 
@@ -123,7 +212,7 @@ async def delete_stock(stock_id: int, db=Depends(get_db)):
         db[0].execute("DELETE FROM stocks WHERE StockID = %s", (stock_id,))
         db[1].commit()
 
-        log_activity(db, "pi pi-trash", f"Stock deleted: {stock[0]}", "Warning")
+        log_activity(db, "pi pi-trash", f"Stock deleted: {stock[0]}", "Deleted")
         return {"message": "Stock deleted successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

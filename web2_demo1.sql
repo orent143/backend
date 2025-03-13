@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2025 at 01:28 PM
+-- Generation Time: Mar 13, 2025 at 01:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -128,7 +128,64 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (101, 'pi pi-trash', 'Product deleted: TESTTT', '2025-03-11 23:36:08', 'Warning'),
 (102, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 23:49:07', 'Success'),
 (103, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-12 00:00:53', 'Success'),
-(104, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 00:01:08', 'Success');
+(104, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 00:01:08', 'Success'),
+(105, 'pi pi-trash', 'Product deleted: Matcha', '2025-03-12 20:34:49', 'Warning'),
+(106, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:53', 'Warning'),
+(107, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:55', 'Warning'),
+(108, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:57', 'Warning'),
+(109, 'pi pi-box', 'New Stock added: string', '2025-03-12 20:43:53', 'Success'),
+(110, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-12 21:54:01', 'Success'),
+(111, 'pi pi-trash', 'Product deleted: Matcha Latte', '2025-03-12 21:54:07', 'Warning'),
+(112, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 22:10:51', 'Success'),
+(113, 'pi pi-pencil', 'Stock updated: Coffee Beans', '2025-03-12 22:55:31', 'Success'),
+(114, 'pi pi-pencil', 'Stock updated: Caramel Syrup', '2025-03-12 22:55:37', 'Success'),
+(115, 'pi pi-pencil', 'Stock updated: Sugar', '2025-03-12 22:55:57', 'Success'),
+(116, 'pi pi-pencil', 'Stock updated: Ice Cubes', '2025-03-12 22:56:03', 'Success'),
+(117, 'pi pi-box', 'New product added: 11qwertyuiqwq', '2025-03-12 23:12:53', 'Success'),
+(118, 'pi pi-box', 'New Stock added: qwqwwq weqeoqioip', '2025-03-12 23:13:39', 'Success'),
+(119, 'pi pi-trash', 'Stock deleted: qwqwwq weqeoqioip', '2025-03-12 23:14:40', 'Warning'),
+(120, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:17:56', 'Success'),
+(121, 'pi pi-box', 'New Stock added: Vanilla Latte', '2025-03-12 23:18:38', 'Success'),
+(122, 'pi pi-trash', 'Stock deleted: Vanilla Latte', '2025-03-12 23:18:41', 'Warning'),
+(123, 'pi pi-box', 'New Stock added: salt', '2025-03-12 23:19:15', 'Success'),
+(124, 'pi pi-pencil', 'Stock updated: Salt', '2025-03-12 23:23:14', 'Success'),
+(125, 'pi pi-trash', 'Stock deleted: salt', '2025-03-12 23:23:26', 'Warning'),
+(126, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:23:28', 'Warning'),
+(127, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:23:46', 'Success'),
+(128, 'pi pi-box', 'New Stock added: Sal', '2025-03-12 23:25:13', 'Success'),
+(129, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:29:01', 'Warning'),
+(130, 'pi pi-trash', 'Stock deleted: Sal', '2025-03-12 23:29:37', 'Warning'),
+(131, 'pi pi-pencil', 'Stock updated: Wooden Spoon', '2025-03-12 23:29:48', 'Success'),
+(132, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:30:43', 'Success'),
+(133, 'pi pi-pencil', 'Stock updated: Salt', '2025-03-12 23:36:58', 'Success'),
+(134, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:37:01', 'Warning'),
+(135, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:37:19', 'Success'),
+(136, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:41:32', 'Success'),
+(137, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:41:36', 'Warning'),
+(138, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:41:38', 'Warning'),
+(139, 'pi pi-box', 'New Stock added: sdsdas', '2025-03-12 23:41:52', 'Success'),
+(140, 'pi pi-trash', 'Product deleted: 11qwertyuiqwq', '2025-03-12 23:42:39', 'Warning'),
+(141, 'pi pi-trash', 'Stock deleted: sdsdas', '2025-03-12 23:43:15', 'Warning'),
+(142, 'pi pi-box', 'New Stock added: Matcha Latte', '2025-03-12 23:43:25', 'Success'),
+(143, 'pi pi-box', 'New Stock added: Cafe Mocha', '2025-03-12 23:44:08', 'Success'),
+(144, 'pi pi-pencil', 'Stock updated: Cafe Mocha', '2025-03-12 23:53:14', 'Success'),
+(145, 'pi pi-pencil', 'Stock updated: Cup', '2025-03-13 00:04:15', 'Updated'),
+(146, 'pi pi-pencil', 'Stock updated: Milk', '2025-03-13 00:04:22', 'Updated'),
+(147, 'pi pi-pencil', 'Stock updated: Oat Milk', '2025-03-13 00:04:29', 'Updated'),
+(148, 'pi pi-pencil', 'Stock updated: Mineral Water', '2025-03-13 00:04:35', 'Updated'),
+(149, 'pi pi-pencil', 'Stock updated: Paper Plate', '2025-03-13 00:04:45', 'Updated'),
+(150, 'pi pi-pencil', 'Stock updated: Wooden Fork', '2025-03-13 00:04:54', 'Updated'),
+(151, 'pi pi-pencil', 'Stock updated: Blender', '2025-03-13 00:05:04', 'Updated'),
+(152, 'pi pi-trash', 'Stock deleted: string', '2025-03-13 00:06:01', 'Deleted'),
+(153, 'pi-truck', 'New supplier added: admin111 ', '2025-03-13 00:08:00', 'Success'),
+(154, 'pi pi-pencil', 'Supplier updated: string111', '2025-03-13 00:08:07', 'Updated'),
+(155, 'pi pi-trash', 'Supplier deleted: string111', '2025-03-13 00:08:14', 'Deleted'),
+(156, 'pi pi-box', 'New Stock added: Vanilla Latte', '2025-03-13 00:08:32', 'Success'),
+(157, 'pi pi-pencil', 'Stock updated: Vanilla Latte', '2025-03-13 00:10:28', 'Updated'),
+(158, 'pi pi-trash', 'Stock deleted: Cafe Mocha', '2025-03-13 00:10:45', 'Deleted'),
+(159, 'pi pi-trash', 'Stock deleted: Vanilla Latte', '2025-03-13 00:10:55', 'Deleted'),
+(160, 'pi pi-pencil', 'Product updated: WQWQWQWQW', '2025-03-13 00:11:13', 'Updated'),
+(161, 'pi pi-trash', 'Product deleted: WQWQWQWQW', '2025-03-13 00:11:25', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -153,7 +210,8 @@ INSERT INTO `categories` (`id`, `CategoryName`) VALUES
 (7, 'Coffee'),
 (9, 'Desserts'),
 (10, 'Tea'),
-(15, 'Streetfood');
+(15, 'Streetfood'),
+(18, 'QQQ');
 
 -- --------------------------------------------------------
 
@@ -188,10 +246,11 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `C
 (15, 'Caramel Macchiato', 14, 100.00, 9, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Caramel_Macchiato_1741814960.png'),
 (74, 'string', 11, 11.00, 1, 1, 'In Stock', NULL, NULL, '2025-03-11 20:02:44', 'string_1741809764.png'),
 (75, 'Cafe Latte', 1, 1.00, 1, NULL, 'Low Stock', NULL, NULL, '2025-03-11 20:30:02', 'Cafe_Latte_1741811402.png'),
-(76, 'Cafe Latte', 1, 1.00, 3, NULL, 'Low Stock', NULL, NULL, '2025-03-11 21:23:17', 'Cafe_Latte_1741814597.png'),
+(76, 'Cafe Latte', 1, 1.00, 3, NULL, 'Low Stock', NULL, NULL, '2025-03-11 21:23:17', 'Cafe_Latte_1741903851.png'),
 (79, 'Matcha Latte', 11, 11.00, 3, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:45:02', 'Matcha_Latte_1741815902.png'),
 (80, 'Vanilla Latte', 11, 1.00, 15, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:55:32', 'Vanilla_Latte_1741816532.png'),
-(81, 'Cafe Latte', 11, 11.00, 7, NULL, 'In Stock', NULL, NULL, '2025-03-12 00:00:53', 'Cafe_Latte_1741824068.png');
+(81, 'Cafe Latte', 11, 11.00, 7, NULL, 'In Stock', NULL, NULL, '2025-03-12 00:00:53', 'Cafe_Latte_1741824068.png'),
+(88, 'jgkjnln', 1, 8878.00, 1, NULL, NULL, NULL, NULL, '2025-03-12 23:49:15', 'jgkjnln_1741909755.jpg');
 
 -- --------------------------------------------------------
 
@@ -378,26 +437,28 @@ CREATE TABLE `stocks` (
   `CostPrice` decimal(10,2) NOT NULL,
   `CategoryID` int(11) DEFAULT NULL,
   `SupplierID` int(11) DEFAULT NULL,
-  `Status` enum('active','inactive') NOT NULL
+  `Status` enum('active','inactive') NOT NULL,
+  `Image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stocks`
 --
 
-INSERT INTO `stocks` (`StockID`, `StockName`, `Quantity`, `CostPrice`, `CategoryID`, `SupplierID`, `Status`) VALUES
-(1, 'Coffee Beans', 1, 50.00, NULL, 1, ''),
-(2, 'Caramel Syrup', 1, 11.00, NULL, 1, ''),
-(3, 'Sugar', 2, 20.00, NULL, 1, ''),
-(4, 'Ice Cubes', 3, 15.00, NULL, 2, ''),
-(5, 'Cup', 1, 30.00, NULL, 1, ''),
-(6, 'Milk', 7, 80.00, NULL, 2, ''),
-(7, 'Oat Milk', 11, 90.00, NULL, 2, ''),
-(10, 'Mineral Water', 4, 20.00, NULL, 2, ''),
-(16, 'Wooden Spoon', 11, 100.00, NULL, 2, ''),
-(18, 'Paper Plate', 10, 11.00, NULL, 1, ''),
-(19, 'Wooden Fork', 0, 11.00, NULL, 6, ''),
-(20, 'Blender', 1, 123.00, NULL, 8, '');
+INSERT INTO `stocks` (`StockID`, `StockName`, `Quantity`, `CostPrice`, `CategoryID`, `SupplierID`, `Status`, `Image`) VALUES
+(1, 'Coffee Beans', 1, 50.00, NULL, 1, '', 'Coffee_Beans_1741906531.png'),
+(2, 'Caramel Syrup', 1, 11.00, NULL, 1, '', 'Caramel_Syrup_1741906537.png'),
+(3, 'Sugar', 2, 20.00, NULL, 1, '', 'Sugar_1741906557.png'),
+(4, 'Ice Cubes', 3, 15.00, NULL, 2, '', 'Ice_Cubes_1741906563.png'),
+(5, 'Cup', 1, 30.00, NULL, 1, '', 'Cup_1741910655.png'),
+(6, 'Milk', 7, 80.00, NULL, 2, '', 'Milk_1741910662.jpg'),
+(7, 'Oat Milk', 11, 90.00, NULL, 2, '', 'Oat_Milk_1741910669.png'),
+(10, 'Mineral Water', 4, 20.00, NULL, 2, '', 'Mineral_Water_1741910675.png'),
+(16, 'Wooden Spoon', 11, 100.00, NULL, 2, '', 'Wooden_Spoon_1741908588.jpg'),
+(18, 'Paper Plate', 9, 11.00, NULL, 1, '', 'Paper_Plate_1741910685.png'),
+(19, 'Wooden Fork', 1, 11.00, NULL, 6, '', 'Wooden_Fork_1741910694.jpg'),
+(20, 'Blender', 1, 123.00, NULL, 8, '', 'Blender_1741910704.png'),
+(33, 'Matcha Latte', 7, 11.00, NULL, 8, '', 'Matcha_Latte_1741909405.jpg');
 
 -- --------------------------------------------------------
 
@@ -475,7 +536,7 @@ INSERT INTO `suppliers` (`id`, `suppliername`, `contactinfo`, `email`) VALUES
 (2, 'Orent', '12345', 'qwert@gmail.com'),
 (6, 'admin', '1234134', 'admin@admi'),
 (8, 'asas', '12234556', 'asasq@sasa'),
-(16, 'string', '2344544', 'string@hfghfg');
+(19, 'admin111', '11213231', 'john.doe@example.com');
 
 -- --------------------------------------------------------
 
@@ -606,19 +667,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `inventoryproduct`
 --
 ALTER TABLE `inventoryproduct`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `inventory_reports`
@@ -666,7 +727,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
-  MODIFY `StockID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `StockID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `stock_reports`
@@ -678,7 +739,7 @@ ALTER TABLE `stock_reports`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`

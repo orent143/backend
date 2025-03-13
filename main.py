@@ -32,6 +32,7 @@ app.add_middleware(
 # Ensure the uploads directories exist
 os.makedirs("uploads/profile_pics", exist_ok=True)
 os.makedirs("uploads/products", exist_ok=True)  # Ensure product uploads directory exists
+os.makedirs("uploads/stocks", exist_ok=True)  # Ensure stock images directory exists
 
 # Mount static files for serving profile pictures and products
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

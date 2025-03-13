@@ -207,7 +207,7 @@ async def update_inventory_product(
     db[0].execute(update_query, tuple(update_values))
     db[1].commit()
 
-    log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Success")
+    log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Updated")
 
     return {"message": "Product updated successfully", "Image": f"/uploads/products/{image_filename}" if image_filename else None}
 
@@ -223,7 +223,7 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
         db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
         db[1].commit()
 
-        log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Warning")
+        log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Deleted")
 
         return {"message": "Product deleted successfully"}
     

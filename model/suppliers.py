@@ -72,7 +72,7 @@ async def update_supplier(
     db[0].execute(update_query, (suppliername, contactinfo, email, supplier_id))
     db[1].commit()
 
-    log_activity(db, "pi pi-pencil", f"Supplier updated: {suppliername}", "Success")
+    log_activity(db, "pi pi-pencil", f"Supplier updated: {suppliername}", "Updated")
     return {"message": "Supplier updated successfully"}
 
 # Delete a supplier
@@ -93,7 +93,7 @@ async def delete_supplier(supplier_id: int, db=Depends(get_db)):
         db[0].execute(query_delete_supplier, (supplier_id,))
         db[1].commit()
 
-        log_activity(db, "pi pi-trash", f"Supplier deleted: {supplier[0]}", "Warning")
+        log_activity(db, "pi pi-trash", f"Supplier deleted: {supplier[0]}", "Deleted")
         return {"message": "Supplier deleted successfully"}
     
     except Exception as e:

@@ -1,12 +1,17 @@
-from fastapi import Depends, HTTPException, APIRouter, Form
+from fastapi import Depends, HTTPException, APIRouter, Form, UploadFile, File
 from typing import List, Optional
 from pydantic import BaseModel
 from model.db import get_db
 import json
+import os
+import shutil
+from datetime import datetime
+
+UPLOAD_DIR = "uploads/products"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 CreateProductRouter = APIRouter(tags=["CreateProduct"])
 
-# Pydantic Model for Stock Input
 class ProductStock(BaseModel):
     StockID: int
     StockQuantity: int
@@ -25,26 +30,33 @@ async def create_product(
     Quantity: int = Form(...),
     UnitPrice: float = Form(...),
     Stocks: Optional[str] = Form("[]"),  # JSON string containing stock details
+    Image: Optional[UploadFile] = File(None),
     db=Depends(get_db)
 ):
     try:
-        # Convert JSON string to list
         stock_list = json.loads(Stocks) if Stocks else []
+        image_filename = None
+
+        # Save uploaded image
+        if Image:
+            file_extension = Image.filename.split(".")[-1]
+            image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+            file_path = os.path.join(UPLOAD_DIR, image_filename)
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(Image.file, buffer)
 
         # Insert product into inventoryproduct
         query_insert_product = """
-        INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Image)
+        VALUES (%s, %s, %s, %s, %s)
         """
-        values = (ProductName, Quantity, UnitPrice, CategoryID)
+        values = (ProductName, Quantity, UnitPrice, CategoryID, image_filename)
         db[0].execute(query_insert_product, values)
         db[1].commit()
 
-        # Get the newly inserted Product ID
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_product_id = db[0].fetchone()[0]
 
-        # Update stocks table instead of product_stock
         for stock in stock_list:
             query_update_stock = """
             UPDATE stocks
@@ -55,11 +67,12 @@ async def create_product(
 
         db[1].commit()
 
-        return {"id": new_product_id, "message": "Product created successfully"}
+        return {"id": new_product_id, "message": "Product created successfully", "Image": f"/uploads/products/{image_filename}" if image_filename else None}
     
     except Exception as e:
-        db[1].rollback()  # Rollback in case of an error
+        db[1].rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
 
 # Fetch categories and stocks
 @CreateProductRouter.get("/products/prepopulate", response_model=dict)
