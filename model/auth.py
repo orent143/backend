@@ -1,18 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 import bcrypt
-from .db import get_db  # Import database dependency
+from .db import get_db  
 
 AuthRouter = APIRouter(tags=["Auth"])
 
-# Pydantic Models
 class LoginRequest(BaseModel):
     username: str
     password: str
 
 class LoginResponse(BaseModel):
     user_id: int
-    username: str  # Changed from 'name' to 'username'
+    username: str  
     role: str
 
 @AuthRouter.post("/login/", response_model=LoginResponse)
@@ -35,6 +34,6 @@ async def login_user(login_data: LoginRequest, db_dep=Depends(get_db)):
 
     return {
         "user_id": user[0],
-        "username": user[1],  # Corrected field name
+        "username": user[1],  
         "role": user[3]
     }

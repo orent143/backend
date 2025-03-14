@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Dict, List, Optional
 from datetime import datetime
 from model.db import get_db
-import traceback  # Add this to log the full error trace
+import traceback  
 
 ReportRouter = APIRouter(tags=["Reports"])
 
@@ -17,7 +17,7 @@ def determine_status(quantity: int) -> str:
 
 def generate_inventory_report(db, report_date: Optional[str] = None) -> Dict:
     """Fetch all inventory data for a given report date or the latest available report."""
-    print(f"Generating inventory report for: {report_date}")  # Debugging log
+    print(f"Generating inventory report for: {report_date}") 
 
     if report_date:
         db[0].execute("""
@@ -38,13 +38,12 @@ def generate_inventory_report(db, report_date: Optional[str] = None) -> Dict:
     if not products:
         raise HTTPException(status_code=404, detail="No inventory report found")
 
-    total_value = sum(product[3] * product[4] for product in products)  # Quantity * UnitPrice
+    total_value = sum(product[3] * product[4] for product in products)  
 
-    # Get the latest report date from the retrieved products
     latest_report_date = products[0][7].strftime("%Y-%m-%d %H:%M:%S") if products else None
 
     return {
-        "date": latest_report_date,  # Include report date in response
+        "date": latest_report_date,  
         "total_items": len(products),
         "total_value": total_value,
         "items": [
@@ -73,7 +72,7 @@ async def get_inventory_report(
     except HTTPException as e:
         raise e
     except Exception as e:
-        print(traceback.format_exc())  # Log full error trace
+        print(traceback.format_exc())  
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @ReportRouter.get("/low_stock_report", response_model=Dict)
@@ -82,20 +81,18 @@ async def get_low_stock_report(
     db: List = Depends(get_db)
 ):
     try:
-        # Fetch low stock data (stock with quantity <= 10)
-        print(f"Generating low stock report for: {date}")  # Debugging log
+        print(f"Generating low stock report for: {date}")  
 
-        # Query to get low stock items
         if date:
             db[0].execute("""
-                SELECT ReportID, StockID, StockName, Quantity, CostPrice, SupplierID, Status, ReportDate
+                SELECT ReportID, StockID, StockName, Quantity, CostPrice, SupplierID, Status, ReportDate, Image
                 FROM stock_reports
                 WHERE DATE(ReportDate) = %s AND Quantity <= 10
                 ORDER BY ReportDate DESC
             """, (date,))
         else:
             db[0].execute("""
-                SELECT ReportID, StockID, StockName, Quantity, CostPrice, SupplierID, Status, ReportDate
+                SELECT ReportID, StockID, StockName, Quantity, CostPrice, SupplierID, Status, ReportDate, Image
                 FROM stock_reports
                 WHERE Quantity <= 10
                 ORDER BY ReportDate DESC
@@ -106,13 +103,12 @@ async def get_low_stock_report(
         if not low_stock_items:
             raise HTTPException(status_code=404, detail="No low stock report found")
 
-        total_value = sum(item[3] * item[4] for item in low_stock_items)  # Quantity * CostPrice
+        total_value = sum(item[3] * item[4] for item in low_stock_items)  
 
-        # Get the latest report date from the retrieved low stock items
         latest_report_date = low_stock_items[0][7].strftime("%Y-%m-%d %H:%M:%S") if low_stock_items else None
 
         return {
-            "date": latest_report_date,  # Include report date in response
+            "date": latest_report_date,  
             "total_items": len(low_stock_items),
             "total_value": total_value,
             "items": [
@@ -124,7 +120,8 @@ async def get_low_stock_report(
                     "CostPrice": float(item[4]),
                     "SupplierID": item[5],
                     "Status": item[6],
-                    "ReportDate": item[7].strftime("%Y-%m-%d %H:%M:%S")
+                    "ReportDate": item[7].strftime("%Y-%m-%d %H:%M:%S"),
+                    "Image": f"/uploads/stocks/{item[8]}" if item[8] else None,
                 }
                 for item in low_stock_items
             ]
@@ -133,5 +130,5 @@ async def get_low_stock_report(
     except HTTPException as e:
         raise e
     except Exception as e:
-        print(traceback.format_exc())  # Log full error trace
+        print(traceback.format_exc())  
         raise HTTPException(status_code=500, detail="Internal server error")

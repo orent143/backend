@@ -32,7 +32,7 @@ async def read_users(request: Request, db=Depends(get_db)):
 
 @UsersRouter.get("/users/{user_id}", response_model=dict)
 async def read_user(user_id: int, request: Request, db=Depends(get_db)):
-    base_url = str(request.base_url).rstrip("/")  # Ensure base_url does not have a trailing slash
+    base_url = str(request.base_url).rstrip("/")  
     query = "SELECT id, username, role, profile_pic, date_added FROM users WHERE id = %s"
     db[0].execute(query, (user_id,))
     user = db[0].fetchone()

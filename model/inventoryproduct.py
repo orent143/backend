@@ -17,7 +17,6 @@ class ProductUpdate(BaseModel):
     UnitPrice: Optional[float] = None
     CategoryID: Optional[int] = None
 
-# Function to determine stock status
 def determine_status(quantity: int) -> str:
     if quantity == 0:
         return "Out of Stock"
@@ -26,7 +25,6 @@ def determine_status(quantity: int) -> str:
     else:
         return "In Stock"
 
-# Function to log activity
 def log_activity(db, icon: str, title: str, status: str):
     try:
         db[0].execute(
@@ -104,7 +102,6 @@ async def create_inventory_product(
         Status = determine_status(Quantity)
         image_filename = None
 
-        # Save uploaded image
         if Image:
             file_extension = Image.filename.split(".")[-1]
             image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
@@ -112,7 +109,6 @@ async def create_inventory_product(
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-        # Insert product into the database
         db[0].execute(
             "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status, Image) VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status, image_filename)
@@ -159,7 +155,7 @@ async def update_inventory_product(
     
     update_fields = []
     update_values = []
-    image_filename = product[1]  # Keep existing image filename
+    image_filename = product[1]  
 
     if ProductName is not None:
         update_fields.append("ProductName = %s")
@@ -180,7 +176,6 @@ async def update_inventory_product(
         update_fields.append("`CategoryID (FK)` = %s")
         update_values.append(CategoryID)
     
-    # Handle image upload
     if Image:
         file_extension = Image.filename.split(".")[-1]
         image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
@@ -189,7 +184,6 @@ async def update_inventory_product(
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(Image.file, buffer)
         
-        # Delete old image if exists
         if product[1]:
             old_image_path = os.path.join(UPLOAD_DIR, product[1])
             if os.path.exists(old_image_path):
@@ -234,9 +228,8 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
 @InventoryRouter.post("/inventorysummary", response_model=list)
 async def post_inventory_summary(db=Depends(get_db)):
     try:
-        report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Include time
+        report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  
 
-        # Insert into reports and get the ReportID
         db[0].execute(
             "INSERT INTO reports (ReportType, ReportName, ReportDate) VALUES (%s, %s, %s)",
             ("Daily", "Inventory Summary", report_date)
@@ -244,13 +237,11 @@ async def post_inventory_summary(db=Depends(get_db)):
         db[1].commit()
 
         db[0].execute("SELECT LAST_INSERT_ID()")
-        report_id = db[0].fetchone()[0]  # Fetch the last inserted report ID
+        report_id = db[0].fetchone()[0]  
 
-        # Fetch all products from inventory
         db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Image FROM inventoryproduct")
         products = db[0].fetchall()
 
-        # Insert inventory report entries
         for product in products:
             product_id, product_name, quantity, unit_price, category_id, image = product
             quantity = quantity if quantity is not None else 0

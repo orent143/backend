@@ -29,7 +29,7 @@ async def create_product(
     CategoryID: int = Form(...),
     Quantity: int = Form(...),
     UnitPrice: float = Form(...),
-    Stocks: Optional[str] = Form("[]"),  # JSON string containing stock details
+    Stocks: Optional[str] = Form("[]"), 
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db)
 ):
@@ -37,7 +37,6 @@ async def create_product(
         stock_list = json.loads(Stocks) if Stocks else []
         image_filename = None
 
-        # Save uploaded image
         if Image:
             file_extension = Image.filename.split(".")[-1]
             image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
@@ -45,7 +44,6 @@ async def create_product(
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-        # Insert product into inventoryproduct
         query_insert_product = """
         INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Image)
         VALUES (%s, %s, %s, %s, %s)
@@ -74,7 +72,6 @@ async def create_product(
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
-# Fetch categories and stocks
 @CreateProductRouter.get("/products/prepopulate", response_model=dict)
 async def prepopulate_product_form(db=Depends(get_db)):
     try:
@@ -87,7 +84,7 @@ async def prepopulate_product_form(db=Depends(get_db)):
 def fetch_categories(db):
     """Fetch all categories from the database"""
     try:
-        query = "SELECT id, CategoryName FROM categories"  # Corrected table and column names
+        query = "SELECT id, CategoryName FROM categories" 
         db[0].execute(query)
         categories = [{"id": row[0], "CategoryName": row[1]} for row in db[0].fetchall()]
         return categories

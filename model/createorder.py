@@ -1,29 +1,33 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Request, Depends, HTTPException
 from typing import List
 from pydantic import BaseModel
 from model.db import get_db
 
 CreateOrderRouter = APIRouter(tags=["CreateOrders"])
 
-# Order Request Model
 class CreateOrderRequest(BaseModel):
     customer_name: str
     table_number: int
-    items: List[dict]  # Example: [{ "id": 1, "quantity": 2 }]
+    items: List[dict]  
     total_amount: float
 
-# Fetch menu items from inventoryproduct
 @CreateOrderRouter.get("/menu_items")
-async def get_menu_items(db=Depends(get_db)):
-    db[0].execute("SELECT id, ProductName, UnitPrice, Quantity FROM inventoryproduct WHERE Quantity > 0")
+async def get_menu_items(request: Request, db=Depends(get_db)):
+    base_url = str(request.base_url)
+    db[0].execute("SELECT id, ProductName, UnitPrice, Quantity, Image FROM inventoryproduct WHERE Quantity > 0")
     products = db[0].fetchall()
 
     return [
-        {"id": product[0], "name": product[1], "price": float(product[2]), "stock": product[3]}
+        {
+            "id": product[0],
+            "name": product[1],
+            "price": float(product[2]),
+            "stock": product[3],
+            "image": f"{base_url}uploads/products/{product[4]}" if product[4] else None
+        }
         for product in products
     ]
 
-# Create a new order and update sales
 @CreateOrderRouter.post("/create_order")
 async def create_order(order_data: CreateOrderRequest, db=Depends(get_db)):
     try:
@@ -32,7 +36,6 @@ async def create_order(order_data: CreateOrderRequest, db=Depends(get_db)):
         if order_data.total_amount <= 0:
             raise HTTPException(status_code=400, detail="Total amount must be greater than zero")
 
-        # Validate stock availability
         for item in order_data.items:
             cursor.execute("SELECT Quantity, UnitPrice FROM inventoryproduct WHERE id = %s", (item["id"],))
             product = cursor.fetchone()
@@ -41,7 +44,6 @@ async def create_order(order_data: CreateOrderRequest, db=Depends(get_db)):
             if item["quantity"] > product[0]:
                 raise HTTPException(status_code=400, detail=f"Insufficient stock for Product ID {item['id']}")
 
-        # Insert order into 'orders' table
         cursor.execute(
             """
             INSERT INTO orders (CustomerName, TableNumber, OrderDate, TotalAmount, OrderStatus) 
@@ -51,35 +53,28 @@ async def create_order(order_data: CreateOrderRequest, db=Depends(get_db)):
         )
         conn.commit()
 
-        # Get the last inserted OrderID
         cursor.execute("SELECT LAST_INSERT_ID()")
         order_id = cursor.fetchone()[0]
 
-        # Insert order items, update stock, and update sales
         for item in order_data.items:
             product_id = item["id"]
             quantity_sold = item["quantity"]
 
-            # Insert into order_items table
             cursor.execute(
                 "INSERT INTO order_items (OrderID, ProductID, Quantity) VALUES (%s, %s, %s)",
                 (order_id, product_id, quantity_sold)
             )
 
-            # Reduce stock in inventory
             cursor.execute(
                 "UPDATE inventoryproduct SET Quantity = Quantity - %s WHERE id = %s",
                 (quantity_sold, product_id)
             )
 
-            # Fetch unit price
             cursor.execute("SELECT UnitPrice FROM inventoryproduct WHERE id = %s", (product_id,))
             unit_price = cursor.fetchone()[0]
 
-            # Calculate remitted amount (total earnings from sales)
             remitted_amount = unit_price * quantity_sold
 
-            # Update sales table
             cursor.execute("""
                 INSERT INTO sales (product_id, quantity_sold, remitted)
                 VALUES (%s, %s, %s)

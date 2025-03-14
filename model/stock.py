@@ -17,7 +17,6 @@ class StockUpdate(BaseModel):
     CostPrice: Optional[float] = None
     SupplierID: Optional[int] = None
 
-# Function to determine stock status
 def determine_stock_status(quantity: int) -> str:
     if quantity == 0:
         return "Out of Stock"
@@ -36,7 +35,6 @@ def log_activity(db, icon: str, title: str, status: str):
     except Exception as e:
         print(f"Failed to log activity: {e}")
         
-# ✅ Get All Stocks
 @StockRouter.get("/", response_model=list)
 async def read_stocks(request: Request, db=Depends(get_db)):
     base_url = str(request.base_url)
@@ -75,7 +73,7 @@ async def read_stock(stock_id: int, request: Request, db=Depends(get_db)):
         }
     raise HTTPException(status_code=404, detail="Stock not found")
 
-# ✅ Create Stock (Status is determined automatically)
+
 @StockRouter.post("/stocks/")
 async def create_stock(
     request: Request,
@@ -126,6 +124,7 @@ async def create_stock(
 @StockRouter.put("/stocks/{stock_id}", response_model=dict)
 async def update_stock(
     stock_id: int,
+    request: Request,
     StockName: Optional[str] = Form(None),
     Quantity: Optional[int] = Form(None),
     CostPrice: Optional[float] = Form(None),
@@ -181,7 +180,7 @@ async def update_stock(
 
     log_activity(db, "pi pi-pencil", f"Stock updated: {stock[0]}", "Updated")
 
-    base_url = str(Request.base_url)
+    base_url = str(request.base_url)
     image_url = f"{base_url}uploads/stocks/{image_filename}" if image_filename else None
 
     return {
@@ -196,18 +195,15 @@ async def update_stock(
     }
 
 
-# ✅ Delete Stock
 
 @StockRouter.delete("/stocks/{stock_id}", response_model=dict)
 async def delete_stock(stock_id: int, db=Depends(get_db)):
     try:
-        # Check if stock exists
         db[0].execute("SELECT StockName FROM stocks WHERE StockID = %s", (stock_id,))
         stock = db[0].fetchone()
         if not stock:
             raise HTTPException(status_code=404, detail="Stock not found")
 
-        # Delete dependent records from stock_reports
         db[0].execute("DELETE FROM stock_reports WHERE StockID = %s", (stock_id,))
         db[0].execute("DELETE FROM stocks WHERE StockID = %s", (stock_id,))
         db[1].commit()
@@ -219,31 +215,26 @@ async def delete_stock(stock_id: int, db=Depends(get_db)):
 
 
 
-# ✅ Get Low Stock
 @StockRouter.post("/stocks/low_stock")
-async def get_low_stock(db=Depends(get_db)):
+async def get_low_stock(request: Request, db=Depends(get_db)):
     try:
-        # Fetch low stock items (Quantity <= 10)
-        query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status FROM stocks WHERE Quantity <= 10"
+        base_url = str(request.base_url)
+        query = "SELECT StockID, StockName, Quantity, CostPrice, SupplierID, Status, Image FROM stocks WHERE Quantity <= 10"
         db[0].execute(query)
         low_stock_items = db[0].fetchall()
 
-        # If low stock items exist, insert them into stock_reports table
         if low_stock_items:
-            # Record the current timestamp for the report date
-            report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+            report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             for item in low_stock_items:
-                # Insert each low stock item into the stock_reports table
                 db[0].execute(
-                    "INSERT INTO stock_reports (ReportDate, StockID, StockName, Quantity, CostPrice, SupplierID, Status) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (report_date, item[0], item[1], item[2], item[3], item[4], item[5])
+                    "INSERT INTO stock_reports (ReportDate, StockID, StockName, Quantity, CostPrice, SupplierID, Status, Image) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (report_date, item[0], item[1], item[2], item[3], item[4], item[5], item[6])
                 )
-            
+
             db[1].commit()
 
-            # Return the low stock items
             return [
                 {
                     "StockID": item[0],
@@ -251,22 +242,24 @@ async def get_low_stock(db=Depends(get_db)):
                     "Quantity": item[2],
                     "CostPrice": item[3],
                     "SupplierID": item[4],
-                    "Status": item[5]
+                    "Status": item[5],
+                    "Image": f"{base_url}uploads/stocks/{item[6]}" if item[6] else None
                 }
                 for item in low_stock_items
             ]
         else:
             return {"message": "No low stock items found"}
-        
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching low stock items: {str(e)}")
+
 
 @StockRouter.get("/stocks/low_stock/total", response_model=dict)
 async def get_total_low_stock(db=Depends(get_db)):
     try:
         query = "SELECT COUNT(*) FROM stocks WHERE Quantity <= 10"
         db[0].execute(query)
-        total_low_stock = db[0].fetchone()[0] or 0  # Default to 0 if no items are low stock
+        total_low_stock = db[0].fetchone()[0] or 0 
 
         return {"total_low_stock": total_low_stock}
 
@@ -277,7 +270,7 @@ async def get_total_low_stock(db=Depends(get_db)):
 async def get_total_cost(db=Depends(get_db)):
     query = "SELECT SUM(Quantity * CostPrice) FROM stocks"
     db[0].execute(query)
-    total_cost = db[0].fetchone()[0] or 0.0  # Default to 0 if no data
+    total_cost = db[0].fetchone()[0] or 0.0  
     return {"total_cost": total_cost}
 
 

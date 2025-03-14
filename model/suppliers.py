@@ -52,7 +52,6 @@ async def read_supplier(supplier_id: int, db=Depends(get_db)):
         return {"id": supplier[0], "suppliername": supplier[1], "contactinfo": supplier[2], "email": supplier[3]}
     raise HTTPException(status_code=404, detail="Supplier not found")
 
-# Update a supplier
 @SupplierRouter.put("/suppliers/{supplier_id}", response_model=dict)
 async def update_supplier(
     supplier_id: int,
@@ -75,7 +74,6 @@ async def update_supplier(
     log_activity(db, "pi pi-pencil", f"Supplier updated: {suppliername}", "Updated")
     return {"message": "Supplier updated successfully"}
 
-# Delete a supplier
 @SupplierRouter.delete("/suppliers/{supplier_id}", response_model=dict)
 async def delete_supplier(supplier_id: int, db=Depends(get_db)):
     query_check_supplier = "SELECT suppliername FROM suppliers WHERE id = %s"

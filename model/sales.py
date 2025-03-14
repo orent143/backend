@@ -13,6 +13,7 @@ class SalesResponse(BaseModel):
     unit_price: float
     items_sold: int
     remitted: float
+    image_url: str  # Include image URL
 
 # Sales Update Model
 class SalesUpdateRequest(BaseModel):
@@ -27,30 +28,31 @@ async def get_sales_data(db=Depends(get_db)):
         cursor = db[0]
         today = datetime.now().date()  # Get today's date
 
-        # Fetch and aggregate sales per product for today, maintaining inventory order
+        # Fetch and aggregate sales per product for today, including product image
         cursor.execute("""
             SELECT 
-                ip.ProductName, ip.Quantity, ip.UnitPrice, 
+                ip.ProductName, ip.Quantity, ip.UnitPrice, ip.Image,
                 COALESCE(SUM(s.quantity_sold), 0) AS total_items_sold, 
                 COALESCE(SUM(s.remitted), 0) AS total_remitted
             FROM inventoryproduct ip
             LEFT JOIN sales s ON ip.id = s.product_id AND DATE(s.created_at) = %s  
-            GROUP BY ip.id, ip.ProductName, ip.Quantity, ip.UnitPrice
+            GROUP BY ip.id, ip.ProductName, ip.Quantity, ip.UnitPrice, ip.Image
             ORDER BY ip.id ASC
         """, (today,))
 
         sales_data = cursor.fetchall()
 
         if not sales_data:
-            return []  # Return empty list if no products match
+            return []  
 
         return [
             {
                 "name": row[0],
                 "quantity": row[1],
                 "unit_price": float(row[2]),
-                "items_sold": row[3],
-                "remitted": float(row[4])
+                "items_sold": row[4],
+                "remitted": float(row[5]),
+                "image_url": row[3] if row[3] else ""  
             }
             for row in sales_data
         ]
@@ -58,14 +60,11 @@ async def get_sales_data(db=Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-
-# Update Sales when an order is created or completed
 @SalesRouter.post("/sales/update")
 async def update_sales(sales_update: SalesUpdateRequest, db=Depends(get_db)):
     try:
         cursor, conn = db
 
-        # Check if product exists
         cursor.execute("SELECT Quantity FROM inventoryproduct WHERE id = %s", (sales_update.product_id,))
         product = cursor.fetchone()
 
@@ -74,11 +73,9 @@ async def update_sales(sales_update: SalesUpdateRequest, db=Depends(get_db)):
 
         available_stock = product[0]
 
-        # Ensure there is enough stock
         if available_stock < sales_update.quantity_sold:
             raise HTTPException(status_code=400, detail="Not enough stock available")
 
-        # Update Sales Table
         cursor.execute("""
             INSERT INTO sales (product_id, quantity_sold, remitted, created_at)
             VALUES (%s, %s, %s, NOW())
@@ -87,7 +84,6 @@ async def update_sales(sales_update: SalesUpdateRequest, db=Depends(get_db)):
                 remitted = remitted + VALUES(remitted)
         """, (sales_update.product_id, sales_update.quantity_sold, sales_update.remitted))
 
-        # Deduct from Inventory
         cursor.execute("""
             UPDATE inventoryproduct 
             SET Quantity = Quantity - %s 
