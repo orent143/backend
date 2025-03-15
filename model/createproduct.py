@@ -29,11 +29,15 @@ async def create_product(
     CategoryID: int = Form(...),
     Quantity: int = Form(...),
     UnitPrice: float = Form(...),
+    ProcessType: str = Form(...),  # Added ProcessType
     Stocks: Optional[str] = Form("[]"), 
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db)
 ):
     try:
+        if ProcessType not in ["Ready-Made", "To Be Made"]:
+            raise HTTPException(status_code=400, detail="Invalid ProcessType. Choose 'Ready-Made' or 'To Be Made'.")
+
         stock_list = json.loads(Stocks) if Stocks else []
         image_filename = None
 
@@ -45,10 +49,10 @@ async def create_product(
                 shutil.copyfileobj(Image.file, buffer)
 
         query_insert_product = """
-        INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, Image)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """
-        values = (ProductName, Quantity, UnitPrice, CategoryID, image_filename)
+        values = (ProductName, Quantity, UnitPrice, CategoryID, ProcessType, image_filename)
         db[0].execute(query_insert_product, values)
         db[1].commit()
 
@@ -65,8 +69,13 @@ async def create_product(
 
         db[1].commit()
 
-        return {"id": new_product_id, "message": "Product created successfully", "Image": f"/uploads/products/{image_filename}" if image_filename else None}
-    
+        return {
+            "id": new_product_id,
+            "message": "Product created successfully",
+            "ProcessType": ProcessType,
+            "Image": f"/uploads/products/{image_filename}" if image_filename else None
+        }
+
     except Exception as e:
         db[1].rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

@@ -35,12 +35,22 @@ def log_activity(db, icon: str, title: str, status: str):
     except Exception as e:
         print(f"Failed to log activity: {e}")
 
+def log_transaction(db, product_id: int, transaction_type: str, quantity_change: int, unit_price: float):
+    try:
+        db[0].execute(
+            "INSERT INTO inventory_transactions (product_id, transaction_type, quantity_change, unit_price, timestamp) VALUES (%s, %s, %s, %s, NOW())",
+            (product_id, transaction_type, quantity_change, unit_price),
+        )
+        db[1].commit()
+    except Exception as e:
+        print(f"Failed to log transaction: {e}")
 
-
-@InventoryRouter.get("/", response_model=list)
-async def read_inventory_products(request: Request, db=Depends(get_db)):
+@InventoryRouter.get("/inventoryproducts/all", response_model=list)
+async def get_all_inventory_products(request: Request, db=Depends(get_db)):
+    """ Fetch all products without filters. """
     base_url = str(request.base_url)
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Image FROM inventoryproduct")
+
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, ProcessType, Image FROM inventoryproduct")
     products = db[0].fetchall()
 
     return [
@@ -51,13 +61,42 @@ async def read_inventory_products(request: Request, db=Depends(get_db)):
             "UnitPrice": product[3],
             "CategoryID": product[4],
             "SupplierID": product[5],
+            "ProcessType": product[6],
             "Status": determine_status(product[2]),
-            "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
+            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
         }
         for product in products
     ]
 
 
+@InventoryRouter.get("/inventoryproducts/filter", response_model=list)
+async def filter_inventory_products(request: Request, process_type: Optional[str] = None, db=Depends(get_db)):
+    """ Fetch products filtered by Process Type (Ready-Made or To Be Made). """
+    if process_type not in ["Ready-Made", "To Be Made"]:
+        raise HTTPException(status_code=400, detail="Invalid Process Type")
+
+    base_url = str(request.base_url)
+    
+    db[0].execute(
+        "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, ProcessType, Image FROM inventoryproduct WHERE ProcessType = %s",
+        (process_type,)
+    )
+    products = db[0].fetchall()
+
+    return [
+        {
+            "id": product[0],
+            "ProductName": product[1],
+            "Quantity": product[2],
+            "UnitPrice": product[3],
+            "CategoryID": product[4],
+            "SupplierID": product[5],
+            "ProcessType": product[6],
+            "Status": determine_status(product[2]),
+            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
+        }
+        for product in products
+    ]
 
 @InventoryRouter.get("/inventoryproduct/total", response_model=dict)
 async def get_total_products(db=Depends(get_db)):
@@ -95,12 +134,16 @@ async def create_inventory_product(
     UnitPrice: float = Form(...),
     CategoryID: Optional[int] = Form(None),
     SupplierID: Optional[int] = Form(None),
+    ProcessType: str = Form(...),  # New field
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db),
 ):
     try:
         Status = determine_status(Quantity)
         image_filename = None
+
+        if ProcessType not in ["Ready-Made", "To Be Made"]:
+            raise HTTPException(status_code=400, detail="Invalid Process Type")
 
         if Image:
             file_extension = Image.filename.split(".")[-1]
@@ -110,15 +153,17 @@ async def create_inventory_product(
                 shutil.copyfileobj(Image.file, buffer)
 
         db[0].execute(
-            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status, Image) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status, image_filename)
+            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status, ProcessType, Image) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status, ProcessType, image_filename)
         )
         db[1].commit()
 
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_product_id = db[0].fetchone()[0]
 
-        log_activity(db, "pi pi-box", f"New product added: {ProductName}", "Success")
+        log_activity(db, "pi pi-box", f"New product added: {ProductName} ({ProcessType})", "Success")
+
+        log_transaction(db, new_product_id, "Added", Quantity, UnitPrice)
 
         base_url = str(request.base_url)
         image_url = f"{base_url}uploads/products/{image_filename}" if image_filename else None
@@ -131,11 +176,13 @@ async def create_inventory_product(
             "CategoryID": CategoryID,
             "SupplierID": SupplierID,
             "Status": Status,
+            "ProcessType": ProcessType,  # Include in response
             "Image": image_url
         }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
 
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
 async def update_inventory_product(
@@ -145,17 +192,21 @@ async def update_inventory_product(
     UnitPrice: Optional[float] = Form(None),
     CategoryID: Optional[int] = Form(None),
     Image: Optional[UploadFile] = File(None),
+    TransactionType: Optional[str] = Form(None),  # Added Transaction Type
     db=Depends(get_db),
 ):
-    db[0].execute("SELECT ProductName, Image FROM inventoryproduct WHERE id = %s", (product_id,))
+    db[0].execute(
+        "SELECT ProductName, Quantity, UnitPrice, Image FROM inventoryproduct WHERE id = %s",
+        (product_id,),
+    )
     product = db[0].fetchone()
 
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-    
+
     update_fields = []
     update_values = []
-    image_filename = product[1]  
+    image_filename = product[3]  # Image filename from DB
 
     if ProductName is not None:
         update_fields.append("ProductName = %s")
@@ -175,23 +226,24 @@ async def update_inventory_product(
     if CategoryID is not None:
         update_fields.append("`CategoryID (FK)` = %s")
         update_values.append(CategoryID)
-    
+
     if Image:
         file_extension = Image.filename.split(".")[-1]
         image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
         file_path = os.path.join(UPLOAD_DIR, image_filename)
-        
+
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(Image.file, buffer)
-        
-        if product[1]:
-            old_image_path = os.path.join(UPLOAD_DIR, product[1])
+
+        # Remove old image if exists
+        if product[3]:
+            old_image_path = os.path.join(UPLOAD_DIR, product[3])
             if os.path.exists(old_image_path):
                 os.remove(old_image_path)
-        
+
         update_fields.append("Image = %s")
         update_values.append(image_filename)
-    
+
     if not update_fields:
         raise HTTPException(status_code=400, detail="No fields provided for update")
 
@@ -203,7 +255,21 @@ async def update_inventory_product(
 
     log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Updated")
 
-    return {"message": "Product updated successfully", "Image": f"/uploads/products/{image_filename}" if image_filename else None}
+    if Quantity is not None or UnitPrice is not None:
+        log_transaction(
+            db,
+            product_id,
+            TransactionType or "Updated",  # Include Transaction Type
+            Quantity or product[1],
+            UnitPrice or product[2],
+        )
+
+    return {
+        "message": "Product updated successfully",
+        "Image": f"/uploads/products/{image_filename}" if image_filename else None,
+    }
+
+
 
 @InventoryRouter.delete("/inventoryproduct/{product_id}", response_model=dict)
 async def delete_inventory_product(product_id: int, db=Depends(get_db)):
@@ -218,7 +284,7 @@ async def delete_inventory_product(product_id: int, db=Depends(get_db)):
         db[1].commit()
 
         log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Deleted")
-
+        log_transaction(db, product_id, "Deleted", 0, 0.0)
         return {"message": "Product deleted successfully"}
     
     except Exception as e:
@@ -292,3 +358,26 @@ async def get_activity_logs(db=Depends(get_db)):
         }
         for log in logs
     ]
+@InventoryRouter.get("/inventory_transactions", response_model=list)
+async def get_inventory_transactions(db=Depends(get_db)):
+    """ Fetch all inventory transactions. """
+    try:
+        db[0].execute(
+            "SELECT id, product_id, transaction_type, quantity_change, unit_price, timestamp FROM inventory_transactions ORDER BY timestamp DESC"
+        )
+        transactions = db[0].fetchall()
+
+        return [
+            {
+                "id": transaction[0],
+                "product_id": transaction[1],
+                "transaction_type": transaction[2],
+                "quantity_change": transaction[3],
+                "unit_price": transaction[4],
+                "timestamp": transaction[5],
+            }
+            for transaction in transactions
+        ]
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching transactions: {str(e)}")
