@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2025 at 01:40 PM
+-- Generation Time: Mar 16, 2025 at 12:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,170 +40,27 @@ CREATE TABLE `activity_logs` (
 --
 
 INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
-(16, 'pi pi-trash', 'Product deleted: ljguihop', '2025-03-08 23:06:00', 'Warning'),
-(17, 'pi pi-trash', 'Product deleted: string', '2025-03-08 23:06:02', 'Warning'),
-(18, 'pi pi-trash', 'Supplier deleted: qq', '2025-03-08 23:06:11', 'Warning'),
-(19, 'pi pi-trash', 'Product deleted: Cafe Americano', '2025-03-08 23:06:31', 'Warning'),
-(20, 'pi pi-trash', 'Product deleted: TESTTTT', '2025-03-08 23:06:38', 'Warning'),
-(21, 'pi pi-box', 'New product added: TESttttt', '2025-03-08 23:06:47', 'Success'),
-(22, 'pi pi-pencil', 'Product updated: TESttttt', '2025-03-08 23:06:56', 'Success'),
-(23, 'pi pi-pencil', 'Product updated: TESTTT', '2025-03-08 23:06:56', 'Success'),
-(24, 'pi pi-trash', 'Supplier deleted: TESTTTT!!!!', '2025-03-08 23:11:35', 'Warning'),
-(25, 'pi pi-trash', 'Stock deleted: Whipped Cream', '2025-03-08 23:13:13', 'Warning'),
-(26, 'pi pi-trash', 'Stock deleted: Paper Plate', '2025-03-08 23:13:16', 'Warning'),
-(27, 'pi pi-box', 'New Stock added: Paper Plate ', '2025-03-08 23:13:39', 'Success'),
-(28, 'pi pi-box', 'New Stock added: Wooden Fork ', '2025-03-08 23:14:02', 'Success'),
-(29, 'pi-truck', 'New supplier added: asas ', '2025-03-08 23:14:16', 'Success'),
-(30, 'pi pi-pencil', 'Supplier updated: asas', '2025-03-08 23:14:22', 'Success'),
-(31, 'pi pi-box', 'New Stock added: Blender ', '2025-03-08 23:18:55', 'Success'),
-(32, 'pi-truck', 'New supplier added: admin111 ', '2025-03-08 23:28:52', 'Success'),
-(33, 'pi pi-pencil', 'Supplier updated: admin111', '2025-03-08 23:29:06', 'Success'),
-(34, 'pi pi-trash', 'Supplier deleted: asas', '2025-03-08 23:29:11', 'Warning'),
-(35, 'pi pi-pencil', 'Stock updated: Blender', '2025-03-08 23:29:43', 'Success'),
-(36, 'pi pi-pencil', 'Stock updated: Wooden Fork', '2025-03-08 23:29:48', 'Success'),
-(37, 'pi pi-box', 'New Stock added: waaa ', '2025-03-08 23:30:13', 'Success'),
-(38, 'pi pi-pencil', 'Stock updated: waaa', '2025-03-08 23:30:27', 'Success'),
-(39, 'pi pi-trash', 'Stock deleted: waaasss', '2025-03-08 23:30:30', 'Warning'),
-(40, 'pi pi-box', 'New product added: qsq', '2025-03-08 23:30:40', 'Success'),
-(41, 'pi pi-pencil', 'Product updated: qsq', '2025-03-08 23:30:46', 'Success'),
-(42, 'pi pi-pencil', 'Product updated: qsq', '2025-03-08 23:30:46', 'Success'),
-(43, 'pi pi-trash', 'Product deleted: qsq', '2025-03-08 23:30:50', 'Warning'),
-(44, 'pi pi-trash', 'Product deleted: NNNNNN', '2025-03-08 23:30:53', 'Warning'),
-(45, 'pi pi-trash', 'Supplier deleted: admin111', '2025-03-08 23:32:00', 'Warning'),
-(46, 'pi pi-box', 'New product added: OrenttTESTT', '2025-03-09 13:26:42', 'Success'),
-(47, 'pi-truck', 'New supplier added: string ', '2025-03-09 13:44:50', 'Success'),
-(48, 'pi-truck', 'New supplier added: TESTTTTT ', '2025-03-09 13:46:37', 'Success'),
-(49, 'pi pi-trash', 'Supplier deleted: TESTTTTT', '2025-03-09 13:47:54', 'Warning'),
-(50, 'pi-truck', 'New supplier added: TESTTTTT ', '2025-03-09 13:50:47', 'Success'),
-(51, 'pi pi-pencil', 'Product updated: OrenttTESTT', '2025-03-09 13:54:59', 'Success'),
-(52, 'pi pi-pencil', 'Product updated: Orentt', '2025-03-09 13:54:59', 'Success'),
-(53, 'pi pi-pencil', 'Stock updated: Blender', '2025-03-09 13:56:22', 'Success'),
-(54, 'pi pi-pencil', 'Supplier updated: TESTTTTT', '2025-03-09 13:58:03', 'Success'),
-(55, 'pi pi-trash', 'Supplier deleted: TESTTTTT', '2025-03-10 22:24:00', 'Warning'),
-(56, 'pi pi-box', 'New product added: OrenttTESTT', '2025-03-10 22:30:26', 'Success'),
-(57, 'pi pi-box', 'New product added: QWQ', '2025-03-10 22:35:36', 'Success'),
-(58, 'pi pi-trash', 'Product deleted: iuyfuygo', '2025-03-10 22:35:54', 'Warning'),
-(59, 'pi pi-trash', 'Product deleted: OrenttTESTT', '2025-03-10 22:35:57', 'Warning'),
-(60, 'pi pi-trash', 'Product deleted: Orentt', '2025-03-10 22:35:58', 'Warning'),
-(61, 'pi pi-trash', 'Product deleted: QWQ', '2025-03-10 22:35:59', 'Warning'),
-(62, 'pi pi-box', 'New product added: string', '2025-03-11 20:02:44', 'Success'),
-(63, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 20:30:02', 'Success'),
-(64, 'pi pi-pencil', 'Product updated: Matcha Latte', '2025-03-11 21:07:49', 'Success'),
-(65, 'pi pi-pencil', 'Product updated: Crossiant', '2025-03-11 21:08:10', 'Success'),
-(66, 'pi pi-pencil', 'Product updated: Spanish Latte', '2025-03-11 21:12:13', 'Success'),
-(67, 'pi pi-pencil', 'Product updated: Cafe Americano', '2025-03-11 21:12:37', 'Success'),
-(68, 'pi pi-pencil', 'Product updated: Cafe Americano', '2025-03-11 21:13:19', 'Success'),
-(69, 'pi pi-pencil', 'Product updated: Spanish Latte', '2025-03-11 21:15:22', 'Success'),
-(70, 'pi pi-pencil', 'Product updated: string', '2025-03-11 21:16:11', 'Success'),
-(71, 'pi pi-pencil', 'Product updated: Matcha Latte', '2025-03-11 21:22:52', 'Success'),
-(72, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 21:23:17', 'Success'),
-(73, 'pi pi-pencil', 'Product updated: Crossiant', '2025-03-11 21:24:10', 'Success'),
-(74, 'pi pi-pencil', 'Product updated: Cafe Mocha', '2025-03-11 21:26:57', 'Success'),
-(75, 'pi pi-pencil', 'Product updated: Cafe Mocha', '2025-03-11 21:27:56', 'Success'),
-(76, 'pi pi-pencil', 'Product updated: Caramel Macchiato', '2025-03-11 21:29:20', 'Success'),
-(77, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-11 21:41:53', 'Success'),
-(78, 'pi pi-trash', 'Product deleted: Matcha Latte', '2025-03-11 21:44:16', 'Warning'),
-(79, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-11 21:44:28', 'Success'),
-(80, 'pi pi-trash', 'Product deleted: Cafe Latte', '2025-03-11 21:44:51', 'Warning'),
-(81, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-11 21:45:02', 'Success'),
-(82, 'pi pi-box', 'New product added: Vanilla Latte', '2025-03-11 21:55:32', 'Success'),
-(83, 'pi pi-pencil', 'Product updated: Vanilla Latte', '2025-03-11 21:55:38', 'Success'),
-(84, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 21:59:37', 'Success'),
-(85, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:03:04', 'Success'),
-(86, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:20:13', 'Success'),
-(87, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 22:20:46', 'Success'),
-(88, 'pi pi-trash', 'Product deleted: Cafe Americano', '2025-03-11 23:35:03', 'Warning'),
-(89, 'pi pi-trash', 'Product deleted: Vanilla Latte', '2025-03-11 23:35:05', 'Warning'),
-(90, 'pi pi-trash', 'Product deleted: Lemon', '2025-03-11 23:35:07', 'Warning'),
-(91, 'pi pi-trash', 'Product deleted: Mango', '2025-03-11 23:35:09', 'Warning'),
-(92, 'pi pi-trash', 'Product deleted: Wintermelon', '2025-03-11 23:35:12', 'Warning'),
-(93, 'pi pi-trash', 'Product deleted: 3in1', '2025-03-11 23:35:14', 'Warning'),
-(94, 'pi pi-trash', 'Product deleted: Green Tea', '2025-03-11 23:35:16', 'Warning'),
-(95, 'pi pi-trash', 'Product deleted: Black Tea', '2025-03-11 23:35:18', 'Warning'),
-(96, 'pi pi-trash', 'Product deleted: Cafe Mocha', '2025-03-11 23:35:21', 'Warning'),
-(97, 'pi pi-trash', 'Product deleted: Kopiko', '2025-03-11 23:35:23', 'Warning'),
-(98, 'pi pi-trash', 'Product deleted: Nescafe', '2025-03-11 23:35:25', 'Warning'),
-(99, 'pi pi-trash', 'Product deleted: Ham & Cheese', '2025-03-11 23:36:03', 'Warning'),
-(100, 'pi pi-trash', 'Product deleted: Orange', '2025-03-11 23:36:06', 'Warning'),
-(101, 'pi pi-trash', 'Product deleted: TESTTT', '2025-03-11 23:36:08', 'Warning'),
-(102, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-11 23:49:07', 'Success'),
-(103, 'pi pi-box', 'New product added: Cafe Latte', '2025-03-12 00:00:53', 'Success'),
-(104, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 00:01:08', 'Success'),
-(105, 'pi pi-trash', 'Product deleted: Matcha', '2025-03-12 20:34:49', 'Warning'),
-(106, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:53', 'Warning'),
-(107, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:55', 'Warning'),
-(108, 'pi pi-trash', 'Product deleted: string', '2025-03-12 20:34:57', 'Warning'),
-(109, 'pi pi-box', 'New Stock added: string', '2025-03-12 20:43:53', 'Success'),
-(110, 'pi pi-box', 'New product added: Matcha Latte', '2025-03-12 21:54:01', 'Success'),
-(111, 'pi pi-trash', 'Product deleted: Matcha Latte', '2025-03-12 21:54:07', 'Warning'),
-(112, 'pi pi-pencil', 'Product updated: Cafe Latte', '2025-03-12 22:10:51', 'Success'),
-(113, 'pi pi-pencil', 'Stock updated: Coffee Beans', '2025-03-12 22:55:31', 'Success'),
-(114, 'pi pi-pencil', 'Stock updated: Caramel Syrup', '2025-03-12 22:55:37', 'Success'),
-(115, 'pi pi-pencil', 'Stock updated: Sugar', '2025-03-12 22:55:57', 'Success'),
-(116, 'pi pi-pencil', 'Stock updated: Ice Cubes', '2025-03-12 22:56:03', 'Success'),
-(117, 'pi pi-box', 'New product added: 11qwertyuiqwq', '2025-03-12 23:12:53', 'Success'),
-(118, 'pi pi-box', 'New Stock added: qwqwwq weqeoqioip', '2025-03-12 23:13:39', 'Success'),
-(119, 'pi pi-trash', 'Stock deleted: qwqwwq weqeoqioip', '2025-03-12 23:14:40', 'Warning'),
-(120, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:17:56', 'Success'),
-(121, 'pi pi-box', 'New Stock added: Vanilla Latte', '2025-03-12 23:18:38', 'Success'),
-(122, 'pi pi-trash', 'Stock deleted: Vanilla Latte', '2025-03-12 23:18:41', 'Warning'),
-(123, 'pi pi-box', 'New Stock added: salt', '2025-03-12 23:19:15', 'Success'),
-(124, 'pi pi-pencil', 'Stock updated: Salt', '2025-03-12 23:23:14', 'Success'),
-(125, 'pi pi-trash', 'Stock deleted: salt', '2025-03-12 23:23:26', 'Warning'),
-(126, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:23:28', 'Warning'),
-(127, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:23:46', 'Success'),
-(128, 'pi pi-box', 'New Stock added: Sal', '2025-03-12 23:25:13', 'Success'),
-(129, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:29:01', 'Warning'),
-(130, 'pi pi-trash', 'Stock deleted: Sal', '2025-03-12 23:29:37', 'Warning'),
-(131, 'pi pi-pencil', 'Stock updated: Wooden Spoon', '2025-03-12 23:29:48', 'Success'),
-(132, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:30:43', 'Success'),
-(133, 'pi pi-pencil', 'Stock updated: Salt', '2025-03-12 23:36:58', 'Success'),
-(134, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:37:01', 'Warning'),
-(135, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:37:19', 'Success'),
-(136, 'pi pi-box', 'New Stock added: Salt', '2025-03-12 23:41:32', 'Success'),
-(137, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:41:36', 'Warning'),
-(138, 'pi pi-trash', 'Stock deleted: Salt', '2025-03-12 23:41:38', 'Warning'),
-(139, 'pi pi-box', 'New Stock added: sdsdas', '2025-03-12 23:41:52', 'Success'),
-(140, 'pi pi-trash', 'Product deleted: 11qwertyuiqwq', '2025-03-12 23:42:39', 'Warning'),
-(141, 'pi pi-trash', 'Stock deleted: sdsdas', '2025-03-12 23:43:15', 'Warning'),
-(142, 'pi pi-box', 'New Stock added: Matcha Latte', '2025-03-12 23:43:25', 'Success'),
-(143, 'pi pi-box', 'New Stock added: Cafe Mocha', '2025-03-12 23:44:08', 'Success'),
-(144, 'pi pi-pencil', 'Stock updated: Cafe Mocha', '2025-03-12 23:53:14', 'Success'),
-(145, 'pi pi-pencil', 'Stock updated: Cup', '2025-03-13 00:04:15', 'Updated'),
-(146, 'pi pi-pencil', 'Stock updated: Milk', '2025-03-13 00:04:22', 'Updated'),
-(147, 'pi pi-pencil', 'Stock updated: Oat Milk', '2025-03-13 00:04:29', 'Updated'),
-(148, 'pi pi-pencil', 'Stock updated: Mineral Water', '2025-03-13 00:04:35', 'Updated'),
-(149, 'pi pi-pencil', 'Stock updated: Paper Plate', '2025-03-13 00:04:45', 'Updated'),
-(150, 'pi pi-pencil', 'Stock updated: Wooden Fork', '2025-03-13 00:04:54', 'Updated'),
-(151, 'pi pi-pencil', 'Stock updated: Blender', '2025-03-13 00:05:04', 'Updated'),
-(152, 'pi pi-trash', 'Stock deleted: string', '2025-03-13 00:06:01', 'Deleted'),
-(153, 'pi-truck', 'New supplier added: admin111 ', '2025-03-13 00:08:00', 'Success'),
-(154, 'pi pi-pencil', 'Supplier updated: string111', '2025-03-13 00:08:07', 'Updated'),
-(155, 'pi pi-trash', 'Supplier deleted: string111', '2025-03-13 00:08:14', 'Deleted'),
-(156, 'pi pi-box', 'New Stock added: Vanilla Latte', '2025-03-13 00:08:32', 'Success'),
-(157, 'pi pi-pencil', 'Stock updated: Vanilla Latte', '2025-03-13 00:10:28', 'Updated'),
-(158, 'pi pi-trash', 'Stock deleted: Cafe Mocha', '2025-03-13 00:10:45', 'Deleted'),
-(159, 'pi pi-trash', 'Stock deleted: Vanilla Latte', '2025-03-13 00:10:55', 'Deleted'),
-(160, 'pi pi-pencil', 'Product updated: WQWQWQWQW', '2025-03-13 00:11:13', 'Updated'),
-(161, 'pi pi-trash', 'Product deleted: WQWQWQWQW', '2025-03-13 00:11:25', 'Deleted'),
-(162, 'pi pi-box', 'New product added: KwekKWek', '2025-03-14 00:20:45', 'Success'),
-(163, 'pi pi-box', 'New Stock added: Stick', '2025-03-14 00:21:13', 'Success'),
-(164, 'pi pi-pencil', 'Stock updated: Stick', '2025-03-14 00:21:22', 'Updated'),
-(165, 'pi-truck', 'New supplier added: qq ', '2025-03-14 00:22:15', 'Success'),
-(166, 'pi pi-pencil', 'Supplier updated: qq', '2025-03-14 00:22:22', 'Updated'),
-(167, 'pi pi-pencil', 'Product updated: Matcha Latte', '2025-03-14 00:23:10', 'Updated'),
-(168, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-14 00:23:19', 'Success'),
-(169, 'pi pi-box', 'New product added: test', '2025-03-14 00:32:18', 'Success'),
-(170, 'pi pi-pencil', 'Product updated: test', '2025-03-14 00:32:26', 'Updated'),
-(171, 'pi pi-box', 'New Stock added: Test', '2025-03-14 00:32:39', 'Success'),
-(172, 'pi pi-pencil', 'Stock updated: Test', '2025-03-14 00:32:46', 'Updated'),
-(173, 'pi pi-trash', 'Product deleted: test', '2025-03-14 00:33:23', 'Deleted'),
-(174, 'pi-truck', 'New supplier added: TESTTTT!!!! ', '2025-03-14 00:33:44', 'Success'),
-(175, 'pi pi-pencil', 'Supplier updated: TESTTTT!!!!', '2025-03-14 00:33:50', 'Updated'),
-(176, 'pi pi-pencil', 'Product updated: Crossiant', '2025-03-14 00:34:31', 'Updated'),
-(177, 'pi pi-trash', 'Product deleted: test', '2025-03-14 00:38:11', 'Deleted'),
-(178, 'pi pi-trash', 'Stock deleted: Test', '2025-03-14 00:38:16', 'Deleted'),
-(179, 'pi pi-trash', 'Supplier deleted: TESTTTT!!!!', '2025-03-14 00:38:20', 'Deleted');
+(201, 'pi pi-box', 'New product added: Cafe Latte (Ready-Made)', '2025-03-15 10:16:11', 'Success'),
+(202, 'pi pi-box', 'New product added: Cafe Latte (Ready-Made)', '2025-03-15 10:20:31', 'Success'),
+(203, 'pi pi-box', 'New product added: Matcha Latte (To Be Made)', '2025-03-15 10:38:25', 'Success'),
+(204, 'pi pi-trash', 'Product deleted: Cafe Latte', '2025-03-15 10:50:30', 'Deleted'),
+(205, 'pi pi-box', 'New product added: Croissant (Ready-Made)', '2025-03-15 10:53:07', 'Success'),
+(206, 'pi pi-box', 'New product added: Carbonara (To Be Made)', '2025-03-15 10:58:44', 'Success'),
+(207, 'pi pi-box', 'New product added: Spaghetti (To Be Made)', '2025-03-15 11:00:56', 'Success'),
+(208, 'pi pi-box', 'New product added: Cappuccino (To Be Made)', '2025-03-15 11:07:13', 'Success'),
+(209, 'pi pi-trash', 'Stock deleted: Milk', '2025-03-15 11:12:26', 'Deleted'),
+(210, 'pi pi-trash', 'Stock deleted: Blender', '2025-03-15 11:12:34', 'Deleted'),
+(211, 'pi pi-trash', 'Stock deleted: Matcha Latte', '2025-03-15 11:12:37', 'Deleted'),
+(212, 'pi pi-trash', 'Stock deleted: Stick', '2025-03-15 11:12:40', 'Deleted'),
+(213, 'pi pi-trash', 'Stock deleted: Wooden Spoon', '2025-03-15 11:14:54', 'Deleted'),
+(214, 'pi pi-trash', 'Stock deleted: Paper Plate', '2025-03-15 11:14:56', 'Deleted'),
+(215, 'pi pi-trash', 'Stock deleted: Wooden Fork', '2025-03-15 11:14:58', 'Deleted'),
+(216, 'pi pi-pencil', 'Stock updated: Coffee Beans', '2025-03-15 11:15:12', 'Updated'),
+(217, 'pi pi-pencil', 'Stock updated: Caramel Syrup', '2025-03-15 11:15:22', 'Updated'),
+(218, 'pi pi-pencil', 'Stock updated: Sugar', '2025-03-15 11:15:27', 'Updated'),
+(219, 'pi pi-pencil', 'Stock updated: Ice Cubes', '2025-03-15 11:15:33', 'Updated'),
+(220, 'pi pi-pencil', 'Stock updated: Cup', '2025-03-15 11:15:40', 'Updated'),
+(221, 'pi pi-pencil', 'Stock updated: Oat Milk', '2025-03-15 11:15:46', 'Updated');
 
 -- --------------------------------------------------------
 
@@ -244,29 +101,21 @@ CREATE TABLE `inventoryproduct` (
   `StockID` int(11) DEFAULT NULL,
   `StockQuantity` int(11) DEFAULT NULL,
   `ReportDate` datetime DEFAULT current_timestamp(),
-  `Image` varchar(255) DEFAULT NULL
+  `Image` varchar(255) DEFAULT NULL,
+  `ProcessType` enum('Ready-Made','To Be Made') NOT NULL DEFAULT 'Ready-Made'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventoryproduct`
 --
 
-INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`, `StockID`, `StockQuantity`, `ReportDate`, `Image`) VALUES
-(4, 'Matcha Latte', 4, 160.00, 23, 2, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31', 'Matcha_Latte_1741813669.png'),
-(5, 'Crossiant', 120, 25.00, 24, 5, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Crossiant_1741813690.png'),
-(6, 'Matcha Latte', 0, 1.00, 1, 1, 'Low Stock', NULL, NULL, '2025-02-26 22:44:31', 'string_1741814171.png'),
-(7, 'Cafe Americano', 11, 70.00, 5, 1, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Cafe_Americano_1741813999.png'),
-(8, 'Cafe Mocha', 12, 120.00, 1, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Cafe_Mocha_1741814876.png'),
-(15, 'Caramel Macchiato', 14, 100.00, 9, 2, 'In Stock', NULL, NULL, '2025-02-26 22:44:31', 'Caramel_Macchiato_1741814960.png'),
-(74, 'string', 11, 11.00, 1, 1, 'In Stock', NULL, NULL, '2025-03-11 20:02:44', 'string_1741809764.png'),
-(75, 'Cafe Latte', 0, 1.00, 1, NULL, 'Low Stock', NULL, NULL, '2025-03-11 20:30:02', 'Cafe_Latte_1741811402.png'),
-(76, 'Cafe Latte', 0, 1.00, 3, NULL, 'Low Stock', NULL, NULL, '2025-03-11 21:23:17', 'Cafe_Latte_1741903851.png'),
-(79, 'Matcha Latte', 11, 11.00, 3, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:45:02', 'Matcha_Latte_1741815902.png'),
-(80, 'Vanilla Latte', 11, 1.00, 15, NULL, 'In Stock', NULL, NULL, '2025-03-11 21:55:32', 'Vanilla_Latte_1741816532.png'),
-(81, 'Cafe Latte', 10, 11.00, 7, NULL, 'In Stock', NULL, NULL, '2025-03-12 00:00:53', 'Cafe_Latte_1741824068.png'),
-(88, 'jgkjnln', 0, 8878.00, 1, NULL, NULL, NULL, NULL, '2025-03-12 23:49:15', 'jgkjnln_1741909755.jpg'),
-(90, 'KwekKWek', 1, 11.00, 20, NULL, 'Low Stock', NULL, NULL, '2025-03-14 00:20:45', 'KwekKWek_1741998045.png'),
-(91, 'Isaw', 1, 11.00, 21, NULL, NULL, NULL, NULL, '2025-03-14 00:21:57', 'Isaw_1741998117.png');
+INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`, `StockID`, `StockQuantity`, `ReportDate`, `Image`, `ProcessType`) VALUES
+(99, 'Cafe Latte', 11, 11.00, 20, 1, 'In Stock', NULL, NULL, '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made'),
+(101, 'Matcha Latte', 11, 111.00, 22, NULL, 'In Stock', NULL, NULL, '2025-03-15 10:38:25', 'Matcha_Latte_1742121505.jpg', 'To Be Made'),
+(102, 'Croissant', 1, 20.00, 20, NULL, 'Low Stock', NULL, NULL, '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made'),
+(103, 'Carbonara', 11, 111.00, 20, NULL, 'In Stock', NULL, NULL, '2025-03-15 10:58:44', 'Carbonara_1742122724.png', 'To Be Made'),
+(104, 'Spaghetti', 11, 11.00, 20, 1, 'In Stock', NULL, NULL, '2025-03-15 11:00:56', 'Spaghetti_1742122856.png', 'To Be Made'),
+(105, 'Cappuccino', 11, 50.00, 22, NULL, 'In Stock', NULL, NULL, '2025-03-15 11:07:13', 'Cappuccino_1742123233.png', 'To Be Made');
 
 -- --------------------------------------------------------
 
@@ -291,32 +140,32 @@ CREATE TABLE `inventory_reports` (
 --
 
 INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID`, `Status`, `Image`) VALUES
-(1, '2025-03-11 23:49:07', 4, 'Matcha Latte', 6, 160.00, 3, 'Low Stock', 'Matcha_Latte_1741813669.png'),
-(2, '2025-03-11 23:49:07', 5, 'Crossiant', 121, 25.00, 4, 'In Stock', 'Crossiant_1741813690.png'),
-(3, '2025-03-11 23:49:07', 6, 'Matcha Latte', 0, 1.00, 1, 'Out of Stock', 'string_1741814171.png'),
-(4, '2025-03-11 23:49:07', 7, 'Cafe Americano', 12, 70.00, 5, 'In Stock', 'Cafe_Americano_1741813999.png'),
-(5, '2025-03-11 23:49:07', 8, 'Cafe Mocha', 12, 120.00, 1, 'In Stock', 'Cafe_Mocha_1741814876.png'),
-(6, '2025-03-11 23:49:07', 15, 'Caramel Macchiato', 14, 100.00, 9, 'In Stock', 'Caramel_Macchiato_1741814960.png'),
-(7, '2025-03-11 23:49:07', 74, 'string', 11, 11.00, 1, 'In Stock', 'string_1741809764.png'),
-(8, '2025-03-11 23:49:07', 75, 'Cafe Latte', 1, 1.00, 1, 'Low Stock', 'Cafe_Latte_1741811402.png'),
-(9, '2025-03-11 23:49:07', 76, 'Cafe Latte', 1, 1.00, 3, 'Low Stock', 'Cafe_Latte_1741814597.png'),
-(10, '2025-03-11 23:49:07', 79, 'Matcha Latte', 11, 11.00, 3, 'In Stock', 'Matcha_Latte_1741815902.png'),
-(11, '2025-03-11 23:49:07', 80, 'Vanilla Latte', 11, 1.00, 15, 'In Stock', 'Vanilla_Latte_1741816532.png'),
-(12, '2025-03-14 00:23:19', 4, 'Matcha Latte', 4, 160.00, 23, 'Low Stock', 'Matcha_Latte_1741813669.png'),
-(13, '2025-03-14 00:23:19', 5, 'Crossiant', 120, 25.00, 4, 'In Stock', 'Crossiant_1741813690.png'),
-(14, '2025-03-14 00:23:19', 6, 'Matcha Latte', 0, 1.00, 1, 'Out of Stock', 'string_1741814171.png'),
-(15, '2025-03-14 00:23:19', 7, 'Cafe Americano', 11, 70.00, 5, 'In Stock', 'Cafe_Americano_1741813999.png'),
-(16, '2025-03-14 00:23:19', 8, 'Cafe Mocha', 12, 120.00, 1, 'In Stock', 'Cafe_Mocha_1741814876.png'),
-(17, '2025-03-14 00:23:19', 15, 'Caramel Macchiato', 14, 100.00, 9, 'In Stock', 'Caramel_Macchiato_1741814960.png'),
-(18, '2025-03-14 00:23:19', 74, 'string', 11, 11.00, 1, 'In Stock', 'string_1741809764.png'),
-(19, '2025-03-14 00:23:19', 75, 'Cafe Latte', 0, 1.00, 1, 'Out of Stock', 'Cafe_Latte_1741811402.png'),
-(20, '2025-03-14 00:23:19', 76, 'Cafe Latte', 0, 1.00, 3, 'Out of Stock', 'Cafe_Latte_1741903851.png'),
-(21, '2025-03-14 00:23:19', 79, 'Matcha Latte', 11, 11.00, 3, 'In Stock', 'Matcha_Latte_1741815902.png'),
-(22, '2025-03-14 00:23:19', 80, 'Vanilla Latte', 11, 1.00, 15, 'In Stock', 'Vanilla_Latte_1741816532.png'),
-(23, '2025-03-14 00:23:19', 81, 'Cafe Latte', 11, 11.00, 7, 'In Stock', 'Cafe_Latte_1741824068.png'),
-(24, '2025-03-14 00:23:19', 88, 'jgkjnln', 1, 8878.00, 1, 'Low Stock', 'jgkjnln_1741909755.jpg'),
-(25, '2025-03-14 00:23:19', 90, 'KwekKWek', 1, 11.00, 20, 'Low Stock', 'KwekKWek_1741998045.png'),
 (26, '2025-03-14 00:23:19', 91, 'Isaw', 1, 11.00, 21, 'Low Stock', 'Isaw_1741998117.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_transactions`
+--
+
+CREATE TABLE `inventory_transactions` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `transaction_type` enum('Added','Used','Updated') NOT NULL,
+  `quantity_change` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `unit_price` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_transactions`
+--
+
+INSERT INTO `inventory_transactions` (`id`, `product_id`, `transaction_type`, `quantity_change`, `timestamp`, `unit_price`, `user_id`) VALUES
+(14, 101, 'Added', 11, '2025-03-15 22:38:25', 111.00, 1),
+(15, 102, 'Added', 1, '2025-03-15 22:53:07', 20.00, 1),
+(16, 105, 'Added', 11, '2025-03-15 23:07:13', 50.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -385,19 +234,6 @@ CREATE TABLE `order_items` (
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `OrderID`, `ProductID`, `Quantity`) VALUES
-(1, 5, 4, 2),
-(2, 5, 5, 1),
-(3, 6, 7, 1),
-(4, 6, 75, 1),
-(5, 6, 76, 1),
-(7, 7, 81, 1),
-(8, 7, 88, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -447,22 +283,6 @@ CREATE TABLE `sales` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `sales`
---
-
-INSERT INTO `sales` (`id`, `product_id`, `product_name`, `Image`, `quantity_sold`, `unit_price`, `remitted`, `sale_date`, `created_at`) VALUES
-(1, 4, '', NULL, 1, 0.00, 160.00, '2025-03-08 12:42:16', '2025-03-08 12:42:16'),
-(2, 7, '', NULL, 1, 0.00, 70.00, '2025-03-08 12:42:16', '2025-03-08 12:42:16'),
-(3, 6, '', NULL, 1, 0.00, 1.00, '2025-03-12 10:54:08', '2025-03-12 10:54:08'),
-(4, 4, '', NULL, 2, 0.00, 320.00, '2025-03-14 12:17:31', '2025-03-14 12:17:31'),
-(5, 5, '', NULL, 1, 0.00, 25.00, '2025-03-14 12:17:31', '2025-03-14 12:17:31'),
-(6, 7, '', NULL, 1, 0.00, 70.00, '2025-03-14 12:17:36', '2025-03-14 12:17:36'),
-(7, 75, '', NULL, 1, 0.00, 1.00, '2025-03-14 12:17:36', '2025-03-14 12:17:36'),
-(8, 76, '', NULL, 1, 0.00, 1.00, '2025-03-14 12:17:36', '2025-03-14 12:17:36'),
-(10, 81, '', NULL, 1, 0.00, 11.00, '2025-03-14 12:35:16', '2025-03-14 12:35:16'),
-(11, 88, '', NULL, 1, 0.00, 8878.00, '2025-03-14 12:35:16', '2025-03-14 12:35:16');
-
 -- --------------------------------------------------------
 
 --
@@ -485,20 +305,13 @@ CREATE TABLE `stocks` (
 --
 
 INSERT INTO `stocks` (`StockID`, `StockName`, `Quantity`, `CostPrice`, `CategoryID`, `SupplierID`, `Status`, `Image`) VALUES
-(1, 'Coffee Beans', 1, 50.00, NULL, 1, '', 'Coffee_Beans_1741906531.png'),
-(2, 'Caramel Syrup', 0, 11.00, NULL, 1, '', 'Caramel_Syrup_1741906537.png'),
-(3, 'Sugar', 2, 20.00, NULL, 1, '', 'Sugar_1741906557.png'),
-(4, 'Ice Cubes', 3, 15.00, NULL, 2, '', 'Ice_Cubes_1741906563.png'),
-(5, 'Cup', 1, 30.00, NULL, 1, '', 'Cup_1741910655.png'),
-(6, 'Milk', 6, 80.00, NULL, 2, '', 'Milk_1741910662.jpg'),
-(7, 'Oat Milk', 11, 90.00, NULL, 2, '', 'Oat_Milk_1741910669.png'),
-(10, 'Mineral Water', 4, 20.00, NULL, 2, '', 'Mineral_Water_1741910675.png'),
-(16, 'Wooden Spoon', 11, 100.00, NULL, 2, '', 'Wooden_Spoon_1741908588.jpg'),
-(18, 'Paper Plate', 9, 11.00, NULL, 1, '', 'Paper_Plate_1741910685.png'),
-(19, 'Wooden Fork', 1, 11.00, NULL, 6, '', 'Wooden_Fork_1741910694.jpg'),
-(20, 'Blender', 1, 123.00, NULL, 8, '', 'Blender_1741910704.png'),
-(33, 'Matcha Latte', 7, 11.00, NULL, 8, '', 'Matcha_Latte_1741909405.jpg'),
-(36, 'Stick', 10, 11.00, NULL, 6, '', 'Stick_1741998082.png');
+(1, 'Coffee Beans', 1, 50.00, NULL, 1, '', 'Coffee_Beans_1742123712.jpg'),
+(2, 'Caramel Syrup', 1, 11.00, NULL, 1, '', 'Caramel_Syrup_1742123722.jpg'),
+(3, 'Sugar', 2, 20.00, NULL, 1, '', 'Sugar_1742123727.jpg'),
+(4, 'Ice Cubes', 3, 15.00, NULL, 2, '', 'Ice_Cubes_1742123733.jpg'),
+(5, 'Cup', 1, 30.00, NULL, 1, '', 'Cup_1742123740.jpg'),
+(7, 'Oat Milk', 11, 90.00, NULL, 2, '', 'Oat_Milk_1742123746.jpg'),
+(10, 'Mineral Water', 4, 20.00, NULL, 2, '', 'Mineral_Water_1741910675.png');
 
 -- --------------------------------------------------------
 
@@ -526,79 +339,53 @@ INSERT INTO `stock_reports` (`ReportID`, `ReportDate`, `StockID`, `StockName`, `
 (19, '2025-02-27 22:15:10', 3, 'Sugar', 2, 20.00, 1, '', NULL),
 (20, '2025-02-27 22:15:10', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
 (21, '2025-02-27 22:15:10', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(22, '2025-02-27 22:15:10', 6, 'Milk', 7, 80.00, 2, '', NULL),
 (23, '2025-02-27 22:15:10', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
 (25, '2025-02-28 05:13:09', 3, 'Sugar', 2, 20.00, 1, '', NULL),
 (26, '2025-02-28 05:13:09', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
 (27, '2025-02-28 05:13:09', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(28, '2025-02-28 05:13:09', 6, 'Milk', 7, 80.00, 2, '', NULL),
 (29, '2025-02-28 05:13:09', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
 (32, '2025-03-03 22:46:29', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
 (33, '2025-03-03 22:46:29', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
 (34, '2025-03-03 22:46:29', 3, 'Sugar', 2, 20.00, 1, '', NULL),
 (35, '2025-03-03 22:46:29', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
 (36, '2025-03-03 22:46:29', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(37, '2025-03-03 22:46:29', 6, 'Milk', 7, 80.00, 2, '', NULL),
 (38, '2025-03-03 22:46:29', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
 (41, '2025-03-08 20:09:10', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
 (42, '2025-03-08 20:09:10', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
 (43, '2025-03-08 20:09:10', 3, 'Sugar', 2, 20.00, 1, '', NULL),
 (44, '2025-03-08 20:09:10', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
 (45, '2025-03-08 20:09:10', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(46, '2025-03-08 20:09:10', 6, 'Milk', 7, 80.00, 2, '', NULL),
 (47, '2025-03-08 20:09:10', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
 (50, '2025-03-08 21:57:12', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
 (51, '2025-03-08 21:57:12', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
 (52, '2025-03-08 21:57:12', 3, 'Sugar', 2, 20.00, 1, '', NULL),
 (53, '2025-03-08 21:57:12', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
 (54, '2025-03-08 21:57:12', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(55, '2025-03-08 21:57:12', 6, 'Milk', 7, 80.00, 2, '', NULL),
 (56, '2025-03-08 21:57:12', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
 (58, '2025-03-13 20:21:13', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
 (59, '2025-03-13 20:21:13', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
 (60, '2025-03-13 20:21:13', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
 (61, '2025-03-13 20:21:13', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
 (62, '2025-03-13 20:21:13', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(63, '2025-03-13 20:21:13', 6, 'Milk', 7, 80.00, 2, '', 'Milk_1741910662.jpg'),
 (64, '2025-03-13 20:21:13', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(65, '2025-03-13 20:21:13', 18, 'Paper Plate', 9, 11.00, 1, '', 'Paper_Plate_1741910685.png'),
-(66, '2025-03-13 20:21:13', 19, 'Wooden Fork', 1, 11.00, 6, '', 'Wooden_Fork_1741910694.jpg'),
-(67, '2025-03-13 20:21:13', 20, 'Blender', 1, 123.00, 8, '', 'Blender_1741910704.png'),
-(68, '2025-03-13 20:21:13', 33, 'Matcha Latte', 7, 11.00, 8, '', 'Matcha_Latte_1741909405.jpg'),
 (69, '2025-03-13 21:14:37', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
 (70, '2025-03-13 21:14:37', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
 (71, '2025-03-13 21:14:37', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
 (72, '2025-03-13 21:14:37', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
 (73, '2025-03-13 21:14:37', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(74, '2025-03-13 21:14:37', 6, 'Milk', 7, 80.00, 2, '', 'Milk_1741910662.jpg'),
 (75, '2025-03-13 21:14:37', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(76, '2025-03-13 21:14:37', 18, 'Paper Plate', 9, 11.00, 1, '', 'Paper_Plate_1741910685.png'),
-(77, '2025-03-13 21:14:37', 19, 'Wooden Fork', 1, 11.00, 6, '', 'Wooden_Fork_1741910694.jpg'),
-(78, '2025-03-13 21:14:37', 20, 'Blender', 1, 123.00, 8, '', 'Blender_1741910704.png'),
-(79, '2025-03-13 21:14:37', 33, 'Matcha Latte', 7, 11.00, 8, '', 'Matcha_Latte_1741909405.jpg'),
 (80, '2025-03-13 21:27:56', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
 (81, '2025-03-13 21:27:56', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
 (82, '2025-03-13 21:27:56', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
 (83, '2025-03-13 21:27:56', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
 (84, '2025-03-13 21:27:56', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(85, '2025-03-13 21:27:56', 6, 'Milk', 7, 80.00, 2, '', 'Milk_1741910662.jpg'),
 (86, '2025-03-13 21:27:56', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(87, '2025-03-13 21:27:56', 18, 'Paper Plate', 9, 11.00, 1, '', 'Paper_Plate_1741910685.png'),
-(88, '2025-03-13 21:27:56', 19, 'Wooden Fork', 1, 11.00, 6, '', 'Wooden_Fork_1741910694.jpg'),
-(89, '2025-03-13 21:27:56', 20, 'Blender', 1, 123.00, 8, '', 'Blender_1741910704.png'),
-(90, '2025-03-13 21:27:56', 33, 'Matcha Latte', 7, 11.00, 8, '', 'Matcha_Latte_1741909405.jpg'),
 (91, '2025-03-14 00:23:25', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
 (92, '2025-03-14 00:23:25', 2, 'Caramel Syrup', 0, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
 (93, '2025-03-14 00:23:25', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
 (94, '2025-03-14 00:23:25', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
 (95, '2025-03-14 00:23:25', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(96, '2025-03-14 00:23:25', 6, 'Milk', 7, 80.00, 2, '', 'Milk_1741910662.jpg'),
-(97, '2025-03-14 00:23:25', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(98, '2025-03-14 00:23:25', 18, 'Paper Plate', 9, 11.00, 1, '', 'Paper_Plate_1741910685.png'),
-(99, '2025-03-14 00:23:25', 19, 'Wooden Fork', 1, 11.00, 6, '', 'Wooden_Fork_1741910694.jpg'),
-(100, '2025-03-14 00:23:25', 20, 'Blender', 1, 123.00, 8, '', 'Blender_1741910704.png'),
-(101, '2025-03-14 00:23:25', 33, 'Matcha Latte', 7, 11.00, 8, '', 'Matcha_Latte_1741909405.jpg'),
-(102, '2025-03-14 00:23:25', 36, 'Stick', 10, 11.00, 6, '', 'Stick_1741998082.png');
+(97, '2025-03-14 00:23:25', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png');
 
 -- --------------------------------------------------------
 
@@ -624,6 +411,29 @@ INSERT INTO `suppliers` (`id`, `suppliername`, `contactinfo`, `email`) VALUES
 (8, 'asas', '12234556', 'asasq@sasa'),
 (19, 'admin111', '11213231', 'john.doe@example.com'),
 (20, 'qq', '11213231', 'orent@123');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction_logs`
+--
+
+CREATE TABLE `transaction_logs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `action` varchar(50) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transaction_logs`
+--
+
+INSERT INTO `transaction_logs` (`id`, `user_id`, `action`, `details`, `timestamp`) VALUES
+(1, 13, 'LOGIN', 'User logged in', '2025-03-15 22:34:49'),
+(2, 13, 'LOGIN', 'User logged in', '2025-03-15 22:37:06'),
+(3, 13, 'LOGIN', 'User logged in', '2025-03-15 23:00:10');
 
 -- --------------------------------------------------------
 
@@ -677,6 +487,13 @@ ALTER TABLE `inventoryproduct`
 --
 ALTER TABLE `inventory_reports`
   ADD PRIMARY KEY (`ReportID`);
+
+--
+-- Indexes for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `orders`
@@ -735,6 +552,13 @@ ALTER TABLE `suppliers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `transaction_logs`
+--
+ALTER TABLE `transaction_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -748,7 +572,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -760,13 +584,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `inventoryproduct`
 --
 ALTER TABLE `inventoryproduct`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `inventory_reports`
 --
 ALTER TABLE `inventory_reports`
   MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -817,6 +647,12 @@ ALTER TABLE `suppliers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT for table `transaction_logs`
+--
+ALTER TABLE `transaction_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -825,6 +661,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  ADD CONSTRAINT `inventory_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`);
 
 --
 -- Constraints for table `order_history`
@@ -858,6 +700,12 @@ ALTER TABLE `stocks`
 ALTER TABLE `stock_reports`
   ADD CONSTRAINT `stock_reports_ibfk_1` FOREIGN KEY (`StockID`) REFERENCES `stocks` (`StockID`),
   ADD CONSTRAINT `stock_reports_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`id`);
+
+--
+-- Constraints for table `transaction_logs`
+--
+ALTER TABLE `transaction_logs`
+  ADD CONSTRAINT `transaction_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
