@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2025 at 12:20 AM
+-- Generation Time: Mar 17, 2025 at 10:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -60,7 +60,46 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (218, 'pi pi-pencil', 'Stock updated: Sugar', '2025-03-15 11:15:27', 'Updated'),
 (219, 'pi pi-pencil', 'Stock updated: Ice Cubes', '2025-03-15 11:15:33', 'Updated'),
 (220, 'pi pi-pencil', 'Stock updated: Cup', '2025-03-15 11:15:40', 'Updated'),
-(221, 'pi pi-pencil', 'Stock updated: Oat Milk', '2025-03-15 11:15:46', 'Updated');
+(221, 'pi pi-pencil', 'Stock updated: Oat Milk', '2025-03-15 11:15:46', 'Updated'),
+(222, 'pi pi-box', 'New product added: Cafe Mocha (Ready-Made)', '2025-03-15 21:05:17', 'Success'),
+(223, 'pi pi-box', 'New product added: Spanish Latte (Ready-Made)', '2025-03-15 21:36:15', 'Success'),
+(224, 'pi pi-box', 'New product added: Bread (Ready-Made)', '2025-03-15 21:37:41', 'Success'),
+(225, 'pi pi-box', 'New product added: Bread (Ready-Made)', '2025-03-15 23:18:06', 'Success'),
+(226, 'pi pi-box', 'New product added: Bread (Ready-Made)', '2025-03-15 23:23:26', 'Success'),
+(227, 'pi pi-box', 'New product added: sasa (Ready-Made)', '2025-03-16 00:12:39', 'Success'),
+(228, 'pi pi-box', 'Stock added for sasa', '2025-03-16 00:40:21', 'Success'),
+(229, 'pi pi-box', 'Stock added for Carbonara', '2025-03-16 00:41:09', 'Success'),
+(230, 'pi pi-box', 'Stock added for Matcha Latte', '2025-03-16 00:50:15', 'Success'),
+(231, 'pi pi-box', 'Stock added for Matcha Latte', '2025-03-16 00:54:01', 'Success'),
+(232, 'pi pi-box', 'Stock added for Carbonara', '2025-03-16 01:00:25', 'Success'),
+(233, 'pi pi-box', 'Stock added for Croissant', '2025-03-16 01:08:20', 'Success'),
+(234, 'pi pi-chart-line', 'Inventory summary generated', '2025-03-16 09:47:52', 'Success'),
+(235, 'pi pi-box', 'New product added: Matcha (Ready-Made)', '2025-03-16 10:56:25', 'Success'),
+(236, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 10:57:15', 'Success'),
+(237, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 12:32:54', 'Success'),
+(238, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 12:52:56', 'Success'),
+(239, 'pi pi-box', 'Stock added for JAJJAJA', '2025-03-16 12:53:12', 'Success'),
+(240, 'pi pi-box', 'Stock added for Cappuccino', '2025-03-16 13:08:50', 'Success'),
+(241, 'pi pi-box', 'Stock added for Bread', '2025-03-16 13:34:00', 'Success'),
+(242, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 14:12:52', 'Success'),
+(243, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 14:56:44', 'Success'),
+(244, 'pi pi-box', 'Stock added for Croissant', '2025-03-16 15:14:58', 'Success'),
+(245, 'pi pi-box', 'New product added: uiokb (Ready-Made)', '2025-03-16 15:26:35', 'Success'),
+(246, 'pi pi-box', 'Stock added for uiokb', '2025-03-16 15:27:08', 'Success'),
+(247, 'pi pi-box', 'New product added: kjviu (To Be Made)', '2025-03-16 15:31:36', 'Success'),
+(248, 'pi pi-box', 'Stock added for Matcha', '2025-03-16 18:04:20', 'Success'),
+(249, 'pi pi-trash', 'Product deleted: JAJJAJA', '2025-03-16 19:10:39', 'Deleted'),
+(250, 'pi pi-trash', 'Product deleted: uiokb', '2025-03-16 19:14:10', 'Deleted'),
+(251, 'pi pi-box', 'New product added: walage (Ready-Made)', '2025-03-16 19:19:42', 'Success'),
+(252, 'pi pi-trash', 'Product deleted: kjviu', '2025-03-16 19:23:16', 'Deleted'),
+(253, 'pi pi-trash', 'Product deleted: jvufguj', '2025-03-16 19:23:37', 'Deleted'),
+(254, 'pi pi-trash', 'Product deleted: Cafe Mocha', '2025-03-16 19:24:00', 'Deleted'),
+(255, 'pi pi-box', 'Stock added for walage', '2025-03-16 19:25:41', 'Success'),
+(256, 'pi pi-box', 'Stock added for walage', '2025-03-16 19:26:20', 'Success'),
+(257, 'pi pi-box', 'New product added: asas (To Be Made)', '2025-03-16 20:03:30', 'Success'),
+(258, 'pi pi-box', 'New product added: adsadadffgvv (Ready-Made)', '2025-03-16 20:04:28', 'Success'),
+(259, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:12:58', 'Success'),
+(260, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:27:08', 'Success');
 
 -- --------------------------------------------------------
 
@@ -91,31 +130,37 @@ INSERT INTO `categories` (`id`, `CategoryName`, `ImagePath`) VALUES
 --
 
 CREATE TABLE `inventoryproduct` (
-  `id` int(11) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `ProductName` varchar(100) DEFAULT NULL,
-  `Quantity` int(11) DEFAULT NULL,
   `UnitPrice` decimal(10,2) DEFAULT NULL,
   `CategoryID (FK)` int(11) DEFAULT NULL,
-  `SupplierID (FK)` int(11) DEFAULT NULL,
   `Status` varchar(20) DEFAULT NULL,
-  `StockID` int(11) DEFAULT NULL,
-  `StockQuantity` int(11) DEFAULT NULL,
   `ReportDate` datetime DEFAULT current_timestamp(),
   `Image` varchar(255) DEFAULT NULL,
-  `ProcessType` enum('Ready-Made','To Be Made') NOT NULL DEFAULT 'Ready-Made'
+  `ProcessType` enum('Ready-Made','To Be Made') NOT NULL DEFAULT 'Ready-Made',
+  `Quantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventoryproduct`
 --
 
-INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID (FK)`, `SupplierID (FK)`, `Status`, `StockID`, `StockQuantity`, `ReportDate`, `Image`, `ProcessType`) VALUES
-(99, 'Cafe Latte', 11, 11.00, 20, 1, 'In Stock', NULL, NULL, '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made'),
-(101, 'Matcha Latte', 11, 111.00, 22, NULL, 'In Stock', NULL, NULL, '2025-03-15 10:38:25', 'Matcha_Latte_1742121505.jpg', 'To Be Made'),
-(102, 'Croissant', 1, 20.00, 20, NULL, 'Low Stock', NULL, NULL, '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made'),
-(103, 'Carbonara', 11, 111.00, 20, NULL, 'In Stock', NULL, NULL, '2025-03-15 10:58:44', 'Carbonara_1742122724.png', 'To Be Made'),
-(104, 'Spaghetti', 11, 11.00, 20, 1, 'In Stock', NULL, NULL, '2025-03-15 11:00:56', 'Spaghetti_1742122856.png', 'To Be Made'),
-(105, 'Cappuccino', 11, 50.00, 22, NULL, 'In Stock', NULL, NULL, '2025-03-15 11:07:13', 'Cappuccino_1742123233.png', 'To Be Made');
+INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (FK)`, `Status`, `ReportDate`, `Image`, `ProcessType`, `Quantity`) VALUES
+('101', 'Matcha Latte', 111.00, 22, 'In Stock', '2025-03-15 10:38:25', 'Matcha_Latte_1742121505.jpg', 'To Be Made', 2),
+('102', 'Croissant', 20.00, 20, 'Low Stock', '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made', 12),
+('103', 'Carbonara', 111.00, 20, 'In Stock', '2025-03-15 10:58:44', 'Carbonara_1742122724.png', 'To Be Made', 21),
+('104', 'Spaghetti', 11.00, 20, 'In Stock', '2025-03-15 11:00:56', 'Spaghetti_1742122856.png', 'To Be Made', 0),
+('105', 'Cappuccino', 50.00, 22, 'In Stock', '2025-03-15 11:07:13', 'Cappuccino_1742123233.png', 'To Be Made', 11),
+('107', 'Spanish Latte', 11.00, 20, 'In Stock', '2025-03-15 21:36:15', 'Spanish_Latte_1742160975.jpg', 'Ready-Made', 0),
+('108', 'Bread', 111.00, 20, 'In Stock', '2025-03-15 21:37:41', 'Bread_1742161061.png', 'Ready-Made', 1),
+('109', 'Bread', 11.00, 20, NULL, '2025-03-15 23:18:06', 'Bread_1742167086.jpg', 'Ready-Made', 0),
+('110', 'Bread', 11.00, 20, NULL, '2025-03-15 23:23:26', 'Bread_1742167406.jpg', 'Ready-Made', 0),
+('111', 'sasa', 111.00, 20, NULL, '2025-03-16 00:12:39', '111_sasa.jpg', 'Ready-Made', 11),
+('123', 'walage', 11.00, 20, NULL, '2025-03-16 19:19:42', '123_walage.jpg', 'Ready-Made', 22),
+('2', 'asas', 11.00, 20, NULL, '2025-03-16 20:03:30', '2_asas.jpg', 'To Be Made', 0),
+('3', 'adsadadffgvv', 11.00, 20, NULL, '2025-03-16 20:04:28', '3_adsadadffgvv.jpg', 'Ready-Made', 113),
+('900', 'Matcha', 11.00, 20, NULL, '2025-03-16 10:56:25', '900_Matcha.jpg', 'Ready-Made', 2565),
+('99', 'Cafe Latte', 11.00, 20, 'In Stock', '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made', 0);
 
 -- --------------------------------------------------------
 
@@ -126,7 +171,7 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `Quantity`, `UnitPrice`, `C
 CREATE TABLE `inventory_reports` (
   `ReportID` int(11) NOT NULL,
   `ReportDate` datetime NOT NULL,
-  `ProductID` int(11) NOT NULL,
+  `ProductID` varchar(36) DEFAULT NULL,
   `ProductName` varchar(255) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `UnitPrice` decimal(10,2) NOT NULL,
@@ -140,7 +185,21 @@ CREATE TABLE `inventory_reports` (
 --
 
 INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `ProductName`, `Quantity`, `UnitPrice`, `CategoryID`, `Status`, `Image`) VALUES
-(26, '2025-03-14 00:23:19', 91, 'Isaw', 1, 11.00, 21, 'Low Stock', 'Isaw_1741998117.png');
+(26, '2025-03-14 00:23:19', '91', 'Isaw', 1, 11.00, 21, 'Low Stock', 'Isaw_1741998117.png'),
+(27, '2025-03-16 09:47:52', '1000', 'JAJJAJA', 0, 11.00, 20, 'Out of Stock', 'JAJJAJA_1742169519.jpg'),
+(28, '2025-03-16 09:47:52', '101', 'Matcha Latte', 2, 111.00, 22, 'Low Stock', 'Matcha_Latte_1742121505.jpg'),
+(29, '2025-03-16 09:47:52', '102', 'Croissant', 6, 20.00, 20, 'Low Stock', 'Croissant_1742122387.png'),
+(30, '2025-03-16 09:47:52', '103', 'Carbonara', 21, 111.00, 20, 'In Stock', 'Carbonara_1742122724.png'),
+(31, '2025-03-16 09:47:52', '104', 'Spaghetti', 0, 11.00, 20, 'Out of Stock', 'Spaghetti_1742122856.png'),
+(32, '2025-03-16 09:47:52', '105', 'Cappuccino', 0, 50.00, 22, 'Out of Stock', 'Cappuccino_1742123233.png'),
+(33, '2025-03-16 09:47:52', '106', 'Cafe Mocha', 0, 11.00, 22, 'Out of Stock', NULL),
+(34, '2025-03-16 09:47:52', '107', 'Spanish Latte', 0, 11.00, 20, 'Out of Stock', 'Spanish_Latte_1742160975.jpg'),
+(35, '2025-03-16 09:47:52', '108', 'Bread', 0, 111.00, 20, 'Out of Stock', 'Bread_1742161061.png'),
+(36, '2025-03-16 09:47:52', '109', 'Bread', 0, 11.00, 20, 'Out of Stock', 'Bread_1742167086.jpg'),
+(37, '2025-03-16 09:47:52', '11', 'jvufguj', 0, 11.00, 20, 'Out of Stock', NULL),
+(38, '2025-03-16 09:47:52', '110', 'Bread', 0, 11.00, 20, 'Out of Stock', 'Bread_1742167406.jpg'),
+(39, '2025-03-16 09:47:52', '111', 'sasa', 11, 111.00, 20, 'In Stock', '111_sasa.jpg'),
+(40, '2025-03-16 09:47:52', '99', 'Cafe Latte', 0, 11.00, 20, 'Out of Stock', 'Cafe_Latte_1742120171.png');
 
 -- --------------------------------------------------------
 
@@ -150,22 +209,20 @@ INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `Product
 
 CREATE TABLE `inventory_transactions` (
   `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `transaction_type` enum('Added','Used','Updated') NOT NULL,
-  `quantity_change` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `unit_price` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `user_id` int(11) DEFAULT NULL
+  `product_name` varchar(255) NOT NULL,
+  `transaction_type` enum('Add','Update') NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `cost_price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventory_transactions`
 --
 
-INSERT INTO `inventory_transactions` (`id`, `product_id`, `transaction_type`, `quantity_change`, `timestamp`, `unit_price`, `user_id`) VALUES
-(14, 101, 'Added', 11, '2025-03-15 22:38:25', 111.00, 1),
-(15, 102, 'Added', 1, '2025-03-15 22:53:07', 20.00, 1),
-(16, 105, 'Added', 11, '2025-03-15 23:07:13', 50.00, NULL);
+INSERT INTO `inventory_transactions` (`id`, `product_name`, `transaction_type`, `quantity`, `cost_price`, `created_at`) VALUES
+(1, 'adsadadffgvv', 'Add', 1, 21.00, '2025-03-17 09:12:58'),
+(2, 'adsadadffgvv', 'Add', 112, 2111.00, '2025-03-17 09:27:08');
 
 -- --------------------------------------------------------
 
@@ -230,9 +287,34 @@ INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `table_n
 CREATE TABLE `order_items` (
   `id` int(11) NOT NULL,
   `OrderID` int(11) NOT NULL,
-  `ProductID` int(11) NOT NULL,
+  `ProductID` varchar(36) NOT NULL,
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_transactions`
+--
+
+CREATE TABLE `product_transactions` (
+  `id` int(11) NOT NULL,
+  `product_id` varchar(36) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `transaction_type` enum('Add','Edit','Delete') NOT NULL,
+  `process_type` enum('Ready-Made','To Be Made') NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_transactions`
+--
+
+INSERT INTO `product_transactions` (`id`, `product_id`, `product_name`, `transaction_type`, `process_type`, `unit_price`, `category_id`, `created_at`) VALUES
+(1, '2', 'asas', 'Add', 'To Be Made', 11.00, 20, '2025-03-17 08:03:30'),
+(2, '3', 'adsadadffgvv', 'Add', 'Ready-Made', 11.00, 20, '2025-03-17 08:04:28');
 
 -- --------------------------------------------------------
 
@@ -262,7 +344,8 @@ INSERT INTO `reports` (`ReportID`, `ReportType`, `ReportName`, `ReportDate`) VAL
 (8, 'Daily', 'Inventory Summary', '2025-03-11 22:20:13'),
 (9, 'Daily', 'Inventory Summary', '2025-03-11 22:20:46'),
 (10, 'Daily', 'Inventory Summary', '2025-03-11 23:49:07'),
-(11, 'Daily', 'Inventory Summary', '2025-03-14 00:23:19');
+(11, 'Daily', 'Inventory Summary', '2025-03-14 00:23:19'),
+(12, 'Daily', 'Inventory Summary', '2025-03-16 09:47:52');
 
 -- --------------------------------------------------------
 
@@ -272,7 +355,7 @@ INSERT INTO `reports` (`ReportID`, `ReportType`, `ReportName`, `ReportDate`) VAL
 
 CREATE TABLE `sales` (
   `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_id` varchar(36) NOT NULL,
   `product_name` varchar(255) NOT NULL,
   `Image` varchar(255) DEFAULT NULL,
   `quantity_sold` int(11) NOT NULL DEFAULT 0,
@@ -286,106 +369,46 @@ CREATE TABLE `sales` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stocks`
+-- Table structure for table `stock_details`
 --
 
-CREATE TABLE `stocks` (
-  `StockID` int(11) NOT NULL,
-  `StockName` varchar(255) NOT NULL,
-  `Quantity` int(11) NOT NULL,
-  `CostPrice` decimal(10,2) NOT NULL,
-  `CategoryID` int(11) DEFAULT NULL,
+CREATE TABLE `stock_details` (
+  `id` int(11) NOT NULL,
+  `ProductID` varchar(36) NOT NULL,
+  `stock_location` varchar(255) NOT NULL,
+  `batch_number` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `cost_price` float NOT NULL,
   `SupplierID` int(11) DEFAULT NULL,
-  `Status` enum('active','inactive') NOT NULL,
-  `Image` varchar(255) DEFAULT NULL
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `stocks`
+-- Dumping data for table `stock_details`
 --
 
-INSERT INTO `stocks` (`StockID`, `StockName`, `Quantity`, `CostPrice`, `CategoryID`, `SupplierID`, `Status`, `Image`) VALUES
-(1, 'Coffee Beans', 1, 50.00, NULL, 1, '', 'Coffee_Beans_1742123712.jpg'),
-(2, 'Caramel Syrup', 1, 11.00, NULL, 1, '', 'Caramel_Syrup_1742123722.jpg'),
-(3, 'Sugar', 2, 20.00, NULL, 1, '', 'Sugar_1742123727.jpg'),
-(4, 'Ice Cubes', 3, 15.00, NULL, 2, '', 'Ice_Cubes_1742123733.jpg'),
-(5, 'Cup', 1, 30.00, NULL, 1, '', 'Cup_1742123740.jpg'),
-(7, 'Oat Milk', 11, 90.00, NULL, 2, '', 'Oat_Milk_1742123746.jpg'),
-(10, 'Mineral Water', 4, 20.00, NULL, 2, '', 'Mineral_Water_1741910675.png');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_reports`
---
-
-CREATE TABLE `stock_reports` (
-  `ReportID` int(11) NOT NULL,
-  `ReportDate` datetime NOT NULL,
-  `StockID` int(11) NOT NULL,
-  `StockName` varchar(255) NOT NULL,
-  `Quantity` int(11) NOT NULL,
-  `CostPrice` decimal(10,2) NOT NULL,
-  `SupplierID` int(11) NOT NULL,
-  `Status` enum('active','inactive') NOT NULL,
-  `Image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `stock_reports`
---
-
-INSERT INTO `stock_reports` (`ReportID`, `ReportDate`, `StockID`, `StockName`, `Quantity`, `CostPrice`, `SupplierID`, `Status`, `Image`) VALUES
-(19, '2025-02-27 22:15:10', 3, 'Sugar', 2, 20.00, 1, '', NULL),
-(20, '2025-02-27 22:15:10', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
-(21, '2025-02-27 22:15:10', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(23, '2025-02-27 22:15:10', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
-(25, '2025-02-28 05:13:09', 3, 'Sugar', 2, 20.00, 1, '', NULL),
-(26, '2025-02-28 05:13:09', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
-(27, '2025-02-28 05:13:09', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(29, '2025-02-28 05:13:09', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
-(32, '2025-03-03 22:46:29', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
-(33, '2025-03-03 22:46:29', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
-(34, '2025-03-03 22:46:29', 3, 'Sugar', 2, 20.00, 1, '', NULL),
-(35, '2025-03-03 22:46:29', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
-(36, '2025-03-03 22:46:29', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(38, '2025-03-03 22:46:29', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
-(41, '2025-03-08 20:09:10', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
-(42, '2025-03-08 20:09:10', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
-(43, '2025-03-08 20:09:10', 3, 'Sugar', 2, 20.00, 1, '', NULL),
-(44, '2025-03-08 20:09:10', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
-(45, '2025-03-08 20:09:10', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(47, '2025-03-08 20:09:10', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
-(50, '2025-03-08 21:57:12', 1, 'Coffee Beans', 1, 50.00, 1, '', NULL),
-(51, '2025-03-08 21:57:12', 2, 'Caramel Syrup', 1, 11.00, 1, '', NULL),
-(52, '2025-03-08 21:57:12', 3, 'Sugar', 2, 20.00, 1, '', NULL),
-(53, '2025-03-08 21:57:12', 4, 'Ice Cubes', 6, 15.00, 2, '', NULL),
-(54, '2025-03-08 21:57:12', 5, 'Cup', 1, 30.00, 1, '', NULL),
-(56, '2025-03-08 21:57:12', 10, 'Mineral Water', 4, 20.00, 2, '', NULL),
-(58, '2025-03-13 20:21:13', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
-(59, '2025-03-13 20:21:13', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
-(60, '2025-03-13 20:21:13', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
-(61, '2025-03-13 20:21:13', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
-(62, '2025-03-13 20:21:13', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(64, '2025-03-13 20:21:13', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(69, '2025-03-13 21:14:37', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
-(70, '2025-03-13 21:14:37', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
-(71, '2025-03-13 21:14:37', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
-(72, '2025-03-13 21:14:37', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
-(73, '2025-03-13 21:14:37', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(75, '2025-03-13 21:14:37', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(80, '2025-03-13 21:27:56', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
-(81, '2025-03-13 21:27:56', 2, 'Caramel Syrup', 1, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
-(82, '2025-03-13 21:27:56', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
-(83, '2025-03-13 21:27:56', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
-(84, '2025-03-13 21:27:56', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(86, '2025-03-13 21:27:56', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png'),
-(91, '2025-03-14 00:23:25', 1, 'Coffee Beans', 1, 50.00, 1, '', 'Coffee_Beans_1741906531.png'),
-(92, '2025-03-14 00:23:25', 2, 'Caramel Syrup', 0, 11.00, 1, '', 'Caramel_Syrup_1741906537.png'),
-(93, '2025-03-14 00:23:25', 3, 'Sugar', 2, 20.00, 1, '', 'Sugar_1741906557.png'),
-(94, '2025-03-14 00:23:25', 4, 'Ice Cubes', 3, 15.00, 2, '', 'Ice_Cubes_1741906563.png'),
-(95, '2025-03-14 00:23:25', 5, 'Cup', 1, 30.00, 1, '', 'Cup_1741910655.png'),
-(97, '2025-03-14 00:23:25', 10, 'Mineral Water', 4, 20.00, 2, '', 'Mineral_Water_1741910675.png');
+INSERT INTO `stock_details` (`id`, `ProductID`, `stock_location`, `batch_number`, `quantity`, `expiration_date`, `cost_price`, `SupplierID`, `created_at`) VALUES
+(1, '111', 'Ref', '1', 11, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
+(2, '103', 'Ref', '1', 11, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
+(3, '101', 'Table', '12', 1, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
+(4, '101', 'Table', '12', 1, '2025-03-20', 0, NULL, '2025-03-17 05:54:21'),
+(5, '103', 'ref', '1', 10, '2025-03-20', 0, NULL, '2025-03-17 05:54:21'),
+(6, '102', 'Rack', '12', 6, '2025-03-30', 30, NULL, '2025-03-17 05:54:21'),
+(7, '900', 'Ref', '11', 110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
+(9, '900', 'Ref', '1', 110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
+(10, '900', 'Ref', '11', 1110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
+(12, '105', 'qweeq', '11', 11, '2025-03-17', 50, 2, '2025-03-17 05:54:21'),
+(13, '108', 'rack', '1', 1, '2025-03-25', 11, 2, '2025-03-17 05:54:21'),
+(14, '900', 'TAble', '23', 12, '2025-03-17', 120, 19, '2025-03-17 05:54:21'),
+(15, '900', 'Ref', '11', 110, '2025-03-20', 10, 19, '2025-03-17 05:54:21'),
+(16, '900', 'TAble', '23', 12, '2025-03-17', 10, 19, '2025-03-17 05:54:21'),
+(17, '102', 'Table', '12', 6, '2025-03-30', 300, 19, '2025-03-17 05:54:21'),
+(19, '900', 'Ref', '111', 1101, '2025-03-20', 101, 1, '2025-03-17 06:04:20'),
+(20, '123', 'ead', '1', 11, '2025-03-17', 123, 19, '2025-03-17 07:25:41'),
+(21, '123', 'ead', '1', 11, '2025-03-20', 123, 19, '2025-03-17 07:26:20'),
+(22, '3', 'ADSA', '1', 1, '2025-03-25', 21, 6, '2025-03-17 09:12:58'),
+(23, '3', 'ADSA', '2', 112, '2025-03-25', 2111, 2, '2025-03-17 09:27:08');
 
 -- --------------------------------------------------------
 
@@ -411,29 +434,6 @@ INSERT INTO `suppliers` (`id`, `suppliername`, `contactinfo`, `email`) VALUES
 (8, 'asas', '12234556', 'asasq@sasa'),
 (19, 'admin111', '11213231', 'john.doe@example.com'),
 (20, 'qq', '11213231', 'orent@123');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transaction_logs`
---
-
-CREATE TABLE `transaction_logs` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `action` varchar(50) DEFAULT NULL,
-  `details` text DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `transaction_logs`
---
-
-INSERT INTO `transaction_logs` (`id`, `user_id`, `action`, `details`, `timestamp`) VALUES
-(1, 13, 'LOGIN', 'User logged in', '2025-03-15 22:34:49'),
-(2, 13, 'LOGIN', 'User logged in', '2025-03-15 22:37:06'),
-(3, 13, 'LOGIN', 'User logged in', '2025-03-15 23:00:10');
 
 -- --------------------------------------------------------
 
@@ -492,8 +492,7 @@ ALTER TABLE `inventory_reports`
 -- Indexes for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `orders`
@@ -517,6 +516,14 @@ ALTER TABLE `order_items`
   ADD KEY `ProductID` (`ProductID`);
 
 --
+-- Indexes for table `product_transactions`
+--
+ALTER TABLE `product_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
 -- Indexes for table `reports`
 --
 ALTER TABLE `reports`
@@ -530,33 +537,17 @@ ALTER TABLE `sales`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `stocks`
+-- Indexes for table `stock_details`
 --
-ALTER TABLE `stocks`
-  ADD PRIMARY KEY (`StockID`),
-  ADD KEY `CategoryID` (`CategoryID`),
-  ADD KEY `SupplierID` (`SupplierID`);
-
---
--- Indexes for table `stock_reports`
---
-ALTER TABLE `stock_reports`
-  ADD PRIMARY KEY (`ReportID`),
-  ADD KEY `StockID` (`StockID`),
-  ADD KEY `SupplierID` (`SupplierID`);
+ALTER TABLE `stock_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ProductID` (`ProductID`);
 
 --
 -- Indexes for table `suppliers`
 --
 ALTER TABLE `suppliers`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transaction_logs`
---
-ALTER TABLE `transaction_logs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -572,7 +563,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -581,22 +572,16 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT for table `inventoryproduct`
---
-ALTER TABLE `inventoryproduct`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
-
---
 -- AUTO_INCREMENT for table `inventory_reports`
 --
 ALTER TABLE `inventory_reports`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -617,10 +602,16 @@ ALTER TABLE `order_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `product_transactions`
+--
+ALTER TABLE `product_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -629,28 +620,16 @@ ALTER TABLE `sales`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `stocks`
+-- AUTO_INCREMENT for table `stock_details`
 --
-ALTER TABLE `stocks`
-  MODIFY `StockID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
-
---
--- AUTO_INCREMENT for table `stock_reports`
---
-ALTER TABLE `stock_reports`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+ALTER TABLE `stock_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `transaction_logs`
---
-ALTER TABLE `transaction_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -663,12 +642,6 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `inventory_transactions`
---
-ALTER TABLE `inventory_transactions`
-  ADD CONSTRAINT `inventory_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`);
-
---
 -- Constraints for table `order_history`
 --
 ALTER TABLE `order_history`
@@ -679,33 +652,26 @@ ALTER TABLE `order_history`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`);
+
+--
+-- Constraints for table `product_transactions`
+--
+ALTER TABLE `product_transactions`
+  ADD CONSTRAINT `product_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`),
+  ADD CONSTRAINT `product_transactions_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
 
 --
 -- Constraints for table `sales`
 --
 ALTER TABLE `sales`
-  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`);
 
 --
--- Constraints for table `stocks`
+-- Constraints for table `stock_details`
 --
-ALTER TABLE `stocks`
-  ADD CONSTRAINT `stocks_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `stocks_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `stock_reports`
---
-ALTER TABLE `stock_reports`
-  ADD CONSTRAINT `stock_reports_ibfk_1` FOREIGN KEY (`StockID`) REFERENCES `stocks` (`StockID`),
-  ADD CONSTRAINT `stock_reports_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`id`);
-
---
--- Constraints for table `transaction_logs`
---
-ALTER TABLE `transaction_logs`
-  ADD CONSTRAINT `transaction_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `stock_details`
+  ADD CONSTRAINT `stock_details_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

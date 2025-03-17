@@ -5,11 +5,12 @@ from model.db import get_db
 import os
 import shutil
 from datetime import datetime
+from uuid import uuid4
 
 UPLOAD_DIR = "uploads/products"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-InventoryRouter = APIRouter(tags=["InventoryProduct"])
+InventoryRouter = APIRouter(tags=["Inventory"])
 
 class ProductUpdate(BaseModel):
     ProductName: Optional[str] = None
@@ -17,13 +18,30 @@ class ProductUpdate(BaseModel):
     UnitPrice: Optional[float] = None
     CategoryID: Optional[int] = None
 
-def determine_status(quantity: int) -> str:
+class StockItem(BaseModel):
+    stock_location: str
+    batch_number: str
+    quantity: int
+    expiration_date: str
+    cost_price: float
+    SupplierID: Optional[int] = None  # Add SupplierID
+
+class StockInRequest(BaseModel):
+    ProductID: str
+    Stocks: List[StockItem]
+
+def determine_status(quantity: Optional[int]) -> str:
+    if quantity is None:
+        return "Unknown"  # Or "Not Available", depending on your preference
     if quantity == 0:
         return "Out of Stock"
     elif quantity <= 10:
         return "Low Stock"
     else:
         return "In Stock"
+
+def generate_unique_id():
+    return str(uuid4())
 
 def log_activity(db, icon: str, title: str, status: str):
     try:
@@ -35,39 +53,39 @@ def log_activity(db, icon: str, title: str, status: str):
     except Exception as e:
         print(f"Failed to log activity: {e}")
 
-def log_transaction(db, product_id: int, transaction_type: str, quantity_change: int, unit_price: float):
+def log_product_transaction(db, product_id: str, product_name: str, transaction_type: str, 
+                          process_type: str, unit_price: float, category_id: Optional[int] = None):
     try:
-        db[0].execute(
-            "INSERT INTO inventory_transactions (product_id, transaction_type, quantity_change, unit_price, timestamp) VALUES (%s, %s, %s, %s, NOW())",
-            (product_id, transaction_type, quantity_change, unit_price),
-        )
+        db[0].execute("""
+            INSERT INTO product_transactions 
+            (product_id, product_name, transaction_type, process_type, unit_price, category_id)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (product_id, product_name, transaction_type, process_type, unit_price, category_id))
         db[1].commit()
     except Exception as e:
-        print(f"Failed to log transaction: {e}")
+        print(f"Failed to log product transaction: {e}")
+        raise
 
 @InventoryRouter.get("/inventoryproducts/all", response_model=list)
 async def get_all_inventory_products(request: Request, db=Depends(get_db)):
-    """ Fetch all products without filters. """
     base_url = str(request.base_url)
 
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, ProcessType, Image FROM inventoryproduct")
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image FROM inventoryproduct")
     products = db[0].fetchall()
 
     return [
         {
-            "id": product[0],
+            "ProductID": product[0],
             "ProductName": product[1],
-            "Quantity": product[2],
+            "Quantity": product[2] if product[5] != "To Be Made" else None,
             "UnitPrice": product[3],
             "CategoryID": product[4],
-            "SupplierID": product[5],
-            "ProcessType": product[6],
-            "Status": determine_status(product[2]),
-            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
+            "ProcessType": product[5],
+            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made",
+            "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
         }
         for product in products
     ]
-
 
 @InventoryRouter.get("/inventoryproducts/filter", response_model=list)
 async def filter_inventory_products(request: Request, process_type: Optional[str] = None, db=Depends(get_db)):
@@ -78,7 +96,7 @@ async def filter_inventory_products(request: Request, process_type: Optional[str
     base_url = str(request.base_url)
     
     db[0].execute(
-        "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, ProcessType, Image FROM inventoryproduct WHERE ProcessType = %s",
+        "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image FROM inventoryproduct WHERE ProcessType = %s",
         (process_type,)
     )
     products = db[0].fetchall()
@@ -87,41 +105,29 @@ async def filter_inventory_products(request: Request, process_type: Optional[str
         {
             "id": product[0],
             "ProductName": product[1],
-            "Quantity": product[2],
+            "Quantity": product[2] if product[5] != "To Be Made" else None,
             "UnitPrice": product[3],
             "CategoryID": product[4],
-            "SupplierID": product[5],
-            "ProcessType": product[6],
-            "Status": determine_status(product[2]),
-            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
+            "ProcessType": product[5],
+            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made",
+            "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
         }
         for product in products
     ]
 
-@InventoryRouter.get("/inventoryproduct/total", response_model=dict)
-async def get_total_products(db=Depends(get_db)):
-    try:
-        db[0].execute("SELECT COUNT(*) FROM inventoryproduct")
-        total_products = db[0].fetchone()[0]
-
-        return {"total_products": total_products}
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching total products: {str(e)}")
-
 @InventoryRouter.get("/inventoryproduct/{product_id}", response_model=dict)
-async def read_inventory_product(product_id: int, db=Depends(get_db)):
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)` FROM inventoryproduct WHERE id = %s", (product_id,))
+async def read_inventory_product(product_id: str, db=Depends(get_db)):
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType FROM inventoryproduct WHERE id = %s", (product_id,))
     product = db[0].fetchone()
 
     if product:
         return {
-            "id": product[0],
+            "ProductID": product[0],
             "ProductName": product[1],
-            "Quantity": product[2],
+            "Quantity": product[2] if product[5] != "To Be Made" else None,
             "UnitPrice": product[3],
             "CategoryID": product[4],
-            "Status": determine_status(product[2])
+            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made"
         }
     
     raise HTTPException(status_code=404, detail="Product not found")
@@ -129,17 +135,21 @@ async def read_inventory_product(product_id: int, db=Depends(get_db)):
 @InventoryRouter.post("/inventoryproduct/")
 async def create_inventory_product(
     request: Request,
+    ProductID: str = Form(...),  # Accept ProductID as input
     ProductName: str = Form(...),
-    Quantity: int = Form(...),
     UnitPrice: float = Form(...),
     CategoryID: Optional[int] = Form(None),
-    SupplierID: Optional[int] = Form(None),
-    ProcessType: str = Form(...),  # New field
+    ProcessType: str = Form(...),
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db),
 ):
     try:
-        Status = determine_status(Quantity)
+        # Check if the ProductID already exists
+        db[0].execute("SELECT id FROM inventoryproduct WHERE id = %s", (ProductID,))
+        existing_product = db[0].fetchone()
+        if existing_product:
+            raise HTTPException(status_code=400, detail="ProductID already exists")
+
         image_filename = None
 
         if ProcessType not in ["Ready-Made", "To Be Made"]:
@@ -147,42 +157,45 @@ async def create_inventory_product(
 
         if Image:
             file_extension = Image.filename.split(".")[-1]
-            image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+            image_filename = f"{ProductID}_{ProductName.replace(' ', '_')}.{file_extension}"
             file_path = os.path.join(UPLOAD_DIR, image_filename)
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
+        quantity = 0 if ProcessType == "To Be Made" else 0  # Ensure it's never NULL
+
         db[0].execute(
-            "INSERT INTO inventoryproduct (ProductName, Quantity, UnitPrice, `CategoryID (FK)`, `SupplierID (FK)`, Status, ProcessType, Image) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            (ProductName, Quantity, UnitPrice, CategoryID, SupplierID, Status, ProcessType, image_filename)
+            "INSERT INTO inventoryproduct (id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (ProductID, ProductName, quantity, UnitPrice, CategoryID, ProcessType, image_filename)
         )
         db[1].commit()
 
-        db[0].execute("SELECT LAST_INSERT_ID()")
-        new_product_id = db[0].fetchone()[0]
 
         log_activity(db, "pi pi-box", f"New product added: {ProductName} ({ProcessType})", "Success")
 
-        log_transaction(db, new_product_id, "Added", Quantity, UnitPrice)
-
+        log_product_transaction(
+            db=db,
+            product_id=ProductID,
+            product_name=ProductName,
+            transaction_type="Add",
+            process_type=ProcessType,
+            unit_price=UnitPrice,
+            category_id=CategoryID
+        )
         base_url = str(request.base_url)
         image_url = f"{base_url}uploads/products/{image_filename}" if image_filename else None
 
         return {
-            "id": new_product_id,
+            "ProductID": ProductID,
             "ProductName": ProductName,
-            "Quantity": Quantity,
+            "Quantity": quantity,
             "UnitPrice": UnitPrice,
             "CategoryID": CategoryID,
-            "SupplierID": SupplierID,
-            "Status": Status,
-            "ProcessType": ProcessType,  # Include in response
+            "ProcessType": ProcessType,
             "Image": image_url
         }
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
 
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
 async def update_inventory_product(
@@ -196,7 +209,7 @@ async def update_inventory_product(
     db=Depends(get_db),
 ):
     db[0].execute(
-        "SELECT ProductName, Quantity, UnitPrice, Image FROM inventoryproduct WHERE id = %s",
+        "SELECT ProductName, Quantity, UnitPrice, Image, ProcessType FROM inventoryproduct WHERE id = %s",
         (product_id,),
     )
     product = db[0].fetchone()
@@ -212,7 +225,7 @@ async def update_inventory_product(
         update_fields.append("ProductName = %s")
         update_values.append(ProductName)
 
-    if Quantity is not None:
+    if Quantity is not None and product[4] != "To Be Made":
         update_fields.append("Quantity = %s")
         update_values.append(Quantity)
         Status = determine_status(Quantity)
@@ -256,12 +269,14 @@ async def update_inventory_product(
     log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Updated")
 
     if Quantity is not None or UnitPrice is not None:
-        log_transaction(
-            db,
-            product_id,
-            TransactionType or "Updated",  # Include Transaction Type
-            Quantity or product[1],
-            UnitPrice or product[2],
+        log_product_transaction(
+            db=db,
+            product_id=product_id,
+            product_name=ProductName or product[0],
+            transaction_type="Edit",
+            process_type=product[4],
+            unit_price=UnitPrice or product[2],
+            category_id=CategoryID
         )
 
     return {
@@ -269,28 +284,44 @@ async def update_inventory_product(
         "Image": f"/uploads/products/{image_filename}" if image_filename else None,
     }
 
-
-
 @InventoryRouter.delete("/inventoryproduct/{product_id}", response_model=dict)
-async def delete_inventory_product(product_id: int, db=Depends(get_db)):
+async def delete_inventory_product(product_id: str, db=Depends(get_db)):
     try:
-        db[0].execute("SELECT ProductName FROM inventoryproduct WHERE id = %s", (product_id,))
+        # Get product details before deletion
+        db[0].execute("""
+            SELECT ProductName, ProcessType, UnitPrice, `CategoryID (FK)` 
+            FROM inventoryproduct 
+            WHERE id = %s
+        """, (product_id,))
         product = db[0].fetchone()
 
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
+        # Delete related records
+        db[0].execute("DELETE FROM stock_details WHERE ProductID = %s", (product_id,))
         db[0].execute("DELETE FROM inventoryproduct WHERE id = %s", (product_id,))
-        db[1].commit()
 
+        # Log the transaction
+        log_product_transaction(
+            db=db,
+            product_id=product_id,
+            product_name=product[0],
+            transaction_type="Delete",
+            process_type=product[1],
+            unit_price=product[2],
+            category_id=product[3]
+        )
+
+        db[1].commit()
         log_activity(db, "pi pi-trash", f"Product deleted: {product[0]}", "Deleted")
-        log_transaction(db, product_id, "Deleted", 0, 0.0)
+        
         return {"message": "Product deleted successfully"}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-    
+
 @InventoryRouter.post("/inventorysummary", response_model=list)
 async def post_inventory_summary(db=Depends(get_db)):
     try:
@@ -342,7 +373,6 @@ async def post_inventory_summary(db=Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating inventory summary: {str(e)}")
 
-
 @InventoryRouter.get("/activity_logs", response_model=list)
 async def get_activity_logs(db=Depends(get_db)):
     db[0].execute("SELECT id, icon, title, time, status FROM activity_logs ORDER BY time DESC LIMIT 10")
@@ -358,25 +388,32 @@ async def get_activity_logs(db=Depends(get_db)):
         }
         for log in logs
     ]
-@InventoryRouter.get("/inventory_transactions", response_model=list)
-async def get_inventory_transactions(db=Depends(get_db)):
-    """ Fetch all inventory transactions. """
-    try:
-        db[0].execute(
-            "SELECT id, product_id, transaction_type, quantity_change, unit_price, timestamp FROM inventory_transactions ORDER BY timestamp DESC"
-        )
-        transactions = db[0].fetchall()
 
+@InventoryRouter.get("/product_transactions", response_model=list)
+async def get_product_transactions(db=Depends(get_db)):
+    """Fetch all product transactions."""
+    try:
+        db[0].execute("""
+            SELECT pt.id, pt.product_id, pt.product_name, pt.transaction_type, 
+                   pt.process_type, pt.unit_price, pt.category_id, pt.created_at
+            FROM product_transactions pt
+            ORDER BY pt.created_at DESC
+        """)
+        
+        transactions = db[0].fetchall()
+        
         return [
             {
-                "id": transaction[0],
-                "product_id": transaction[1],
-                "transaction_type": transaction[2],
-                "quantity_change": transaction[3],
-                "unit_price": transaction[4],
-                "timestamp": transaction[5],
+                "id": t[0],
+                "product_id": t[1],
+                "product_name": t[2],
+                "transaction_type": t[3],
+                "process_type": t[4],
+                "unit_price": float(t[5]),
+                "category_id": t[6],
+                "created_at": t[7].strftime("%Y-%m-%d %H:%M:%S")
             }
-            for transaction in transactions
+            for t in transactions
         ]
 
     except Exception as e:
