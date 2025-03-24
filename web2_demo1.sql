@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 02:35 PM
+-- Generation Time: Mar 24, 2025 at 03:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -101,7 +101,14 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (259, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:12:58', 'Success'),
 (260, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:27:08', 'Success'),
 (261, 'pi pi-box', 'Stock added for Matcha', '2025-03-22 13:07:57', 'Success'),
-(262, 'pi pi-box', 'Stock added for Matcha', '2025-03-22 19:25:32', 'Success');
+(262, 'pi pi-box', 'Stock added for Matcha', '2025-03-22 19:25:32', 'Success'),
+(263, 'pi pi-box', 'New product added: Kwek2 (To Be Made)', '2025-03-24 01:41:53', 'Success'),
+(264, 'pi pi-box', 'New product added: Kwek2 (Ready-Made)', '2025-03-24 01:42:56', 'Success'),
+(265, 'pi pi-box', 'New product added: isaw (To Be Made)', '2025-03-24 01:46:24', 'Success'),
+(266, 'pi pi-box', 'Stock added for Kwek2', '2025-03-24 01:52:13', 'Success'),
+(267, 'pi pi-box', 'New product added: sdfsf (To Be Made)', '2025-03-24 02:28:25', 'Success'),
+(268, 'pi pi-box', 'New product added: 3ds (Ready-Made)', '2025-03-24 02:28:36', 'Success'),
+(269, 'pi pi-box', 'Stock added for 3ds', '2025-03-24 02:32:37', 'Success');
 
 -- --------------------------------------------------------
 
@@ -160,7 +167,12 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (F
 ('111', 'sasa', 111.00, 20, NULL, '2025-03-16 00:12:39', '111_sasa.jpg', 'Ready-Made', 11),
 ('123', 'walage', 11.00, 20, NULL, '2025-03-16 19:19:42', '123_walage.jpg', 'Ready-Made', 22),
 ('2', 'asas', 11.00, 20, NULL, '2025-03-16 20:03:30', '2_asas.jpg', 'To Be Made', 0),
+('21', '3ds', 11.00, 23, 'Out of Stock', '2025-03-24 02:28:36', '21_3ds.png', 'Ready-Made', 11),
 ('3', 'adsadadffgvv', 11.00, 20, NULL, '2025-03-16 20:04:28', '3_adsadadffgvv.jpg', 'Ready-Made', 105),
+('32', 'sdfsf', 11.00, 22, 'Available', '2025-03-24 02:28:25', '32_sdfsf.jpg', 'To Be Made', 0),
+('500', 'Kwek2', 11.00, 23, 'Available', '2025-03-24 01:41:53', '500_Kwek2.jpg', 'To Be Made', 2147483647),
+('501', 'Kwek2', 11.00, 23, 'Out of Stock', '2025-03-24 01:42:56', '501_Kwek2.jpg', 'Ready-Made', 11),
+('503', 'isaw', 11.00, 21, 'Available', '2025-03-24 01:46:24', '503_isaw.jpg', 'To Be Made', 0),
 ('900', 'Matcha', 11.00, 20, NULL, '2025-03-16 10:56:25', '900_Matcha.jpg', 'Ready-Made', 2684),
 ('99', 'Cafe Latte', 11.00, 20, 'In Stock', '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made', 0);
 
@@ -226,7 +238,9 @@ INSERT INTO `inventory_transactions` (`id`, `product_name`, `transaction_type`, 
 (1, 'adsadadffgvv', 'Add', 1, 21.00, '2025-03-17 09:12:58'),
 (2, 'adsadadffgvv', 'Add', 112, 2111.00, '2025-03-17 09:27:08'),
 (3, 'Matcha', 'Add', 11, 101.00, '2025-03-23 01:07:57'),
-(4, 'Matcha', 'Add', 111, 1.00, '2025-03-23 07:25:32');
+(4, 'Matcha', 'Add', 111, 1.00, '2025-03-23 07:25:32'),
+(5, 'Kwek2', 'Add', 11, 100.00, '2025-03-24 13:52:13'),
+(6, '3ds', 'Add', 11, 32.00, '2025-03-24 14:32:37');
 
 -- --------------------------------------------------------
 
@@ -352,7 +366,12 @@ CREATE TABLE `product_transactions` (
 
 INSERT INTO `product_transactions` (`id`, `product_id`, `product_name`, `transaction_type`, `process_type`, `unit_price`, `category_id`, `created_at`) VALUES
 (1, '2', 'asas', 'Add', 'To Be Made', 11.00, 20, '2025-03-17 08:03:30'),
-(2, '3', 'adsadadffgvv', 'Add', 'Ready-Made', 11.00, 20, '2025-03-17 08:04:28');
+(2, '3', 'adsadadffgvv', 'Add', 'Ready-Made', 11.00, 20, '2025-03-17 08:04:28'),
+(3, '500', 'Kwek2', 'Add', 'To Be Made', 11.00, 23, '2025-03-24 13:41:53'),
+(4, '501', 'Kwek2', 'Add', 'Ready-Made', 11.00, 23, '2025-03-24 13:42:56'),
+(5, '503', 'isaw', 'Add', 'To Be Made', 11.00, 21, '2025-03-24 13:46:24'),
+(6, '32', 'sdfsf', 'Add', 'To Be Made', 11.00, 22, '2025-03-24 14:28:25'),
+(7, '21', '3ds', 'Add', 'Ready-Made', 11.00, 23, '2025-03-24 14:28:36');
 
 -- --------------------------------------------------------
 
@@ -468,7 +487,9 @@ INSERT INTO `stock_details` (`id`, `ProductID`, `stock_location`, `batch_number`
 (22, '3', 'ADSA', '1', 1, '2025-03-25', 21, 6, '2025-03-17 09:12:58'),
 (23, '3', 'ADSA', '2', 112, '2025-03-25', 2111, 2, '2025-03-17 09:27:08'),
 (24, '900', 'lamisa', '113', 11, '2025-03-29', 101, 1, '2025-03-23 01:07:57'),
-(25, '900', 'lamisa', '114', 111, '2025-03-29', 1, 20, '2025-03-23 07:25:32');
+(25, '900', 'lamisa', '114', 111, '2025-03-29', 1, 20, '2025-03-23 07:25:32'),
+(26, '501', 'ref', '1', 11, '2025-03-29', 100, 2, '2025-03-24 13:52:13'),
+(27, '21', 'ref', '1', 11, '2025-03-31', 32, 6, '2025-03-24 14:32:37');
 
 -- --------------------------------------------------------
 
@@ -630,7 +651,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=263;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -648,7 +669,7 @@ ALTER TABLE `inventory_reports`
 -- AUTO_INCREMENT for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -678,7 +699,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `product_transactions`
 --
 ALTER TABLE `product_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -696,7 +717,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
