@@ -139,7 +139,7 @@ async def read_inventory_product(product_id: str, db=Depends(get_db)):
 @InventoryRouter.post("/inventoryproduct/")
 async def create_inventory_product(
     request: Request,
-    ProductID: str = Form(...),  # Accept ProductID as input
+    ProductID: str = Form(...),
     ProductName: str = Form(...),
     UnitPrice: float = Form(...),
     CategoryID: Optional[int] = Form(None),
@@ -166,14 +166,17 @@ async def create_inventory_product(
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-        quantity = None if ProcessType == "To Be Made" else 0
+        # Set status based on ProcessType
+        status = "Available" if ProcessType == "To Be Made" else "Out of Stock"
 
+        # Insert product into the database
         db[0].execute(
-            "INSERT INTO inventoryproduct (id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (ProductID, ProductName, quantity, UnitPrice, CategoryID, ProcessType, image_filename)
+            """INSERT INTO inventoryproduct 
+            (id, ProductName, UnitPrice, `CategoryID (FK)`, ProcessType, Image, Status) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (ProductID, ProductName, UnitPrice, CategoryID, ProcessType, image_filename, status)
         )
         db[1].commit()
-
 
         log_activity(db, "pi pi-box", f"New product added: {ProductName} ({ProcessType})", "Success")
 
@@ -186,16 +189,17 @@ async def create_inventory_product(
             unit_price=UnitPrice,
             category_id=CategoryID
         )
+        
         base_url = str(request.base_url)
         image_url = f"{base_url}uploads/products/{image_filename}" if image_filename else None
 
         return {
             "ProductID": ProductID,
             "ProductName": ProductName,
-            "Quantity": quantity,
             "UnitPrice": UnitPrice,
             "CategoryID": CategoryID,
             "ProcessType": ProcessType,
+            "Status": status,
             "Image": image_url
         }
     except Exception as e:

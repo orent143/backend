@@ -116,44 +116,88 @@ async def get_product_details(product_id: str, db=Depends(get_db)):
     }
 @StockRouter.get("/stockdetails/{product_id}", response_model=dict)
 async def get_stock_details(product_id: str, db=Depends(get_db)):
-    db[0].execute("""
-        SELECT 
-            sd.id,
-            sd.stock_location,
-            sd.batch_number,
-            sd.quantity,
-            sd.expiration_date,
-            sd.created_at,
-            sd.cost_price,  -- Include the cost price
-            s.SupplierName
-        FROM stock_details sd
-        LEFT JOIN suppliers s ON sd.SupplierID = s.id
-        WHERE sd.ProductID = %s
-        ORDER BY sd.created_at DESC
-    """, (product_id,))
+    try:
+        # Fetch product details
+        db[0].execute("""
+            SELECT 
+                ip.id, 
+                ip.ProductName, 
+                ip.UnitPrice, 
+                ip.ProcessType, 
+                ip.Image, 
+                COALESCE(s.SupplierName, 'N/A') AS SupplierName,
+                COALESCE(MAX(sd.cost_price), 0.0) AS CostPrice
+            FROM inventoryproduct ip
+            LEFT JOIN stock_details sd ON ip.id = sd.ProductID
+            LEFT JOIN suppliers s ON sd.SupplierID = s.id
+            WHERE ip.id = %s
+            GROUP BY ip.id, ip.ProductName, ip.UnitPrice, ip.ProcessType, ip.Image, s.SupplierName
+            ORDER BY sd.created_at DESC
+        """, (product_id,))
+        
+        product = db[0].fetchone()
 
-    stocks = db[0].fetchall()
+        # Consume any remaining results to avoid unread result errors
+        db[0].fetchall()
 
-    if not stocks:
-        raise HTTPException(status_code=404, detail="No stock details found")
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
 
-    stock_list = [
-        {
-            "id": stock[0],
-            "stock_location": stock[1],
-            "batch_number": stock[2],
-            "quantity": stock[3],
-            "expiration_date": stock[4].strftime('%Y-%m-%d') if stock[4] else None,
-            "created_at": stock[5],
-            "CostPrice": float(stock[6]) if stock[6] else 0.0,  # Convert to float
-            "SupplierName": stock[7] or "Unknown"
+        base_url = "http://127.0.0.1:8000/uploads/products/"
+
+        # Fetch stock details
+        db[0].execute("""
+            SELECT 
+                sd.id,
+                sd.stock_location,
+                sd.batch_number,
+                sd.quantity,
+                sd.expiration_date,
+                sd.created_at,
+                sd.cost_price,
+                COALESCE(s.SupplierName, 'Unknown') AS SupplierName
+            FROM stock_details sd
+            LEFT JOIN suppliers s ON sd.SupplierID = s.id
+            WHERE sd.ProductID = %s
+            ORDER BY sd.created_at DESC
+        """, (product_id,))
+
+        stocks = db[0].fetchall()
+
+        # Consume any remaining results to avoid unread result errors
+        db[0].fetchall()
+
+        # Prepare stock details list
+        stock_list = [
+            {
+                "id": stock[0],
+                "stock_location": stock[1],
+                "batch_number": stock[2],
+                "quantity": stock[3],
+                "expiration_date": stock[4].strftime('%Y-%m-%d') if stock[4] else None,
+                "created_at": stock[5],
+                "CostPrice": float(stock[6]) if stock[6] else None,
+                "SupplierName": stock[7] or "Unknown"
+            }
+            for stock in stocks
+        ] if stocks else []  # Return an empty list if no stock details are found
+
+        # Combine product details and stock details
+        return {
+            "ProductID": product[0],
+            "ProductName": product[1] or "N/A",
+            "UnitPrice": f"₱{float(product[2]):,.2f}" if product[2] else "₱0.00",
+            "ProcessType": product[3],
+            "Image": f"{base_url}{product[4]}" if product[4] else None,
+            "CurrentSupplier": product[5],
+            "CostPrice": f"₱{float(product[6]):,.2f}" if product[6] else "₱0.00",
+            "StockDetails": stock_list
         }
-        for stock in stocks
-    ]
 
-    return {"StockDetails": stock_list}
-
-
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    
+    
 @StockRouter.get("/inventory-transactions", response_model=list)
 async def get_inventory_transactions(db=Depends(get_db)):
     """Fetch all inventory transactions."""
