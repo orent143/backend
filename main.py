@@ -48,6 +48,6 @@ app.include_router(CategoryRouter, prefix="/api/categories", tags=["Categories"]
 app.include_router(SupplierRouter, prefix="/api/suppliers", tags=["Suppliers"])
 app.include_router(SalesRouter, prefix="/api/sales", tags=["Sales"])
 app.include_router(ReportRouter, prefix="/api/reports", tags=["Reports"])
-app.include_router(CreateOrderRouter, prefix="/api/orders", tags=["Orders"])
+app.include_router(CreateOrderRouter, prefix="/api/orders", tags=["CreateOrders"])
 app.include_router(OrderSummaryRouter, prefix="/api/ordersummary", tags=["OrderSummary"])
 

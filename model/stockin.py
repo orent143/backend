@@ -83,40 +83,14 @@ async def stock_in(request: StockInRequest, db=Depends(get_db)):
 @StockRouter.get("/stockin/{product_id}", response_model=dict)
 async def get_product_details(product_id: str, db=Depends(get_db)):
     db[0].execute("""
-        SELECT ip.id, ip.ProductName, ip.Quantity, ip.UnitPrice, ip.ProcessType, ip.Image, s.SupplierName
-        FROM inventoryproduct ip
-        LEFT JOIN stock_details sd ON ip.id = sd.ProductID
-        LEFT JOIN suppliers s ON sd.SupplierID = s.id
-        WHERE ip.id = %s
-        ORDER BY sd.id DESC LIMIT 1
-    """, (product_id,))
-    
-    product = db[0].fetchone()
-
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    base_url = "http://127.0.0.1:8000/uploads/products/"
-
-    return {
-        "ProductID": product[0],
-        "ProductName": product[1],
-        "Quantity": product[2],
-        "UnitPrice": product[3],
-        "ProcessType": product[4],
-        "Image": f"{base_url}{product[5]}" if product[5] else None,
-        "CurrentSupplier": product[6]  # Only the latest supplier
-    }
-
-# ...existing code...
-
-@StockRouter.get("/stockdetails/{product_id}", response_model=dict)
-async def get_stock_details(product_id: str, db=Depends(get_db)):
-    product_id = product_id.lstrip("0")
-
-    # Get product details with most recent supplier
-    db[0].execute("""
-        SELECT ip.id, ip.ProductName, ip.Quantity, ip.UnitPrice, ip.ProcessType, ip.Image, s.SupplierName
+        SELECT 
+            ip.id, 
+            ip.ProductName, 
+            ip.Quantity, 
+            ip.ProcessType, 
+            ip.Image, 
+            s.SupplierName,
+            sd.cost_price
         FROM inventoryproduct ip
         LEFT JOIN stock_details sd ON ip.id = sd.ProductID
         LEFT JOIN suppliers s ON sd.SupplierID = s.id
@@ -125,21 +99,9 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
     """, (product_id,))
     
     product = db[0].fetchone()
-    
+
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-
-    # Get stock details ordered by most recent first
-    db[0].execute("""
-        SELECT sd.id, sd.stock_location, sd.batch_number, sd.quantity, sd.expiration_date, 
-               sd.cost_price, s.SupplierName, sd.created_at
-        FROM stock_details sd
-        LEFT JOIN suppliers s ON sd.SupplierID = s.id
-        WHERE sd.ProductID = %s
-        ORDER BY sd.created_at DESC
-    """, (product_id,))
-    
-    stock_details = db[0].fetchall()
 
     base_url = "http://127.0.0.1:8000/uploads/products/"
 
@@ -147,24 +109,50 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
         "ProductID": product[0],
         "ProductName": product[1],
         "Quantity": product[2],
-        "UnitPrice": product[3],
-        "ProcessType": product[4],
-        "Image": f"{base_url}{product[5]}" if product[5] else None,
-        "CurrentSupplier": product[6],
-        "StockDetails": [
-            {
-                "id": detail[0],
-                "stock_location": detail[1],
-                "batch_number": detail[2],
-                "quantity": detail[3],
-                "expiration_date": detail[4].strftime("%Y-%m-%d") if detail[4] else None,
-                "cost_price": detail[5],
-                "SupplierName": detail[6],
-                "created_at": detail[7].strftime("%Y-%m-%d %H:%M:%S") if detail[7] else None
-            }
-            for detail in stock_details
-        ]
+        "ProcessType": product[3],
+        "Image": f"{base_url}{product[4]}" if product[4] else None,
+        "CurrentSupplier": product[5],
+        "CostPrice": float(product[6]) if product[6] else None  # Changed from UnitPrice to CostPrice
     }
+@StockRouter.get("/stockdetails/{product_id}", response_model=dict)
+async def get_stock_details(product_id: str, db=Depends(get_db)):
+    db[0].execute("""
+        SELECT 
+            sd.id,
+            sd.stock_location,
+            sd.batch_number,
+            sd.quantity,
+            sd.expiration_date,
+            sd.created_at,
+            sd.cost_price,  -- Include the cost price
+            s.SupplierName
+        FROM stock_details sd
+        LEFT JOIN suppliers s ON sd.SupplierID = s.id
+        WHERE sd.ProductID = %s
+        ORDER BY sd.created_at DESC
+    """, (product_id,))
+
+    stocks = db[0].fetchall()
+
+    if not stocks:
+        raise HTTPException(status_code=404, detail="No stock details found")
+
+    stock_list = [
+        {
+            "id": stock[0],
+            "stock_location": stock[1],
+            "batch_number": stock[2],
+            "quantity": stock[3],
+            "expiration_date": stock[4].strftime('%Y-%m-%d') if stock[4] else None,
+            "created_at": stock[5],
+            "CostPrice": float(stock[6]) if stock[6] else 0.0,  # Convert to float
+            "SupplierName": stock[7] or "Unknown"
+        }
+        for stock in stocks
+    ]
+
+    return {"StockDetails": stock_list}
+
 
 @StockRouter.get("/inventory-transactions", response_model=list)
 async def get_inventory_transactions(db=Depends(get_db)):

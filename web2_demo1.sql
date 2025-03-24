@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2025 at 10:39 AM
+-- Generation Time: Mar 24, 2025 at 02:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -99,7 +99,9 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (257, 'pi pi-box', 'New product added: asas (To Be Made)', '2025-03-16 20:03:30', 'Success'),
 (258, 'pi pi-box', 'New product added: adsadadffgvv (Ready-Made)', '2025-03-16 20:04:28', 'Success'),
 (259, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:12:58', 'Success'),
-(260, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:27:08', 'Success');
+(260, 'pi pi-box', 'Stock added for adsadadffgvv', '2025-03-16 21:27:08', 'Success'),
+(261, 'pi pi-box', 'Stock added for Matcha', '2025-03-22 13:07:57', 'Success'),
+(262, 'pi pi-box', 'Stock added for Matcha', '2025-03-22 19:25:32', 'Success');
 
 -- --------------------------------------------------------
 
@@ -147,7 +149,7 @@ CREATE TABLE `inventoryproduct` (
 
 INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (FK)`, `Status`, `ReportDate`, `Image`, `ProcessType`, `Quantity`) VALUES
 ('101', 'Matcha Latte', 111.00, 22, 'In Stock', '2025-03-15 10:38:25', 'Matcha_Latte_1742121505.jpg', 'To Be Made', 2),
-('102', 'Croissant', 20.00, 20, 'Low Stock', '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made', 12),
+('102', 'Croissant', 20.00, 20, 'Low Stock', '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made', 0),
 ('103', 'Carbonara', 111.00, 20, 'In Stock', '2025-03-15 10:58:44', 'Carbonara_1742122724.png', 'To Be Made', 21),
 ('104', 'Spaghetti', 11.00, 20, 'In Stock', '2025-03-15 11:00:56', 'Spaghetti_1742122856.png', 'To Be Made', 0),
 ('105', 'Cappuccino', 50.00, 22, 'In Stock', '2025-03-15 11:07:13', 'Cappuccino_1742123233.png', 'To Be Made', 11),
@@ -158,8 +160,8 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (F
 ('111', 'sasa', 111.00, 20, NULL, '2025-03-16 00:12:39', '111_sasa.jpg', 'Ready-Made', 11),
 ('123', 'walage', 11.00, 20, NULL, '2025-03-16 19:19:42', '123_walage.jpg', 'Ready-Made', 22),
 ('2', 'asas', 11.00, 20, NULL, '2025-03-16 20:03:30', '2_asas.jpg', 'To Be Made', 0),
-('3', 'adsadadffgvv', 11.00, 20, NULL, '2025-03-16 20:04:28', '3_adsadadffgvv.jpg', 'Ready-Made', 113),
-('900', 'Matcha', 11.00, 20, NULL, '2025-03-16 10:56:25', '900_Matcha.jpg', 'Ready-Made', 2565),
+('3', 'adsadadffgvv', 11.00, 20, NULL, '2025-03-16 20:04:28', '3_adsadadffgvv.jpg', 'Ready-Made', 105),
+('900', 'Matcha', 11.00, 20, NULL, '2025-03-16 10:56:25', '900_Matcha.jpg', 'Ready-Made', 2684),
 ('99', 'Cafe Latte', 11.00, 20, 'In Stock', '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made', 0);
 
 -- --------------------------------------------------------
@@ -222,7 +224,9 @@ CREATE TABLE `inventory_transactions` (
 
 INSERT INTO `inventory_transactions` (`id`, `product_name`, `transaction_type`, `quantity`, `cost_price`, `created_at`) VALUES
 (1, 'adsadadffgvv', 'Add', 1, 21.00, '2025-03-17 09:12:58'),
-(2, 'adsadadffgvv', 'Add', 112, 2111.00, '2025-03-17 09:27:08');
+(2, 'adsadadffgvv', 'Add', 112, 2111.00, '2025-03-17 09:27:08'),
+(3, 'Matcha', 'Add', 11, 101.00, '2025-03-23 01:07:57'),
+(4, 'Matcha', 'Add', 111, 1.00, '2025-03-23 07:25:32');
 
 -- --------------------------------------------------------
 
@@ -233,24 +237,20 @@ INSERT INTO `inventory_transactions` (`id`, `product_name`, `transaction_type`, 
 CREATE TABLE `orders` (
   `OrderID` int(11) NOT NULL,
   `CustomerName` varchar(255) NOT NULL,
-  `TableNumber` int(11) NOT NULL,
   `OrderDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `TotalAmount` decimal(10,2) NOT NULL,
-  `OrderStatus` varchar(50) DEFAULT 'Pending'
+  `CashOnHand` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `OrderStatus` varchar(50) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`OrderID`, `CustomerName`, `TableNumber`, `OrderDate`, `TotalAmount`, `OrderStatus`) VALUES
-(1, 'qwq', 1, '2025-03-08 12:42:16', 230.00, 'Completed'),
-(2, 'jj', 2, '2025-03-12 10:54:08', 1.00, 'Pending'),
-(3, 'GI', 11, '2025-03-14 12:12:50', 72.00, 'Pending'),
-(4, 'John Doe', 1, '2025-03-14 12:15:23', 345.00, 'Pending'),
-(5, 'John Doe', 1, '2025-03-14 12:17:31', 345.00, 'Pending'),
-(6, 'GI', 11, '2025-03-14 12:17:36', 72.00, 'Completed'),
-(7, 'test', 1, '2025-03-14 12:35:16', 8900.00, 'Completed');
+INSERT INTO `orders` (`OrderID`, `CustomerName`, `OrderDate`, `TotalAmount`, `CashOnHand`, `OrderStatus`) VALUES
+(2, 'John ', '2025-03-24 12:48:35', 51.00, 0.00, 'Pending'),
+(3, 'John ', '2025-03-24 12:52:59', 51.00, 0.00, 'Pending'),
+(4, 'John ', '2025-03-24 12:57:34', 51.00, 0.00, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -262,10 +262,11 @@ CREATE TABLE `order_history` (
   `history_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `customer_name` varchar(255) DEFAULT NULL,
-  `table_number` int(11) DEFAULT NULL,
   `order_date` datetime DEFAULT NULL,
+  `total_items` int(11) NOT NULL DEFAULT 0,
+  `cash_on_hand` decimal(10,2) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
-  `order_status` varchar(50) DEFAULT NULL,
+  `change` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -273,10 +274,35 @@ CREATE TABLE `order_history` (
 -- Dumping data for table `order_history`
 --
 
-INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `table_number`, `order_date`, `total_amount`, `order_status`, `created_at`) VALUES
-(1, 1, 'qwq', 1, '2025-03-08 00:42:16', 230.00, 'Completed', '2025-03-08 12:42:20'),
-(2, 6, 'GI', 11, '2025-03-14 00:17:36', 72.00, 'Completed', '2025-03-14 12:18:00'),
-(3, 7, 'test', 1, '2025-03-14 00:35:16', 8900.00, 'Completed', '2025-03-14 12:35:20');
+INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `order_date`, `total_items`, `cash_on_hand`, `total_amount`, `change`, `created_at`) VALUES
+(1, 1, 'John', NULL, 2, 0.00, 82.00, -82.00, '2025-03-24 12:34:28'),
+(2, 5, 'John xcz', NULL, 2, 500.00, 55.00, 445.00, '2025-03-24 13:07:14'),
+(4, 6, 'John xcz', NULL, 2, 500.00, 55.00, 445.00, '2025-03-24 13:24:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_history_detail`
+--
+
+CREATE TABLE `order_history_detail` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `product_price` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_history_detail`
+--
+
+INSERT INTO `order_history_detail` (`id`, `order_id`, `product_id`, `product_name`, `quantity`, `product_price`) VALUES
+(1, 5, 3, 'adsadadffgvv', 2, 0.00),
+(2, 5, 2, 'asas', 3, 0.00),
+(4, 6, 3, 'adsadadffgvv', 2, 11.00),
+(5, 6, 2, 'asas', 3, 11.00);
 
 -- --------------------------------------------------------
 
@@ -290,6 +316,18 @@ CREATE TABLE `order_items` (
   `ProductID` varchar(36) NOT NULL,
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `OrderID`, `ProductID`, `Quantity`) VALUES
+(3, 2, '102', 2),
+(4, 2, '900', 1),
+(5, 3, '102', 2),
+(6, 3, '900', 1),
+(7, 4, '102', 2),
+(8, 4, '900', 1);
 
 -- --------------------------------------------------------
 
@@ -366,6 +404,26 @@ CREATE TABLE `sales` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `product_id`, `product_name`, `Image`, `quantity_sold`, `unit_price`, `remitted`, `sale_date`, `created_at`) VALUES
+(12, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 12:04:14', '2025-03-24 12:04:14'),
+(13, '102', '', NULL, 3, 0.00, 60.00, '2025-03-24 12:04:14', '2025-03-24 12:04:14'),
+(14, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 12:30:23', '2025-03-24 12:30:23'),
+(15, '102', '', NULL, 3, 0.00, 60.00, '2025-03-24 12:30:23', '2025-03-24 12:30:23'),
+(16, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:48:35', '2025-03-24 12:48:35'),
+(17, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:48:35', '2025-03-24 12:48:35'),
+(18, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:52:59', '2025-03-24 12:52:59'),
+(19, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:52:59', '2025-03-24 12:52:59'),
+(20, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:57:34', '2025-03-24 12:57:34'),
+(21, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:57:34', '2025-03-24 12:57:34'),
+(22, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 13:06:33', '2025-03-24 13:06:33'),
+(23, '2', '', NULL, 3, 0.00, 33.00, '2025-03-24 13:06:33', '2025-03-24 13:06:33'),
+(24, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 13:23:24', '2025-03-24 13:23:24'),
+(25, '2', '', NULL, 3, 0.00, 33.00, '2025-03-24 13:23:24', '2025-03-24 13:23:24');
+
 -- --------------------------------------------------------
 
 --
@@ -408,7 +466,9 @@ INSERT INTO `stock_details` (`id`, `ProductID`, `stock_location`, `batch_number`
 (20, '123', 'ead', '1', 11, '2025-03-17', 123, 19, '2025-03-17 07:25:41'),
 (21, '123', 'ead', '1', 11, '2025-03-20', 123, 19, '2025-03-17 07:26:20'),
 (22, '3', 'ADSA', '1', 1, '2025-03-25', 21, 6, '2025-03-17 09:12:58'),
-(23, '3', 'ADSA', '2', 112, '2025-03-25', 2111, 2, '2025-03-17 09:27:08');
+(23, '3', 'ADSA', '2', 112, '2025-03-25', 2111, 2, '2025-03-17 09:27:08'),
+(24, '900', 'lamisa', '113', 11, '2025-03-29', 101, 1, '2025-03-23 01:07:57'),
+(25, '900', 'lamisa', '114', 111, '2025-03-29', 1, 20, '2025-03-23 07:25:32');
 
 -- --------------------------------------------------------
 
@@ -505,6 +565,13 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_history`
   ADD PRIMARY KEY (`history_id`),
+  ADD UNIQUE KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `order_history_detail`
+--
+ALTER TABLE `order_history_detail`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`);
 
 --
@@ -563,7 +630,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=263;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -581,25 +648,31 @@ ALTER TABLE `inventory_reports`
 -- AUTO_INCREMENT for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `order_history_detail`
+--
+ALTER TABLE `order_history_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_transactions`
@@ -617,13 +690,13 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -642,10 +715,10 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `order_history`
+-- Constraints for table `order_history_detail`
 --
-ALTER TABLE `order_history`
-  ADD CONSTRAINT `order_history_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE;
+ALTER TABLE `order_history_detail`
+  ADD CONSTRAINT `order_history_detail_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_history` (`order_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `order_items`

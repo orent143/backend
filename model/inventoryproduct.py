@@ -30,15 +30,18 @@ class StockInRequest(BaseModel):
     ProductID: str
     Stocks: List[StockItem]
 
-def determine_status(quantity: Optional[int]) -> str:
+def determine_status(quantity: Optional[int], process_type: str) -> str:
+    if process_type == "To Be Made":
+        return "Available"  # Always available for To Be Made products
     if quantity is None:
-        return "Unknown"  # Or "Not Available", depending on your preference
+        return "Unknown"
     if quantity == 0:
         return "Out of Stock"
     elif quantity <= 10:
         return "Low Stock"
     else:
         return "In Stock"
+
 
 def generate_unique_id():
     return str(uuid4())
@@ -77,19 +80,20 @@ async def get_all_inventory_products(request: Request, db=Depends(get_db)):
         {
             "ProductID": product[0],
             "ProductName": product[1],
-            "Quantity": product[2] if product[5] != "To Be Made" else None,
+            "Quantity": float('inf') if product[5] == "To Be Made" else product[2],  # Infinite for "To Be Made"
             "UnitPrice": product[3],
             "CategoryID": product[4],
             "ProcessType": product[5],
-            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made",
+            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5]),
             "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
         }
         for product in products
     ]
 
+
+
 @InventoryRouter.get("/inventoryproducts/filter", response_model=list)
 async def filter_inventory_products(request: Request, process_type: Optional[str] = None, db=Depends(get_db)):
-    """ Fetch products filtered by Process Type (Ready-Made or To Be Made). """
     if process_type not in ["Ready-Made", "To Be Made"]:
         raise HTTPException(status_code=400, detail="Invalid Process Type")
 
@@ -105,11 +109,11 @@ async def filter_inventory_products(request: Request, process_type: Optional[str
         {
             "id": product[0],
             "ProductName": product[1],
-            "Quantity": product[2] if product[5] != "To Be Made" else None,
+            "Quantity": float('inf') if product[5] == "To Be Made" else product[2],
             "UnitPrice": product[3],
             "CategoryID": product[4],
             "ProcessType": product[5],
-            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made",
+            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5]),
             "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
         }
         for product in products
@@ -124,10 +128,10 @@ async def read_inventory_product(product_id: str, db=Depends(get_db)):
         return {
             "ProductID": product[0],
             "ProductName": product[1],
-            "Quantity": product[2] if product[5] != "To Be Made" else None,
+            "Quantity": float('inf') if product[5] == "To Be Made" else product[2],
             "UnitPrice": product[3],
             "CategoryID": product[4],
-            "Status": determine_status(product[2]) if product[5] != "To Be Made" else "To Be Made"
+            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5])
         }
     
     raise HTTPException(status_code=404, detail="Product not found")
@@ -162,7 +166,7 @@ async def create_inventory_product(
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-        quantity = 0 if ProcessType == "To Be Made" else 0  # Ensure it's never NULL
+        quantity = None if ProcessType == "To Be Made" else 0
 
         db[0].execute(
             "INSERT INTO inventoryproduct (id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image) VALUES (%s, %s, %s, %s, %s, %s, %s)",
