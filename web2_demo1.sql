@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 03:33 PM
+-- Generation Time: Mar 25, 2025 at 12:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -108,7 +108,36 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (266, 'pi pi-box', 'Stock added for Kwek2', '2025-03-24 01:52:13', 'Success'),
 (267, 'pi pi-box', 'New product added: sdfsf (To Be Made)', '2025-03-24 02:28:25', 'Success'),
 (268, 'pi pi-box', 'New product added: 3ds (Ready-Made)', '2025-03-24 02:28:36', 'Success'),
-(269, 'pi pi-box', 'Stock added for 3ds', '2025-03-24 02:32:37', 'Success');
+(269, 'pi pi-box', 'Stock added for 3ds', '2025-03-24 02:32:37', 'Success'),
+(270, 'pi pi-pencil', 'Product updated: Matcha Lattee', '2025-03-24 09:50:48', 'Updated'),
+(271, 'pi pi-pencil', 'Product updated: Spanish Late', '2025-03-24 18:13:05', 'Updated'),
+(272, 'pi pi-pencil', 'Product updated: Spaghetti', '2025-03-24 19:18:31', 'Updated'),
+(273, 'pi pi-trash', 'Product deleted: Bread', '2025-03-24 19:33:17', 'Deleted'),
+(274, 'pi pi-trash', 'Product deleted: isaw', '2025-03-24 19:33:32', 'Deleted'),
+(275, 'pi pi-minus', 'Stock-out for adsadadffgvv: 6 units', '2025-03-24 20:11:10', 'Completed'),
+(276, 'pi pi-box', 'Stock added for Matcha', '2025-03-24 21:37:38', 'Success'),
+(277, 'pi pi-box', 'New product added: Pasta (Ready-Made)', '2025-03-24 22:34:10', 'Success'),
+(278, 'pi pi-pencil', 'Product updated: Pasta', '2025-03-24 22:34:29', 'Updated'),
+(279, 'pi pi-box', 'Stock added for Pasta', '2025-03-24 22:35:19', 'Success'),
+(280, 'pi pi-box', 'Stock added for Pasta', '2025-03-24 22:44:52', 'Success'),
+(281, 'pi pi-box', 'New product added: LALALA (To Be Made)', '2025-03-24 23:02:16', 'Success'),
+(282, 'pi pi-trash', 'Product deleted: LALALA', '2025-03-24 23:02:28', 'Deleted'),
+(283, 'pi pi-trash', 'Product deleted: Kwek2', '2025-03-24 23:04:10', 'Deleted'),
+(284, 'pi pi-trash', 'Product deleted: sdfsf', '2025-03-24 23:06:30', 'Deleted'),
+(285, 'pi pi-trash', 'Product deleted: asas', '2025-03-24 23:06:36', 'Deleted'),
+(286, 'pi pi-trash', 'Product deleted: Kwek2', '2025-03-24 23:06:40', 'Deleted'),
+(287, 'pi pi-trash', 'Product deleted: Matcha Lattee', '2025-03-24 23:06:44', 'Deleted'),
+(288, 'pi pi-box', 'New product added: Spaghetti (To Be Made)', '2025-03-24 23:09:29', 'Success'),
+(289, 'pi pi-box', 'New product added: Cafe Latte (Ready-Made)', '2025-03-24 23:10:28', 'Success'),
+(290, 'pi pi-box', 'New product added: Croissant (Ready-Made)', '2025-03-24 23:11:00', 'Success'),
+(291, 'pi pi-box', 'New product added: Carbonara (Ready-Made)', '2025-03-24 23:11:36', 'Success'),
+(292, 'pi pi-box', 'New product added: Spanish Latte (To Be Made)', '2025-03-24 23:11:56', 'Success'),
+(293, 'pi pi-box', 'Stock added for Cafe Latte', '2025-03-24 23:12:43', 'Success'),
+(294, 'pi pi-box', 'Stock added for Croissant', '2025-03-24 23:13:15', 'Success'),
+(295, 'pi pi-box', 'Stock added for Carbonara', '2025-03-24 23:13:43', 'Success'),
+(296, 'pi pi-trash', 'Product deleted: Spanish Latte', '2025-03-24 23:43:54', 'Deleted'),
+(297, 'pi pi-box', 'New product added: Spanish Latte (Ready-Made)', '2025-03-24 23:44:25', 'Success'),
+(298, 'pi pi-box', 'Stock added for Spanish Latte', '2025-03-24 23:47:57', 'Success');
 
 -- --------------------------------------------------------
 
@@ -130,7 +159,8 @@ INSERT INTO `categories` (`id`, `CategoryName`, `ImagePath`) VALUES
 (20, 'Desserts', 'uploads/categories/Desserts_pngtree-coffee-latte-seen-up-close-png-image_15237865.png'),
 (21, 'Frappe', 'uploads/categories/Frappe_User-Avatar-Profile-PNG-Free-File-Download.png'),
 (22, 'Hot Coffee', 'uploads/categories/Hot_Coffee_Spoon-Full-of-Salt.jpg'),
-(23, 'Streetfood', 'uploads/categories/Streetfood_User-Avatar-Profile-Clip-Art-Transparent-PNG.png');
+(23, 'Streetfood', 'uploads/categories/Streetfood_User-Avatar-Profile-Clip-Art-Transparent-PNG.png'),
+(25, 'Pasta', 'uploads/categories/Pasta_pngtree-spaghetti-delicious-delicious-tomato-flavor-photo-png-image_6683220.png');
 
 -- --------------------------------------------------------
 
@@ -155,26 +185,11 @@ CREATE TABLE `inventoryproduct` (
 --
 
 INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (FK)`, `Status`, `ReportDate`, `Image`, `ProcessType`, `Quantity`) VALUES
-('101', 'Matcha Latte', 111.00, 22, 'In Stock', '2025-03-15 10:38:25', 'Matcha_Latte_1742121505.jpg', 'To Be Made', 2),
-('102', 'Croissant', 20.00, 20, 'Low Stock', '2025-03-15 10:53:07', 'Croissant_1742122387.png', 'Ready-Made', 0),
-('103', 'Carbonara', 111.00, 20, 'In Stock', '2025-03-15 10:58:44', 'Carbonara_1742122724.png', 'To Be Made', 21),
-('104', 'Spaghetti', 11.00, 20, 'In Stock', '2025-03-15 11:00:56', 'Spaghetti_1742122856.png', 'To Be Made', 0),
-('105', 'Cappuccino', 50.00, 22, 'In Stock', '2025-03-15 11:07:13', 'Cappuccino_1742123233.png', 'To Be Made', 11),
-('107', 'Spanish Latte', 11.00, 20, 'In Stock', '2025-03-15 21:36:15', 'Spanish_Latte_1742160975.jpg', 'Ready-Made', 0),
-('108', 'Bread', 111.00, 20, 'In Stock', '2025-03-15 21:37:41', 'Bread_1742161061.png', 'Ready-Made', 1),
-('109', 'Bread', 11.00, 20, NULL, '2025-03-15 23:18:06', 'Bread_1742167086.jpg', 'Ready-Made', 0),
-('110', 'Bread', 11.00, 20, NULL, '2025-03-15 23:23:26', 'Bread_1742167406.jpg', 'Ready-Made', 0),
-('111', 'sasa', 111.00, 20, NULL, '2025-03-16 00:12:39', '111_sasa.jpg', 'Ready-Made', 11),
-('123', 'walage', 11.00, 20, NULL, '2025-03-16 19:19:42', '123_walage.jpg', 'Ready-Made', 22),
-('2', 'asas', 11.00, 20, NULL, '2025-03-16 20:03:30', '2_asas.jpg', 'To Be Made', 0),
-('21', '3ds', 11.00, 23, 'Out of Stock', '2025-03-24 02:28:36', '21_3ds.png', 'Ready-Made', 11),
-('3', 'adsadadffgvv', 11.00, 20, NULL, '2025-03-16 20:04:28', '3_adsadadffgvv.jpg', 'Ready-Made', 105),
-('32', 'sdfsf', 11.00, 22, 'Available', '2025-03-24 02:28:25', '32_sdfsf.jpg', 'To Be Made', 0),
-('500', 'Kwek2', 11.00, 23, 'Available', '2025-03-24 01:41:53', '500_Kwek2.jpg', 'To Be Made', 2147483647),
-('501', 'Kwek2', 11.00, 23, 'Out of Stock', '2025-03-24 01:42:56', '501_Kwek2.jpg', 'Ready-Made', 11),
-('503', 'isaw', 11.00, 21, 'Available', '2025-03-24 01:46:24', '503_isaw.jpg', 'To Be Made', 0),
-('900', 'Matcha', 11.00, 20, NULL, '2025-03-16 10:56:25', '900_Matcha.jpg', 'Ready-Made', 2684),
-('99', 'Cafe Latte', 11.00, 20, 'In Stock', '2025-03-15 10:16:11', 'Cafe_Latte_1742120171.png', 'Ready-Made', 0);
+('1', 'Spaghetti', 50.00, 25, 'Available', '2025-03-24 23:09:29', '1_Spaghetti.png', 'To Be Made', 0),
+('2', 'Cafe Latte', 120.00, 22, 'Out of Stock', '2025-03-24 23:10:28', '2_Cafe_Latte.png', 'Ready-Made', 997),
+('3', 'Croissant', 80.00, 20, 'Out of Stock', '2025-03-24 23:11:00', '3_Croissant.png', 'Ready-Made', 149),
+('4', 'Carbonara', 60.00, 25, 'Out of Stock', '2025-03-24 23:11:36', '4_Carbonara.png', 'Ready-Made', 9),
+('5', 'Spanish Latte', 120.00, 22, 'Out of Stock', '2025-03-24 23:44:25', '5_Spanish_Latte.png', 'Ready-Made', 1000);
 
 -- --------------------------------------------------------
 
@@ -224,7 +239,7 @@ INSERT INTO `inventory_reports` (`ReportID`, `ReportDate`, `ProductID`, `Product
 CREATE TABLE `inventory_transactions` (
   `id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
-  `transaction_type` enum('Add','Update') NOT NULL,
+  `transaction_type` enum('Add','Update','Deduct') NOT NULL,
   `quantity` int(11) NOT NULL,
   `cost_price` decimal(10,2) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -235,12 +250,19 @@ CREATE TABLE `inventory_transactions` (
 --
 
 INSERT INTO `inventory_transactions` (`id`, `product_name`, `transaction_type`, `quantity`, `cost_price`, `created_at`) VALUES
-(1, 'adsadadffgvv', 'Add', 1, 21.00, '2025-03-17 09:12:58'),
-(2, 'adsadadffgvv', 'Add', 112, 2111.00, '2025-03-17 09:27:08'),
-(3, 'Matcha', 'Add', 11, 101.00, '2025-03-23 01:07:57'),
-(4, 'Matcha', 'Add', 111, 1.00, '2025-03-23 07:25:32'),
-(5, 'Kwek2', 'Add', 11, 100.00, '2025-03-24 13:52:13'),
-(6, '3ds', 'Add', 11, 32.00, '2025-03-24 14:32:37');
+(28, 'Cafe Latte', 'Add', 1000, 50.00, '2025-03-25 11:12:43'),
+(29, 'Croissant', 'Add', 155, 60.00, '2025-03-25 11:13:15'),
+(30, 'Carbonara', 'Add', 12, 40.00, '2025-03-25 11:13:43'),
+(37, 'Carbonara', 'Deduct', 1, 40.00, '2025-03-25 11:21:44'),
+(38, 'Cafe Latte', 'Deduct', 1, 50.00, '2025-03-25 11:21:44'),
+(39, 'Croissant', 'Deduct', 1, 60.00, '2025-03-25 11:25:18'),
+(40, 'Croissant', 'Deduct', 1, 60.00, '2025-03-25 11:36:10'),
+(41, 'Croissant', 'Deduct', 1, 60.00, '2025-03-25 11:39:42'),
+(46, 'Croissant', 'Deduct', 1, 60.00, '2025-03-25 11:46:47'),
+(47, 'Spanish Latte', 'Add', 1000, 50.00, '2025-03-25 11:47:57'),
+(48, 'Croissant', 'Deduct', 1, 60.00, '2025-03-25 11:48:08'),
+(49, 'Carbonara', 'Deduct', 1, 40.00, '2025-03-25 11:48:12'),
+(50, 'Cafe Latte', 'Deduct', 1, 50.00, '2025-03-25 11:48:12');
 
 -- --------------------------------------------------------
 
@@ -254,17 +276,10 @@ CREATE TABLE `orders` (
   `OrderDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `TotalAmount` decimal(10,2) NOT NULL,
   `CashOnHand` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `OrderStatus` varchar(50) NOT NULL DEFAULT 'Pending'
+  `OrderStatus` varchar(50) NOT NULL DEFAULT 'Pending',
+  `PaymentMethod` enum('Cash','Tally') NOT NULL DEFAULT 'Cash',
+  `EmployeeID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`OrderID`, `CustomerName`, `OrderDate`, `TotalAmount`, `CashOnHand`, `OrderStatus`) VALUES
-(2, 'John ', '2025-03-24 12:48:35', 51.00, 0.00, 'Pending'),
-(3, 'John ', '2025-03-24 12:52:59', 51.00, 0.00, 'Pending'),
-(4, 'John ', '2025-03-24 12:57:34', 51.00, 0.00, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -276,11 +291,13 @@ CREATE TABLE `order_history` (
   `history_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `customer_name` varchar(255) DEFAULT NULL,
-  `order_date` datetime DEFAULT NULL,
+  `OrderDate` datetime DEFAULT NULL,
   `total_items` int(11) NOT NULL DEFAULT 0,
   `cash_on_hand` decimal(10,2) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `change` decimal(10,2) DEFAULT NULL,
+  `payment_method` varchar(50) NOT NULL DEFAULT 'Cash',
+  `employee_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -288,10 +305,14 @@ CREATE TABLE `order_history` (
 -- Dumping data for table `order_history`
 --
 
-INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `order_date`, `total_items`, `cash_on_hand`, `total_amount`, `change`, `created_at`) VALUES
-(1, 1, 'John', NULL, 2, 0.00, 82.00, -82.00, '2025-03-24 12:34:28'),
-(2, 5, 'John xcz', NULL, 2, 500.00, 55.00, 445.00, '2025-03-24 13:07:14'),
-(4, 6, 'John xcz', NULL, 2, 500.00, 55.00, 445.00, '2025-03-24 13:24:32');
+INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `OrderDate`, `total_items`, `cash_on_hand`, `total_amount`, `change`, `payment_method`, `employee_id`, `created_at`) VALUES
+(30, 42, 'John', '2025-03-24 23:21:44', 3, 500.00, 280.00, 220.00, 'Cash', 0, '2025-03-25 11:21:44'),
+(31, 43, 'James', '2025-03-24 23:25:18', 2, 200.00, 130.00, 70.00, 'Cash', 0, '2025-03-25 11:25:18'),
+(32, 44, 'Cath', '2025-03-24 23:36:10', 2, 0.00, 130.00, -130.00, 'Tally', 200, '2025-03-25 11:36:10'),
+(33, 46, 'Orent', '2025-03-24 23:39:42', 2, 0.00, 200.00, -200.00, 'Tally', 2147483647, '2025-03-25 11:39:42'),
+(34, 45, 'Geric', '2025-03-24 23:46:47', 1, 200.00, 80.00, 120.00, 'Cash', 0, '2025-03-25 11:46:47'),
+(35, 47, 'GI', '2025-03-24 23:48:08', 2, 150.00, 130.00, 20.00, 'Cash', 0, '2025-03-25 11:48:08'),
+(36, 48, 'Mayk', '2025-03-24 23:48:12', 3, 0.00, 230.00, -230.00, 'Tally', 220011112, '2025-03-25 11:48:12');
 
 -- --------------------------------------------------------
 
@@ -305,18 +326,30 @@ CREATE TABLE `order_history_detail` (
   `product_id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `product_price` decimal(10,2) NOT NULL DEFAULT 0.00
+  `product_price` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `employee_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_history_detail`
 --
 
-INSERT INTO `order_history_detail` (`id`, `order_id`, `product_id`, `product_name`, `quantity`, `product_price`) VALUES
-(1, 5, 3, 'adsadadffgvv', 2, 0.00),
-(2, 5, 2, 'asas', 3, 0.00),
-(4, 6, 3, 'adsadadffgvv', 2, 11.00),
-(5, 6, 2, 'asas', 3, 11.00);
+INSERT INTO `order_history_detail` (`id`, `order_id`, `product_id`, `product_name`, `quantity`, `product_price`, `employee_id`) VALUES
+(57, 42, 4, 'Carbonara', 1, 60.00, 0),
+(58, 42, 1, 'Spaghetti', 2, 50.00, 0),
+(59, 42, 2, 'Cafe Latte', 1, 120.00, 0),
+(60, 43, 3, 'Croissant', 1, 80.00, 0),
+(61, 43, 1, 'Spaghetti', 1, 50.00, 0),
+(63, 44, 3, 'Croissant', 1, 80.00, 0),
+(64, 44, 1, 'Spaghetti', 1, 50.00, 0),
+(66, 46, 5, 'Spanish Latte', 1, 120.00, 0),
+(67, 46, 3, 'Croissant', 1, 80.00, 0),
+(69, 45, 3, 'Croissant', 1, 80.00, 0),
+(70, 47, 3, 'Croissant', 1, 80.00, 0),
+(71, 47, 1, 'Spaghetti', 1, 50.00, 0),
+(73, 48, 4, 'Carbonara', 1, 60.00, 0),
+(74, 48, 2, 'Cafe Latte', 1, 120.00, 0),
+(75, 48, 1, 'Spaghetti', 1, 50.00, 0);
 
 -- --------------------------------------------------------
 
@@ -330,18 +363,6 @@ CREATE TABLE `order_items` (
   `ProductID` varchar(36) NOT NULL,
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `OrderID`, `ProductID`, `Quantity`) VALUES
-(3, 2, '102', 2),
-(4, 2, '900', 1),
-(5, 3, '102', 2),
-(6, 3, '900', 1),
-(7, 4, '102', 2),
-(8, 4, '900', 1);
 
 -- --------------------------------------------------------
 
@@ -365,13 +386,13 @@ CREATE TABLE `product_transactions` (
 --
 
 INSERT INTO `product_transactions` (`id`, `product_id`, `product_name`, `transaction_type`, `process_type`, `unit_price`, `category_id`, `created_at`) VALUES
-(1, '2', 'asas', 'Add', 'To Be Made', 11.00, 20, '2025-03-17 08:03:30'),
-(2, '3', 'adsadadffgvv', 'Add', 'Ready-Made', 11.00, 20, '2025-03-17 08:04:28'),
-(3, '500', 'Kwek2', 'Add', 'To Be Made', 11.00, 23, '2025-03-24 13:41:53'),
-(4, '501', 'Kwek2', 'Add', 'Ready-Made', 11.00, 23, '2025-03-24 13:42:56'),
-(5, '503', 'isaw', 'Add', 'To Be Made', 11.00, 21, '2025-03-24 13:46:24'),
-(6, '32', 'sdfsf', 'Add', 'To Be Made', 11.00, 22, '2025-03-24 14:28:25'),
-(7, '21', '3ds', 'Add', 'Ready-Made', 11.00, 23, '2025-03-24 14:28:36');
+(26, '1', 'Spaghetti', 'Add', 'To Be Made', 50.00, 25, '2025-03-25 11:09:29'),
+(27, '2', 'Cafe Latte', 'Add', 'Ready-Made', 120.00, 22, '2025-03-25 11:10:28'),
+(28, '3', 'Croissant', 'Add', 'Ready-Made', 80.00, 20, '2025-03-25 11:11:00'),
+(29, '4', 'Carbonara', 'Add', 'Ready-Made', 60.00, 25, '2025-03-25 11:11:36'),
+(30, '5', 'Spanish Latte', 'Add', 'To Be Made', 120.00, 22, '2025-03-25 11:11:56'),
+(31, '5', 'Spanish Latte', 'Delete', 'To Be Made', 120.00, 22, '2025-03-25 11:43:54'),
+(32, '5', 'Spanish Latte', 'Add', 'Ready-Made', 120.00, 22, '2025-03-25 11:44:25');
 
 -- --------------------------------------------------------
 
@@ -428,20 +449,20 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `product_id`, `product_name`, `Image`, `quantity_sold`, `unit_price`, `remitted`, `sale_date`, `created_at`) VALUES
-(12, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 12:04:14', '2025-03-24 12:04:14'),
-(13, '102', '', NULL, 3, 0.00, 60.00, '2025-03-24 12:04:14', '2025-03-24 12:04:14'),
-(14, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 12:30:23', '2025-03-24 12:30:23'),
-(15, '102', '', NULL, 3, 0.00, 60.00, '2025-03-24 12:30:23', '2025-03-24 12:30:23'),
-(16, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:48:35', '2025-03-24 12:48:35'),
-(17, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:48:35', '2025-03-24 12:48:35'),
-(18, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:52:59', '2025-03-24 12:52:59'),
-(19, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:52:59', '2025-03-24 12:52:59'),
-(20, '102', '', NULL, 2, 0.00, 40.00, '2025-03-24 12:57:34', '2025-03-24 12:57:34'),
-(21, '900', '', NULL, 1, 0.00, 11.00, '2025-03-24 12:57:34', '2025-03-24 12:57:34'),
-(22, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 13:06:33', '2025-03-24 13:06:33'),
-(23, '2', '', NULL, 3, 0.00, 33.00, '2025-03-24 13:06:33', '2025-03-24 13:06:33'),
-(24, '3', '', NULL, 2, 0.00, 22.00, '2025-03-24 13:23:24', '2025-03-24 13:23:24'),
-(25, '2', '', NULL, 3, 0.00, 33.00, '2025-03-24 13:23:24', '2025-03-24 13:23:24');
+(90, '4', '', NULL, 1, 0.00, 60.00, '2025-03-25 11:14:24', '2025-03-25 11:14:24'),
+(91, '1', '', NULL, 2, 0.00, 100.00, '2025-03-25 11:14:24', '2025-03-25 11:14:24'),
+(92, '2', '', NULL, 1, 0.00, 120.00, '2025-03-25 11:14:24', '2025-03-25 11:14:24'),
+(93, '3', '', NULL, 1, 0.00, 80.00, '2025-03-25 11:22:14', '2025-03-25 11:22:14'),
+(94, '1', '', NULL, 1, 0.00, 50.00, '2025-03-25 11:22:14', '2025-03-25 11:22:14'),
+(95, '3', '', NULL, 1, 0.00, 80.00, '2025-03-25 11:22:31', '2025-03-25 11:22:31'),
+(96, '1', '', NULL, 1, 0.00, 50.00, '2025-03-25 11:22:31', '2025-03-25 11:22:31'),
+(97, '3', '', NULL, 1, 0.00, 80.00, '2025-03-25 11:39:23', '2025-03-25 11:39:23'),
+(99, '3', '', NULL, 1, 0.00, 80.00, '2025-03-25 11:39:37', '2025-03-25 11:39:37'),
+(100, '3', '', NULL, 1, 0.00, 80.00, '2025-03-25 11:47:14', '2025-03-25 11:47:14'),
+(101, '1', '', NULL, 1, 0.00, 50.00, '2025-03-25 11:47:14', '2025-03-25 11:47:14'),
+(102, '4', '', NULL, 1, 0.00, 60.00, '2025-03-25 11:47:31', '2025-03-25 11:47:31'),
+(103, '2', '', NULL, 1, 0.00, 120.00, '2025-03-25 11:47:31', '2025-03-25 11:47:31'),
+(104, '1', '', NULL, 1, 0.00, 50.00, '2025-03-25 11:47:31', '2025-03-25 11:47:31');
 
 -- --------------------------------------------------------
 
@@ -458,38 +479,19 @@ CREATE TABLE `stock_details` (
   `expiration_date` date DEFAULT NULL,
   `cost_price` float NOT NULL,
   `SupplierID` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `transaction_type` enum('IN','OUT') DEFAULT 'IN'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_details`
 --
 
-INSERT INTO `stock_details` (`id`, `ProductID`, `stock_location`, `batch_number`, `quantity`, `expiration_date`, `cost_price`, `SupplierID`, `created_at`) VALUES
-(1, '111', 'Ref', '1', 11, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
-(2, '103', 'Ref', '1', 11, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
-(3, '101', 'Table', '12', 1, '0000-00-00', 0, NULL, '2025-03-17 05:54:21'),
-(4, '101', 'Table', '12', 1, '2025-03-20', 0, NULL, '2025-03-17 05:54:21'),
-(5, '103', 'ref', '1', 10, '2025-03-20', 0, NULL, '2025-03-17 05:54:21'),
-(6, '102', 'Rack', '12', 6, '2025-03-30', 30, NULL, '2025-03-17 05:54:21'),
-(7, '900', 'Ref', '11', 110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
-(9, '900', 'Ref', '1', 110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
-(10, '900', 'Ref', '11', 1110, '2025-03-20', 10, 1, '2025-03-17 05:54:21'),
-(12, '105', 'qweeq', '11', 11, '2025-03-17', 50, 2, '2025-03-17 05:54:21'),
-(13, '108', 'rack', '1', 1, '2025-03-25', 11, 2, '2025-03-17 05:54:21'),
-(14, '900', 'TAble', '23', 12, '2025-03-17', 120, 19, '2025-03-17 05:54:21'),
-(15, '900', 'Ref', '11', 110, '2025-03-20', 10, 19, '2025-03-17 05:54:21'),
-(16, '900', 'TAble', '23', 12, '2025-03-17', 10, 19, '2025-03-17 05:54:21'),
-(17, '102', 'Table', '12', 6, '2025-03-30', 300, 19, '2025-03-17 05:54:21'),
-(19, '900', 'Ref', '111', 1101, '2025-03-20', 101, 1, '2025-03-17 06:04:20'),
-(20, '123', 'ead', '1', 11, '2025-03-17', 123, 19, '2025-03-17 07:25:41'),
-(21, '123', 'ead', '1', 11, '2025-03-20', 123, 19, '2025-03-17 07:26:20'),
-(22, '3', 'ADSA', '1', 1, '2025-03-25', 21, 6, '2025-03-17 09:12:58'),
-(23, '3', 'ADSA', '2', 112, '2025-03-25', 2111, 2, '2025-03-17 09:27:08'),
-(24, '900', 'lamisa', '113', 11, '2025-03-29', 101, 1, '2025-03-23 01:07:57'),
-(25, '900', 'lamisa', '114', 111, '2025-03-29', 1, 20, '2025-03-23 07:25:32'),
-(26, '501', 'ref', '1', 11, '2025-03-29', 100, 2, '2025-03-24 13:52:13'),
-(27, '21', 'ref', '1', 11, '2025-03-31', 32, 6, '2025-03-24 14:32:37');
+INSERT INTO `stock_details` (`id`, `ProductID`, `stock_location`, `batch_number`, `quantity`, `expiration_date`, `cost_price`, `SupplierID`, `created_at`, `transaction_type`) VALUES
+(34, '2', 'Ref', '1', 998, '2025-03-28', 50, 2, '2025-03-25 11:12:43', 'IN'),
+(35, '3', 'ref', '1', 150, '2025-03-29', 60, 19, '2025-03-25 11:13:15', 'IN'),
+(36, '4', 'Table', '1', 10, '2025-03-30', 40, 1, '2025-03-25 11:13:43', 'IN'),
+(37, '5', 'Ref', '1', 1000, '2025-03-29', 50, 6, '2025-03-25 11:47:57', 'IN');
 
 -- --------------------------------------------------------
 
@@ -608,8 +610,8 @@ ALTER TABLE `order_items`
 --
 ALTER TABLE `product_transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`),
-  ADD KEY `category_id` (`category_id`);
+  ADD KEY `category_id` (`category_id`),
+  ADD KEY `product_transactions_ibfk_1` (`product_id`);
 
 --
 -- Indexes for table `reports`
@@ -629,7 +631,7 @@ ALTER TABLE `sales`
 --
 ALTER TABLE `stock_details`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `ProductID` (`ProductID`);
+  ADD KEY `stock_details_ibfk_1` (`ProductID`);
 
 --
 -- Indexes for table `suppliers`
@@ -651,13 +653,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `inventory_reports`
@@ -669,37 +671,37 @@ ALTER TABLE `inventory_reports`
 -- AUTO_INCREMENT for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `order_history_detail`
 --
 ALTER TABLE `order_history_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `product_transactions`
 --
 ALTER TABLE `product_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -711,13 +713,13 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -752,20 +754,19 @@ ALTER TABLE `order_items`
 -- Constraints for table `product_transactions`
 --
 ALTER TABLE `product_transactions`
-  ADD CONSTRAINT `product_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`),
   ADD CONSTRAINT `product_transactions_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
 
 --
 -- Constraints for table `sales`
 --
 ALTER TABLE `sales`
-  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`);
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `inventoryproduct` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  ADD CONSTRAINT `stock_details_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`);
+  ADD CONSTRAINT `stock_details_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

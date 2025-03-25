@@ -204,93 +204,76 @@ async def create_inventory_product(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
+    
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
 async def update_inventory_product(
-    product_id: int,
+    product_id: str,
     ProductName: Optional[str] = Form(None),
-    Quantity: Optional[int] = Form(None),
     UnitPrice: Optional[float] = Form(None),
     CategoryID: Optional[int] = Form(None),
     Image: Optional[UploadFile] = File(None),
-    TransactionType: Optional[str] = Form(None),  # Added Transaction Type
     db=Depends(get_db),
 ):
-    db[0].execute(
-        "SELECT ProductName, Quantity, UnitPrice, Image, ProcessType FROM inventoryproduct WHERE id = %s",
-        (product_id,),
-    )
-    product = db[0].fetchone()
-
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    update_fields = []
-    update_values = []
-    image_filename = product[3]  # Image filename from DB
-
-    if ProductName is not None:
-        update_fields.append("ProductName = %s")
-        update_values.append(ProductName)
-
-    if Quantity is not None and product[4] != "To Be Made":
-        update_fields.append("Quantity = %s")
-        update_values.append(Quantity)
-        Status = determine_status(Quantity)
-        update_fields.append("Status = %s")
-        update_values.append(Status)
-
-    if UnitPrice is not None:
-        update_fields.append("UnitPrice = %s")
-        update_values.append(UnitPrice)
-
-    if CategoryID is not None:
-        update_fields.append("`CategoryID (FK)` = %s")
-        update_values.append(CategoryID)
-
-    if Image:
-        file_extension = Image.filename.split(".")[-1]
-        image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
-        file_path = os.path.join(UPLOAD_DIR, image_filename)
-
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(Image.file, buffer)
-
-        # Remove old image if exists
-        if product[3]:
-            old_image_path = os.path.join(UPLOAD_DIR, product[3])
-            if os.path.exists(old_image_path):
-                os.remove(old_image_path)
-
-        update_fields.append("Image = %s")
-        update_values.append(image_filename)
-
-    if not update_fields:
-        raise HTTPException(status_code=400, detail="No fields provided for update")
-
-    update_query = f"UPDATE inventoryproduct SET {', '.join(update_fields)} WHERE id = %s"
-    update_values.append(product_id)
-
-    db[0].execute(update_query, tuple(update_values))
-    db[1].commit()
-
-    log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Updated")
-
-    if Quantity is not None or UnitPrice is not None:
-        log_product_transaction(
-            db=db,
-            product_id=product_id,
-            product_name=ProductName or product[0],
-            transaction_type="Edit",
-            process_type=product[4],
-            unit_price=UnitPrice or product[2],
-            category_id=CategoryID
+    try:
+        db[0].execute(
+            "SELECT ProductName, UnitPrice, `CategoryID (FK)`, Image FROM inventoryproduct WHERE id = %s",
+            (product_id,),
         )
+        product = db[0].fetchone()
 
-    return {
-        "message": "Product updated successfully",
-        "Image": f"/uploads/products/{image_filename}" if image_filename else None,
-    }
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+
+        update_fields = []
+        update_values = []
+        image_filename = product[3]  
+
+        if ProductName is not None:
+            update_fields.append("ProductName = %s")
+            update_values.append(ProductName)
+
+        if UnitPrice is not None:
+            update_fields.append("UnitPrice = %s")
+            update_values.append(UnitPrice)
+
+        if CategoryID is not None:
+            update_fields.append("`CategoryID (FK)` = %s")
+            update_values.append(CategoryID)
+
+        if Image:
+            file_extension = Image.filename.split(".")[-1]
+            image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+            file_path = os.path.join(UPLOAD_DIR, image_filename)
+
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(Image.file, buffer)
+
+            if product[3]:
+                old_image_path = os.path.join(UPLOAD_DIR, product[3])
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+
+            update_fields.append("Image = %s")
+            update_values.append(image_filename)
+
+        if not update_fields:
+            raise HTTPException(status_code=400, detail="No fields provided for update")
+
+        update_query = f"UPDATE inventoryproduct SET {', '.join(update_fields)} WHERE id = %s"
+        update_values.append(product_id)
+
+        db[0].execute(update_query, tuple(update_values))
+        db[1].commit()
+
+        log_activity(db, "pi pi-pencil", f"Product updated: {ProductName or product[0]}", "Updated")
+
+        return {
+            "message": "Product updated successfully",
+            "Image": f"/uploads/products/{image_filename}" if image_filename else None,
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 @InventoryRouter.delete("/inventoryproduct/{product_id}", response_model=dict)
 async def delete_inventory_product(product_id: str, db=Depends(get_db)):

@@ -103,17 +103,28 @@ async def get_product_details(product_id: str, db=Depends(get_db)):
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
+    # Determine status based on quantity
+    quantity = product[2]
+    if quantity <= 0:
+        status = "Out of Stock"
+    elif quantity <= 10:
+        status = "Low Stock"
+    else:
+        status = "In Stock"
+
     base_url = "http://127.0.0.1:8000/uploads/products/"
 
     return {
         "ProductID": product[0],
         "ProductName": product[1],
-        "Quantity": product[2],
+        "Quantity": quantity,
         "ProcessType": product[3],
         "Image": f"{base_url}{product[4]}" if product[4] else None,
         "CurrentSupplier": product[5],
-        "CostPrice": float(product[6]) if product[6] else None  # Changed from UnitPrice to CostPrice
+        "CostPrice": float(product[6]) if product[6] else None,
+        "Status": status  # ✅ Add status to the response
     }
+
 @StockRouter.get("/stockdetails/{product_id}", response_model=dict)
 async def get_stock_details(product_id: str, db=Depends(get_db)):
     try:
@@ -145,7 +156,7 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
 
         base_url = "http://127.0.0.1:8000/uploads/products/"
 
-        # Fetch stock details
+        # Fetch current stock details
         db[0].execute("""
             SELECT 
                 sd.id,
@@ -164,10 +175,7 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
 
         stocks = db[0].fetchall()
 
-        # Consume any remaining results to avoid unread result errors
-        db[0].fetchall()
-
-        # Prepare stock details list
+        # Prepare current stock details list
         stock_list = [
             {
                 "id": stock[0],
@@ -180,9 +188,41 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
                 "SupplierName": stock[7] or "Unknown"
             }
             for stock in stocks
-        ] if stocks else []  # Return an empty list if no stock details are found
+        ] if stocks else []
 
-        # Combine product details and stock details
+        # Get the latest cost price from current stock
+        latest_cost_price = float(product[6]) if product[6] else 0.0
+
+        # Fetch deducted stock transactions
+        db[0].execute("""
+            SELECT 
+                it.id,
+                it.product_name,
+                it.quantity,
+                it.transaction_type,
+                it.created_at
+            FROM inventory_transactions it
+            WHERE it.product_name = %s
+              AND it.transaction_type = 'Deduct'
+            ORDER BY it.created_at DESC
+        """, (product[1],))
+
+        deducted_transactions = db[0].fetchall()
+
+        # Prepare deducted stock list with current cost price
+        deducted_list = [
+            {
+                "TransactionID": trans[0],
+                "ProductName": trans[1],
+                "QuantityDeducted": trans[2],
+                "CostPrice": f"₱{latest_cost_price:,.2f}",  # Use the latest cost price
+                "TransactionType": trans[3],
+                "TransactionDate": trans[4].strftime('%Y-%m-%d %H:%M:%S')
+            }
+            for trans in deducted_transactions
+        ] if deducted_transactions else []
+
+        # Combine product details, stock details, and deducted stock
         return {
             "ProductID": product[0],
             "ProductName": product[1] or "N/A",
@@ -190,13 +230,14 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
             "ProcessType": product[3],
             "Image": f"{base_url}{product[4]}" if product[4] else None,
             "CurrentSupplier": product[5],
-            "CostPrice": f"₱{float(product[6]):,.2f}" if product[6] else "₱0.00",
-            "StockDetails": stock_list
+            "CostPrice": f"₱{latest_cost_price:,.2f}",
+            "StockDetails": stock_list,
+            "DeductedTransactions": deducted_list
         }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-    
+
     
 @StockRouter.get("/inventory-transactions", response_model=list)
 async def get_inventory_transactions(db=Depends(get_db)):
