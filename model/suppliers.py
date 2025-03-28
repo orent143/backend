@@ -29,7 +29,7 @@ async def create_supplier(
         db[0].execute("SELECT LAST_INSERT_ID()")
         new_supplier_id = db[0].fetchone()[0]
 
-        log_activity(db, "pi-truck", f"New supplier added: {suppliername} ", "Success")
+        log_activity(db, "pi pi-truck", f"New supplier added: {suppliername} ", "Success")
 
         return {"id": new_supplier_id, "suppliername": suppliername, "contactinfo": contactinfo, "email": email}
 
@@ -73,7 +73,6 @@ async def update_supplier(
 
     log_activity(db, "pi pi-pencil", f"Supplier updated: {suppliername}", "Updated")
     return {"message": "Supplier updated successfully"}
-
 @SupplierRouter.delete("/suppliers/{supplier_id}", response_model=dict)
 async def delete_supplier(supplier_id: int, db=Depends(get_db)):
     query_check_supplier = "SELECT suppliername FROM suppliers WHERE id = %s"
@@ -84,8 +83,6 @@ async def delete_supplier(supplier_id: int, db=Depends(get_db)):
         raise HTTPException(status_code=404, detail="Supplier not found")
 
     try:
-        query_delete_stock_reports = "DELETE FROM stock_reports WHERE SupplierID = %s"
-        db[0].execute(query_delete_stock_reports, (supplier_id,))
 
         query_delete_supplier = "DELETE FROM suppliers WHERE id = %s"
         db[0].execute(query_delete_supplier, (supplier_id,))
@@ -93,10 +90,11 @@ async def delete_supplier(supplier_id: int, db=Depends(get_db)):
 
         log_activity(db, "pi pi-trash", f"Supplier deleted: {supplier[0]}", "Deleted")
         return {"message": "Supplier deleted successfully"}
-    
+
     except Exception as e:
         db[1].rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
 
 
 @SupplierRouter.get("/activity_logs", response_model=List[dict])

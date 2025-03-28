@@ -17,6 +17,7 @@ class ProductUpdate(BaseModel):
     Quantity: Optional[int] = None
     UnitPrice: Optional[float] = None
     CategoryID: Optional[int] = None
+    Threshold: Optional[int] = None  # ✅ Added threshold field
 
 class StockItem(BaseModel):
     stock_location: str
@@ -30,17 +31,23 @@ class StockInRequest(BaseModel):
     ProductID: str
     Stocks: List[StockItem]
 
-def determine_status(quantity: Optional[int], process_type: str) -> str:
+def determine_status(quantity: Optional[int], process_type: str, threshold: Optional[int] = None) -> str:
+    """Determine the product status based on process type and threshold."""
+    # Default None quantity to 0 for consistent status evaluation
+    quantity = quantity if quantity is not None else 0
+    
     if process_type == "To Be Made":
-        return "Available"  # Always available for To Be Made products
-    if quantity is None:
-        return "Unknown"
-    if quantity == 0:
-        return "Out of Stock"
-    elif quantity <= 10:
-        return "Low Stock"
-    else:
-        return "In Stock"
+        return "Available"  # Always available for "To Be Made"
+
+    if process_type == "Ready-Made":
+        if quantity == 0:
+            return "Out of Stock"
+        elif threshold is not None and quantity <= threshold:
+            return "Low Stock"
+        else:
+            return "In Stock"
+    
+    return "Unknown"
 
 
 def generate_unique_id():
@@ -73,36 +80,50 @@ def log_product_transaction(db, product_id: str, product_name: str, transaction_
 async def get_all_inventory_products(request: Request, db=Depends(get_db)):
     base_url = str(request.base_url)
 
-    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image FROM inventoryproduct")
+    # Add ORDER BY id to ensure products are sorted by ProductID
+    db[0].execute("SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Threshold, Image FROM inventoryproduct ORDER BY id")
     products = db[0].fetchall()
 
     return [
         {
             "ProductID": product[0],
             "ProductName": product[1],
-            "Quantity": float('inf') if product[5] == "To Be Made" else product[2],  # Infinite for "To Be Made"
+            "Quantity": product[2],
             "UnitPrice": product[3],
             "CategoryID": product[4],
             "ProcessType": product[5],
-            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5]),
-            "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
+            "Threshold": product[6],
+            "Status": determine_status(product[2], product[5], product[6]),
+            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
         }
         for product in products
     ]
 
 
-
 @InventoryRouter.get("/inventoryproducts/filter", response_model=list)
-async def filter_inventory_products(request: Request, process_type: Optional[str] = None, db=Depends(get_db)):
+async def filter_inventory_products(
+    request: Request,
+    process_type: Optional[str] = None,
+    threshold: Optional[int] = None,  # Optional threshold filter
+    db=Depends(get_db)
+):
+    # Validate process type
     if process_type not in ["Ready-Made", "To Be Made"]:
         raise HTTPException(status_code=400, detail="Invalid Process Type")
 
+    # Base URL for image paths
     base_url = str(request.base_url)
-    
-    db[0].execute(
-        "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Image FROM inventoryproduct WHERE ProcessType = %s",
-        (process_type,)
-    )
+
+    # Construct the SQL query
+    query = "SELECT id, ProductName, Quantity, UnitPrice, `CategoryID (FK)`, ProcessType, Threshold, Image FROM inventoryproduct WHERE ProcessType = %s"
+    params = [process_type]
+
+    # Add threshold filter if provided
+    if threshold is not None:
+        query += " AND Threshold <= %s"
+        params.append(threshold)
+
+    db[0].execute(query, tuple(params))
     products = db[0].fetchall()
 
     return [
@@ -113,8 +134,9 @@ async def filter_inventory_products(request: Request, process_type: Optional[str
             "UnitPrice": product[3],
             "CategoryID": product[4],
             "ProcessType": product[5],
-            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5]),
-            "Image": f"{base_url}uploads/products/{product[6]}" if product[6] else None
+            "Threshold": product[6],
+            "Status": "Available" if product[5] == "To Be Made" else determine_status(product[2], product[5], product[6]),
+            "Image": f"{base_url}uploads/products/{product[7]}" if product[7] else None
         }
         for product in products
     ]
@@ -144,15 +166,13 @@ async def create_inventory_product(
     UnitPrice: float = Form(...),
     CategoryID: Optional[int] = Form(None),
     ProcessType: str = Form(...),
+    Threshold: Optional[int] = Form(None),  # ✅ Threshold parameter only
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db),
 ):
     try:
-        # Check if the ProductID already exists
-        db[0].execute("SELECT id FROM inventoryproduct WHERE id = %s", (ProductID,))
-        existing_product = db[0].fetchone()
-        if existing_product:
-            raise HTTPException(status_code=400, detail="ProductID already exists")
+        if ProcessType == "Ready-Made" and Threshold is None:
+            raise HTTPException(status_code=400, detail="Threshold required for Ready-Made products")
 
         image_filename = None
 
@@ -161,35 +181,23 @@ async def create_inventory_product(
 
         if Image:
             file_extension = Image.filename.split(".")[-1]
-            image_filename = f"{ProductID}_{ProductName.replace(' ', '_')}.{file_extension}"
+            image_filename = f"{ProductID}_{ProductName.replace(' ', '_').replace('/', '_')}.{file_extension}"
             file_path = os.path.join(UPLOAD_DIR, image_filename)
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-        # Set status based on ProcessType
-        status = "Available" if ProcessType == "To Be Made" else "Out of Stock"
+        # Set status based on ProcessType and Threshold
+        status = determine_status(None, ProcessType, Threshold)
 
-        # Insert product into the database
+        # Insert product into the database with threshold
         db[0].execute(
             """INSERT INTO inventoryproduct 
-            (id, ProductName, UnitPrice, `CategoryID (FK)`, ProcessType, Image, Status) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-            (ProductID, ProductName, UnitPrice, CategoryID, ProcessType, image_filename, status)
+            (id, ProductName, UnitPrice, `CategoryID (FK)`, ProcessType, Threshold, Image, Status) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            (ProductID, ProductName, UnitPrice, CategoryID, ProcessType, Threshold, image_filename, status)
         )
         db[1].commit()
 
-        log_activity(db, "pi pi-box", f"New product added: {ProductName} ({ProcessType})", "Success")
-
-        log_product_transaction(
-            db=db,
-            product_id=ProductID,
-            product_name=ProductName,
-            transaction_type="Add",
-            process_type=ProcessType,
-            unit_price=UnitPrice,
-            category_id=CategoryID
-        )
-        
         base_url = str(request.base_url)
         image_url = f"{base_url}uploads/products/{image_filename}" if image_filename else None
 
@@ -199,24 +207,27 @@ async def create_inventory_product(
             "UnitPrice": UnitPrice,
             "CategoryID": CategoryID,
             "ProcessType": ProcessType,
+            "Threshold": Threshold,
             "Status": status,
             "Image": image_url
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-    
+
+        
 @InventoryRouter.put("/inventoryproduct/{product_id}", response_model=dict)
 async def update_inventory_product(
     product_id: str,
     ProductName: Optional[str] = Form(None),
     UnitPrice: Optional[float] = Form(None),
     CategoryID: Optional[int] = Form(None),
+    Threshold: Optional[int] = Form(None),  # ✅ Threshold only
     Image: Optional[UploadFile] = File(None),
     db=Depends(get_db),
 ):
     try:
         db[0].execute(
-            "SELECT ProductName, UnitPrice, `CategoryID (FK)`, Image FROM inventoryproduct WHERE id = %s",
+            "SELECT ProductName, UnitPrice, `CategoryID (FK)`, Threshold, ProcessType, Image FROM inventoryproduct WHERE id = %s",
             (product_id,),
         )
         product = db[0].fetchone()
@@ -226,7 +237,7 @@ async def update_inventory_product(
 
         update_fields = []
         update_values = []
-        image_filename = product[3]  
+        image_filename = product[5]
 
         if ProductName is not None:
             update_fields.append("ProductName = %s")
@@ -240,6 +251,10 @@ async def update_inventory_product(
             update_fields.append("`CategoryID (FK)` = %s")
             update_values.append(CategoryID)
 
+        if Threshold is not None:
+            update_fields.append("Threshold = %s")
+            update_values.append(Threshold)
+
         if Image:
             file_extension = Image.filename.split(".")[-1]
             image_filename = f"{ProductName.replace(' ', '_')}_{int(datetime.utcnow().timestamp())}.{file_extension}"
@@ -248,8 +263,8 @@ async def update_inventory_product(
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(Image.file, buffer)
 
-            if product[3]:
-                old_image_path = os.path.join(UPLOAD_DIR, product[3])
+            if product[5]:
+                old_image_path = os.path.join(UPLOAD_DIR, product[5])
                 if os.path.exists(old_image_path):
                     os.remove(old_image_path)
 
@@ -258,6 +273,11 @@ async def update_inventory_product(
 
         if not update_fields:
             raise HTTPException(status_code=400, detail="No fields provided for update")
+
+        # Update status based on process type and threshold
+        status = determine_status(None, product[4], Threshold)
+        update_fields.append("Status = %s")
+        update_values.append(status)
 
         update_query = f"UPDATE inventoryproduct SET {', '.join(update_fields)} WHERE id = %s"
         update_values.append(product_id)
@@ -409,3 +429,44 @@ async def get_product_transactions(db=Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching transactions: {str(e)}")
+    
+@InventoryRouter.get("/total-products", response_model=dict)
+async def get_total_products(db=Depends(get_db)):
+    """Fetch total count of products in the inventory."""
+    try:
+        # SQL query to count all products in the inventory
+        db[0].execute("""SELECT COUNT(*) FROM inventoryproduct""")
+        
+        # Fetch the count
+        total_products = db[0].fetchone()[0]
+
+        # Return the result as a dictionary
+        return {"total_products": total_products}
+
+    except Exception as e:
+        # Log and raise an error in case of any issues
+        logger.error(f"Error fetching total product count: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+@InventoryRouter.get("/low-stock-total", response_model=dict)
+async def get_total_low_stock(db=Depends(get_db)):
+    """Fetch total count of products that are in low stock, excluding 'To Be Made' products."""
+    try:
+        # SQL query to count products that are in low stock and exclude 'To Be Made' products
+        db[0].execute("""
+            SELECT COUNT(*) 
+            FROM inventoryproduct
+            WHERE ProcessType = 'Ready-Made' 
+            AND Quantity <= Threshold
+        """)
+        
+        # Fetch the count
+        low_stock_count = db[0].fetchone()[0]
+
+        # Return the result as a dictionary
+        return {"total_low_stock": low_stock_count}
+
+    except Exception as e:
+        # Log and raise an error in case of any issues
+        logger.error(f"Error fetching total low stock count: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

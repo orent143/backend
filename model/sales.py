@@ -96,3 +96,23 @@ async def update_sales(sales_update: SalesUpdateRequest, db=Depends(get_db)):
     except Exception as e:
         conn.rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+@SalesRouter.get("/total-sales-revenue", response_model=dict)
+async def get_total_sales_revenue(db=Depends(get_db)):
+    try:
+        cursor = db[0]
+        today = datetime.now().date()  # Get today's date
+
+        # SQL query to calculate total sales revenue for today
+        cursor.execute("""
+            SELECT COALESCE(SUM(s.remitted), 0) AS total_revenue
+            FROM sales s
+            WHERE DATE(s.created_at) = %s
+        """, (today,))
+
+        total_revenue = cursor.fetchone()[0]
+
+        return {"total_sales_revenue": total_revenue}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
