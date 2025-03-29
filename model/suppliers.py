@@ -38,10 +38,11 @@ async def create_supplier(
 
 @SupplierRouter.get("/", response_model=List[dict])
 async def read_suppliers(db=Depends(get_db)):
-    query = "SELECT id, suppliername, contactinfo, email FROM suppliers"
+    query = "SELECT id, suppliername, contactinfo, email FROM suppliers WHERE deleted_at IS NULL"
     db[0].execute(query)
     suppliers = [{"id": supplier[0], "suppliername": supplier[1], "contactinfo": supplier[2], "email": supplier[3]} for supplier in db[0].fetchall()]
     return suppliers
+
 
 @SupplierRouter.get("/suppliers/{supplier_id}", response_model=dict)
 async def read_supplier(supplier_id: int, db=Depends(get_db)):
@@ -83,13 +84,13 @@ async def delete_supplier(supplier_id: int, db=Depends(get_db)):
         raise HTTPException(status_code=404, detail="Supplier not found")
 
     try:
-
-        query_delete_supplier = "DELETE FROM suppliers WHERE id = %s"
-        db[0].execute(query_delete_supplier, (supplier_id,))
+        # Instead of deleting, set a deleted_at field or status to mark the supplier as deleted
+        query_update_supplier = "UPDATE suppliers SET deleted_at = %s WHERE id = %s"
+        db[0].execute(query_update_supplier, (datetime.now(), supplier_id))
         db[1].commit()
 
-        log_activity(db, "pi pi-trash", f"Supplier deleted: {supplier[0]}", "Deleted")
-        return {"message": "Supplier deleted successfully"}
+        log_activity(db, "pi pi-trash", f"Supplier marked as deleted: {supplier[0]}", "Deleted")
+        return {"message": "Supplier marked as deleted successfully"}
 
     except Exception as e:
         db[1].rollback()

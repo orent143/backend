@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2025 at 02:08 PM
+-- Generation Time: Mar 29, 2025 at 10:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -59,7 +59,22 @@ INSERT INTO `activity_logs` (`id`, `icon`, `title`, `time`, `status`) VALUES
 (17, 'pi pi-pencil', 'Product updated: Demisoda', '2025-03-28 00:49:42', 'Updated'),
 (18, 'pi pi-trash', 'Product deleted: Demisoda', '2025-03-28 00:50:19', 'Deleted'),
 (19, 'pi pi-trash', 'Product deleted: Bundaberg', '2025-03-28 00:50:27', 'Deleted'),
-(20, 'pi pi-pencil', 'Product updated: Mineral Water', '2025-03-28 00:51:55', 'Updated');
+(20, 'pi pi-pencil', 'Product updated: Mineral Water', '2025-03-28 00:51:55', 'Updated'),
+(21, 'pi pi-truck', 'New supplier added: TESTTTT!!!! ', '2025-03-28 10:48:51', 'Success'),
+(22, 'pi pi-pencil', 'Product updated: Bundaberg', '2025-03-28 10:51:19', 'Updated'),
+(23, 'pi pi-trash', 'Supplier marked as deleted: TESTTTT!!!!', '2025-03-28 10:51:37', 'Deleted'),
+(24, 'pi pi-truck', 'New supplier added: John Doe ', '2025-03-28 11:29:01', 'Success'),
+(25, 'pi pi-truck', 'New supplier added: TESTTTT!!!! ', '2025-03-28 11:32:18', 'Success'),
+(26, 'pi pi-trash', 'Supplier marked as deleted: John Doe', '2025-03-28 11:37:31', 'Deleted'),
+(27, 'pi pi-trash', 'Product deleted: Demisoda', '2025-03-28 13:12:07', 'Deleted'),
+(28, 'pi pi-trash', 'Supplier marked as deleted: TESTTTT!!!!', '2025-03-28 13:44:59', 'Deleted'),
+(29, 'pi pi-truck', 'New supplier added: admin ', '2025-03-28 13:45:07', 'Success'),
+(30, 'pi pi-truck', 'New supplier added: TESTTTT!!!! ', '2025-03-28 21:21:45', 'Success'),
+(31, 'pi pi-pencil', 'Product updated: Test1', '2025-03-28 21:25:01', 'Updated'),
+(32, 'pi pi-pencil', 'Product updated: Test2', '2025-03-28 21:25:23', 'Updated'),
+(33, 'pi pi-trash', 'Supplier marked as deleted: TESTTTT!!!!', '2025-03-28 21:26:32', 'Deleted'),
+(34, 'pi pi-pencil', 'Product updated: Test2', '2025-03-28 21:27:00', 'Updated'),
+(35, 'pi pi-pencil', 'Product updated: Test1', '2025-03-28 21:27:08', 'Updated');
 
 -- --------------------------------------------------------
 
@@ -113,6 +128,7 @@ CREATE TABLE `inventoryproduct` (
 INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (FK)`, `Status`, `ReportDate`, `Image`, `ProcessType`, `Quantity`, `Threshold`) VALUES
 ('1', 'Cafe Americano', 70.00, 1, 'Available', '2025-03-27 20:33:47', '1_Cafe_Americano.jpeg', 'To Be Made', 0, NULL),
 ('10', 'Peppermint Latte', 90.00, 1, 'Available', '2025-03-27 20:40:26', '10_Peppermint_Latte.jpg', 'To Be Made', 0, NULL),
+('100', 'Test1', 20.00, 9, 'Out of Stock', '2025-03-28 21:22:14', '100_Test1.jpg', 'Ready-Made', 22, 50),
 ('11', 'Vanilla Latte', 90.00, 1, 'Available', '2025-03-27 20:41:03', '11_Vanilla_Latte.jpg', 'To Be Made', 0, NULL),
 ('12', 'Matcha Cafe Latte', 90.00, 1, 'Available', '2025-03-27 20:41:31', '12_Matcha_Cafe_Latte.jpg', 'To Be Made', 0, NULL),
 ('13', 'Hot Tea', 60.00, 1, 'Available', '2025-03-27 20:42:06', '13_Hot_Tea.jpg', 'To Be Made', 0, NULL),
@@ -124,6 +140,7 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (F
 ('19', 'Iced Cappuccino', 80.00, 2, 'Available', '2025-03-27 21:00:14', '19_Iced_Cappuccino.webp', 'To Be Made', 0, NULL),
 ('2', 'Coffee Cappuccino', 750.00, 1, 'Available', '2025-03-27 20:34:32', '2_Coffee_Cappuccino.jpg', 'To Be Made', 0, NULL),
 ('20', 'Iced White Choco Mocha ', 115.00, 2, 'Available', '2025-03-27 21:00:51', '20_Iced_White_Choco_Mocha_.jpg', 'To Be Made', 0, NULL),
+('200', 'Test2', 20.00, 9, 'Available', '2025-03-28 21:22:37', '200_Test2.jpg', 'To Be Made', 0, NULL),
 ('21', 'Angel Affogato', 75.00, 2, 'Available', '2025-03-27 21:01:57', '21_Angel_Affogato.jpg', 'To Be Made', 0, NULL),
 ('22', 'Iced Spanish Latte', 115.00, 2, 'Available', '2025-03-27 21:02:51', '22_Iced_Spanish_Latte.jpg', 'To Be Made', 0, NULL),
 ('23', 'Iced Hazelnut Latte', 115.00, 2, 'Available', '2025-03-27 21:03:18', '23_Iced_Hazelnut_Latte.jpg', 'To Be Made', 0, NULL),
@@ -193,8 +210,10 @@ INSERT INTO `inventoryproduct` (`id`, `ProductName`, `UnitPrice`, `CategoryID (F
 ('82', 'Carbonara', 70.00, 7, 'Available', '2025-03-27 22:47:12', '82_Carbonara.jpg', 'To Be Made', 0, NULL),
 ('83', 'Baked Mac', 70.00, 7, 'Available', '2025-03-27 22:48:39', '83_Baked_Mac.jpg', 'To Be Made', 0, NULL),
 ('84', 'Tuna Pasta', 70.00, 7, 'Available', '2025-03-27 22:49:02', '84_Tuna_Pasta.jpg', 'To Be Made', 0, NULL),
-('85', 'Mineral Water', 10.00, 9, 'Out of Stock', '2025-03-28 00:50:55', '85_Mineral_Water.jpg', 'Ready-Made', 22, 5),
-('86', 'Milkis', 60.00, 9, 'Out of Stock', '2025-03-27 23:17:10', '86_Milkis.jpg', 'Ready-Made', 8, 10),
+('85', 'Mineral Water', 10.00, 9, 'Out of Stock', '2025-03-28 00:50:55', '85_Mineral_Water.jpg', 'Ready-Made', 43, 5),
+('86', 'Milkis', 60.00, 9, 'Out of Stock', '2025-03-27 23:17:10', '86_Milkis.jpg', 'Ready-Made', 18, 10),
+('87', 'Bundaberg', 120.00, 9, 'Out of Stock', '2025-03-28 10:50:12', '87_Bundaberg.jpg', 'Ready-Made', 20, 10),
+('88', 'Demisoda', 70.00, 9, 'Out of Stock', '2025-03-28 13:12:29', '88_Demisoda.jpg', 'Ready-Made', 20, 10),
 ('9', 'Spanish Latte', 90.00, 1, 'Available', '2025-03-27 20:39:10', '9_Spanish_Latte.jpeg', 'To Be Made', 0, NULL);
 
 -- --------------------------------------------------------
@@ -240,7 +259,19 @@ INSERT INTO `inventory_transactions` (`id`, `ProductID`, `product_name`, `transa
 (10, '86', 'Milkis', 'Deduct', 3, '2025-03-28 11:43:35'),
 (19, '86', 'Milkis', 'Add', 4, '2025-03-28 12:33:26'),
 (23, '85', 'Mineral Water', 'Add', 11, '2025-03-28 12:51:22'),
-(24, '85', 'Mineral Water', 'Add', 11, '2025-03-28 12:52:16');
+(24, '85', 'Mineral Water', 'Add', 11, '2025-03-28 12:52:16'),
+(25, '87', 'Bundaberg', 'Add', 10, '2025-03-28 22:50:56'),
+(26, '87', 'Bundaberg', 'Add', 10, '2025-03-28 22:52:04'),
+(41, '88', 'Demisoda', 'Add', 10, '2025-03-29 01:44:28'),
+(42, '88', 'Demisoda', 'Add', 10, '2025-03-29 01:45:25'),
+(43, '85', 'Mineral Water', 'Add', 10, '2025-03-29 02:22:47'),
+(44, '85', 'Mineral Water', 'Add', 11, '2025-03-29 02:22:47'),
+(45, '86', 'Milkis', 'Add', 10, '2025-03-29 02:31:52'),
+(46, '100', 'Test1', 'Add', 10, '2025-03-29 09:23:56'),
+(47, '100', 'Test1', 'Deduct', 3, '2025-03-29 09:24:28'),
+(48, '100', 'Test1', 'Add', 10, '2025-03-29 09:26:19'),
+(49, '100', 'Test1', 'Add', 10, '2025-03-29 09:27:49'),
+(50, '100', 'Test1', 'Deduct', 5, '2025-03-29 09:28:13');
 
 -- --------------------------------------------------------
 
@@ -285,7 +316,10 @@ INSERT INTO `order_history` (`history_id`, `order_id`, `customer_name`, `total_i
 (3, 0, 'Orent', 7, 220.00, 'Cash', '2025-03-28 11:43:35'),
 (4, 0, 'Myk', 7, 810.00, 'Cash', '2025-03-28 11:45:48'),
 (5, 0, 'Myk', 7, 810.00, 'Cash', '2025-03-28 11:46:11'),
-(6, 0, 'John', 5, 380.00, 'Cash', '2025-03-28 11:49:21');
+(6, 0, 'John', 5, 380.00, 'Cash', '2025-03-28 11:49:21'),
+(7, 0, 'Gericcc', 49, 3430.00, 'Cash', '2025-03-29 00:22:07'),
+(8, 0, 'orent', 6, 120.00, 'Cash', '2025-03-29 09:24:28'),
+(9, 0, 'Testt', 10, 200.00, 'Tally', '2025-03-29 09:28:13');
 
 -- --------------------------------------------------------
 
@@ -359,7 +393,12 @@ INSERT INTO `order_history_detail` (`id`, `order_id`, `product_id`, `product_nam
 (50, 5, 78, 'Melon Frappe', 2, 90.00),
 (51, 5, 88, 'Bundaberg', 3, 120.00),
 (52, 6, 85, 'Mineral Water', 2, 10.00),
-(53, 6, 88, 'Bundaberg', 3, 120.00);
+(53, 6, 88, 'Bundaberg', 3, 120.00),
+(54, 7, 88, 'Demisoda', 49, 70.00),
+(55, 8, 100, 'Test1', 3, 20.00),
+(56, 8, 200, 'Test2', 3, 20.00),
+(57, 9, 200, 'Test2', 5, 20.00),
+(58, 9, 100, 'Test1', 5, 20.00);
 
 -- --------------------------------------------------------
 
@@ -400,7 +439,8 @@ INSERT INTO `product_transactions` (`id`, `product_id`, `product_name`, `transac
 (2, '85', 'Mineral Water', 'Delete', 'Ready-Made', 10.00, 9, '2025-03-28 12:16:07'),
 (3, '85', 'Mineral Water', 'Delete', 'Ready-Made', 10.00, 2, '2025-03-28 12:48:30'),
 (4, '87', 'Demisoda', 'Delete', 'Ready-Made', 70.00, 6, '2025-03-28 12:50:19'),
-(5, '88', 'Bundaberg', 'Delete', 'Ready-Made', 120.00, 9, '2025-03-28 12:50:27');
+(5, '88', 'Bundaberg', 'Delete', 'Ready-Made', 120.00, 9, '2025-03-28 12:50:27'),
+(6, '88', 'Demisoda', 'Delete', 'Ready-Made', 70.00, 9, '2025-03-29 01:12:07');
 
 -- --------------------------------------------------------
 
@@ -484,7 +524,11 @@ INSERT INTO `sales` (`id`, `product_id`, `product_name`, `Image`, `quantity_sold
 (46, '71', '', NULL, 2, 0.00, 270.00, '2025-03-28 11:45:48', '2025-03-28 11:45:48'),
 (47, '78', '', NULL, 2, 0.00, 180.00, '2025-03-28 11:45:48', '2025-03-28 11:45:48'),
 (49, '71', '', NULL, 2, 0.00, 270.00, '2025-03-28 11:46:11', '2025-03-28 11:46:11'),
-(50, '78', '', NULL, 2, 0.00, 180.00, '2025-03-28 11:46:11', '2025-03-28 11:46:11');
+(50, '78', '', NULL, 2, 0.00, 180.00, '2025-03-28 11:46:11', '2025-03-28 11:46:11'),
+(55, '100', '', NULL, 3, 0.00, 60.00, '2025-03-29 09:24:28', '2025-03-29 09:24:28'),
+(56, '200', '', NULL, 3, 0.00, 60.00, '2025-03-29 09:24:28', '2025-03-29 09:24:28'),
+(57, '200', '', NULL, 5, 0.00, 100.00, '2025-03-29 09:28:13', '2025-03-29 09:28:13'),
+(58, '100', '', NULL, 5, 0.00, 100.00, '2025-03-29 09:28:13', '2025-03-29 09:28:13');
 
 -- --------------------------------------------------------
 
@@ -511,7 +555,17 @@ INSERT INTO `stock_details` (`id`, `ProductID`, `batch_number`, `quantity`, `exp
 (2, '86', '1', 4, '2025-03-31', 2, '2025-03-28 11:28:34', 'IN'),
 (9, '86', '2', 4, '2025-03-31', 2, '2025-03-28 12:33:26', 'IN'),
 (13, '85', '1', 11, '2025-03-31', 2, '2025-03-28 12:51:22', 'IN'),
-(14, '85', '2', 11, '2025-03-31', 2, '2025-03-28 12:52:16', 'IN');
+(14, '85', '2', 11, '2025-03-31', 2, '2025-03-28 12:52:16', 'IN'),
+(15, '87', '1', 10, '2025-03-31', 5, '2025-03-28 22:50:56', 'IN'),
+(16, '87', '2', 10, '2025-03-31', 3, '2025-03-28 22:52:04', 'IN'),
+(27, '88', '1', 10, '2025-03-31', 5, '2025-03-29 01:44:28', 'IN'),
+(28, '88', '2', 10, '2025-03-31', 8, '2025-03-29 01:45:25', 'IN'),
+(29, '85', '3', 10, '2025-03-31', 3, '2025-03-29 02:22:47', 'IN'),
+(30, '85', '1', 11, '2025-03-31', 3, '2025-03-29 02:22:47', 'IN'),
+(31, '86', '3', 10, '2025-03-31', 2, '2025-03-29 02:31:52', 'IN'),
+(32, '100', '1', 2, '2025-03-31', 8, '2025-03-29 09:23:56', 'IN'),
+(33, '100', '2', 10, '2025-03-31', 5, '2025-03-29 09:26:19', 'IN'),
+(34, '100', '3', 10, '2025-03-31', 8, '2025-03-29 09:27:49', 'IN');
 
 -- --------------------------------------------------------
 
@@ -523,16 +577,22 @@ CREATE TABLE `suppliers` (
   `id` int(11) NOT NULL,
   `suppliername` varchar(100) NOT NULL,
   `contactinfo` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`id`, `suppliername`, `contactinfo`, `email`) VALUES
-(2, 'James Smith', '0987456123', 'jamessmith@gmail.com'),
-(3, 'John Doe', '12234556', 'john.doe@example.com');
+INSERT INTO `suppliers` (`id`, `suppliername`, `contactinfo`, `email`, `deleted_at`) VALUES
+(2, 'James Smith', '0987456123', 'jamessmith@gmail.com', NULL),
+(3, 'John Doe', '12234556', 'john.doe@example.com', NULL),
+(5, 'TESTTTT!!!!', '11213231', 'admin@admin', '2025-03-28 10:51:37'),
+(6, 'John Doe', '112132311111', 'john.doe@example.com', '2025-03-28 11:37:31'),
+(7, 'TESTTTT!!!!', '112132311111', 'admin@admin', '2025-03-28 13:44:59'),
+(8, 'admin', '112132311111', 'admin@admin', NULL),
+(9, 'TESTTTT!!!!', '11213231', 'admin@admin', '2025-03-28 21:26:32');
 
 -- --------------------------------------------------------
 
@@ -647,7 +707,8 @@ ALTER TABLE `sales`
 --
 ALTER TABLE `stock_details`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `stock_details_ibfk_1` (`ProductID`);
+  ADD KEY `stock_details_ibfk_1` (`ProductID`),
+  ADD KEY `fk_supplier_id` (`SupplierID`);
 
 --
 -- Indexes for table `suppliers`
@@ -669,13 +730,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `inventory_reports`
@@ -687,7 +748,7 @@ ALTER TABLE `inventory_reports`
 -- AUTO_INCREMENT for table `inventory_transactions`
 --
 ALTER TABLE `inventory_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -699,13 +760,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `order_history_detail`
 --
 ALTER TABLE `order_history_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -717,7 +778,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `product_transactions`
 --
 ALTER TABLE `product_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -729,19 +790,19 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -788,6 +849,7 @@ ALTER TABLE `sales`
 -- Constraints for table `stock_details`
 --
 ALTER TABLE `stock_details`
+  ADD CONSTRAINT `fk_supplier_id` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `stock_details_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `inventoryproduct` (`id`) ON DELETE CASCADE;
 COMMIT;
 

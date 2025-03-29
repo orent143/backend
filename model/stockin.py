@@ -7,46 +7,81 @@ import logging
 
 StockRouter = APIRouter(tags=["Stock In"])
 
+# Logger configuration
+logger = logging.getLogger(__name__)
+
+
+# Models
+class DeductedTransaction(BaseModel):
+    TransactionID: int
+    QuantityDeducted: int
+    TransactionDate: str
 
 class StockItem(BaseModel):
     batch_number: str
     quantity: int
-    expiration_date: str
-    SupplierID: Optional[int] = None
-
+    expiration_date: Optional[str] = None
+    SupplierName: Optional[str] = "Unknown"
 
 class StockInRequest(BaseModel):
     ProductID: str
     Stocks: List[StockItem]
 
+class ProductDetailsResponse(BaseModel):
+    ProductID: int
+    ProductName: str
+    Quantity: Optional[int] = None
+    ProcessType: Optional[str] = None
+    Image: Optional[str] = None
+    CurrentSupplier: Optional[str] = None
+    Status: Optional[str] = None
+    Threshold: Optional[int] = None
+    StockDetails: List[StockItem]
+    DeductedTransactions: Optional[List[DeductedTransaction]] = []
 
-logger = logging.getLogger(__name__)
-
-
+# ✅ Stock In Endpoint with Supplier Lookup
 @StockRouter.post("/stockin/")
 async def stock_in(request: StockInRequest, db=Depends(get_db)):
     try:
+        # Validate product existence
         db[0].execute("SELECT ProductName FROM inventoryproduct WHERE id = %s", (request.ProductID,))
         product = db[0].fetchone()
+
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
         total_quantity_added = 0
+        stock_list = []
+
+        # Iterate over each stock item
         for stock in request.Stocks:
             total_quantity_added += stock.quantity
 
-            exp_date = None if not stock.expiration_date or stock.expiration_date == "0000-00-00" else datetime.strptime(stock.expiration_date, "%Y-%m-%d").date()
+            # Fetch the supplier ID by name
+            db[0].execute("SELECT id FROM suppliers WHERE SupplierName = %s", (stock.SupplierName,))
+            supplier = db[0].fetchone()
 
-            # Insert into stock_details table
+            # Handle missing supplier
+            if not supplier:
+                raise HTTPException(status_code=404, detail=f"Supplier '{stock.SupplierName}' not found")
+
+            supplier_id = supplier[0]
+
+            # Handle expiration date
+            exp_date = None
+            if stock.expiration_date and stock.expiration_date != "0000-00-00":
+                exp_date = datetime.strptime(stock.expiration_date, "%Y-%m-%d").date()
+
+            # Insert into stock_details
             db[0].execute(
                 """
                 INSERT INTO stock_details (ProductID, batch_number, quantity, expiration_date, SupplierID) 
                 VALUES (%s, %s, %s, %s, %s)
                 """,
-                (request.ProductID, stock.batch_number, stock.quantity, exp_date, stock.SupplierID)
+                (request.ProductID, stock.batch_number, stock.quantity, exp_date, supplier_id)
             )
 
-            # Insert transaction into inventory_transactions
+            # Insert into inventory_transactions
             db[0].execute(
                 """
                 INSERT INTO inventory_transactions (ProductID, product_name, transaction_type, quantity)
@@ -55,28 +90,48 @@ async def stock_in(request: StockInRequest, db=Depends(get_db)):
                 (request.ProductID, product[0], stock.quantity)
             )
 
-        # Update the quantity in inventoryproduct by adding only the newly added stock
-        db[0].execute("UPDATE inventoryproduct SET Quantity = Quantity + %s WHERE id = %s", (total_quantity_added, request.ProductID))
+            stock_list.append({
+                "batch_number": stock.batch_number,
+                "quantity": stock.quantity,
+                "expiration_date": stock.expiration_date,
+                "SupplierName": stock.SupplierName
+            })
+
+        # Update inventory quantity
+        db[0].execute(
+            "UPDATE inventoryproduct SET Quantity = Quantity + %s WHERE id = %s",
+            (total_quantity_added, request.ProductID)
+        )
+
         db[1].commit()
 
-        return {"message": "Stock added successfully", "ProductID": request.ProductID, "TotalQuantityAdded": total_quantity_added}
+        # Return full server response, including added stocks
+        return {
+            "message": "Stock added successfully",
+            "ProductID": request.ProductID,
+            "TotalQuantityAdded": total_quantity_added,
+            "AddedStocks": stock_list
+        }
 
     except Exception as e:
         logger.error(f"Error in stock_in: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
+
+# ✅ Get Product Details Endpoint
 @StockRouter.get("/stockin/{product_id}", response_model=dict)
 async def get_product_details(product_id: str, db=Depends(get_db)):
     """Get product details with consistent remaining quantity."""
     try:
+        # Fetch product and supplier details
         db[0].execute("""
             SELECT 
                 ip.id, 
                 ip.ProductName, 
-                ip.Quantity,    -- ✅ Pulling the quantity directly from inventoryproduct
+                ip.Quantity,    
                 ip.ProcessType, 
                 ip.Image, 
-                ip.Threshold,  -- Fetch the threshold value for the product
+                ip.Threshold,  
                 COALESCE(s.SupplierName, 'N/A') AS SupplierName
             FROM inventoryproduct ip
             LEFT JOIN stock_details sd ON ip.id = sd.ProductID
@@ -90,11 +145,10 @@ async def get_product_details(product_id: str, db=Depends(get_db)):
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
-        # Extract values
         remaining_quantity = product[2]
-        threshold = product[5] if product[5] is not None else 5  # Default threshold to 5 if not set
+        threshold = product[5] if product[5] else 5
 
-        # Determine stock status based on threshold and remaining quantity
+        # Determine stock status
         if remaining_quantity <= 0:
             status = "Out of Stock"
         elif remaining_quantity <= threshold:
@@ -111,7 +165,7 @@ async def get_product_details(product_id: str, db=Depends(get_db)):
             "ProcessType": product[3],
             "Image": f"{base_url}{product[4]}" if product[4] else None,
             "CurrentSupplier": product[6],
-            "Threshold": threshold,  # Return Threshold in the response
+            "Threshold": threshold,
             "Status": status
         }
 
@@ -119,28 +173,27 @@ async def get_product_details(product_id: str, db=Depends(get_db)):
         logger.error(f"Error in get_product_details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-
-
-@StockRouter.get("/stockdetails/{product_id}", response_model=dict)
+# ✅ Get Stock Details with Transactions and Quantity Status
+@StockRouter.get("/stockdetails/{product_id}", response_model=ProductDetailsResponse)
 async def get_stock_details(product_id: str, db=Depends(get_db)):
-    """Get detailed stock info with remaining quantity and basic product details."""
+    """Get detailed stock info with remaining quantity, transactions, supplier, and quantity status."""
     try:
-        # Fetch product details from the inventoryproduct table
+        # Fetch product details with current supplier
         db[0].execute("""
             SELECT 
                 ip.id, 
                 ip.ProductName, 
-                ip.Quantity,    -- Pulling the quantity directly from inventoryproduct
+                ip.Quantity,    
                 ip.ProcessType, 
                 ip.Image, 
-                ip.Threshold,  -- Fetch the threshold value for the product
-                COALESCE(s.SupplierName, 'N/A') AS SupplierName
+                ip.Threshold,
+                COALESCE(s.SupplierName, 'N/A') AS CurrentSupplier
             FROM inventoryproduct ip
             LEFT JOIN stock_details sd ON ip.id = sd.ProductID
             LEFT JOIN suppliers s ON sd.SupplierID = s.id
             WHERE ip.id = %s
-            GROUP BY ip.id, ip.ProductName, ip.Quantity, ip.ProcessType, ip.Image, s.SupplierName
-            ORDER BY sd.created_at DESC
+            ORDER BY sd.created_at DESC 
+            LIMIT 1
         """, (product_id,))
 
         product = db[0].fetchone()
@@ -148,20 +201,27 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
-        # Extract values
+        # Determine stock status
         remaining_quantity = product[2]
-        threshold = product[5]  # Get the threshold value from the database
+        threshold = product[5] if product[5] else 5
 
+        if remaining_quantity <= 0:
+            status = "Out of Stock"
+        elif remaining_quantity <= threshold:
+            status = "Low Stock"
+        else:
+            status = "In Stock"
+
+        # Base URL for images
         base_url = "http://127.0.0.1:8000/uploads/products/"
+        product_image = f"{base_url}{product[4]}" if product[4] else None
 
-        # Fetch current stock details from stock_details table
+        # Fetch stock details
         db[0].execute("""
             SELECT 
-                sd.id,
                 sd.batch_number,
                 sd.quantity,
                 sd.expiration_date,
-                sd.created_at,
                 COALESCE(s.SupplierName, 'Unknown') AS SupplierName
             FROM stock_details sd
             LEFT JOIN suppliers s ON sd.SupplierID = s.id
@@ -171,90 +231,52 @@ async def get_stock_details(product_id: str, db=Depends(get_db)):
 
         stocks = db[0].fetchall()
 
-        # Prepare stock list
         stock_list = [
             {
-                "id": stock[0],
-                "batch_number": stock[1],
-                "quantity": stock[2],
-                "expiration_date": stock[3].strftime('%Y-%m-%d') if stock[3] else None,
-                "created_at": stock[4].strftime('%Y-%m-%d %H:%M:%S'),
-                "SupplierName": stock[5] or "Unknown"
+                "batch_number": stock[0],
+                "quantity": stock[1],
+                "expiration_date": stock[2].strftime('%Y-%m-%d') if stock[2] else None,
+                "SupplierName": stock[3]
             }
             for stock in stocks
         ]
 
-        # Fetch deducted transactions from inventory_transactions table
+        # Fetch deducted transactions
         db[0].execute("""
             SELECT 
-                it.id,
-                it.quantity,
-                it.transaction_type,
-                it.created_at
+                it.id AS TransactionID, 
+                it.quantity AS QuantityDeducted, 
+                it.created_at AS TransactionDate
             FROM inventory_transactions it
-            WHERE it.ProductID = %s
-            AND it.transaction_type = 'Deduct'
+            WHERE it.ProductID = %s AND it.transaction_type = 'Deduct'
             ORDER BY it.created_at DESC
         """, (product_id,))
 
-        deducted_list = [
+        transactions = db[0].fetchall()
+
+        deducted_transactions = [
             {
-                "TransactionID": trans[0],
-                "QuantityDeducted": trans[1],
-                "TransactionDate": trans[3].strftime('%Y-%m-%d %H:%M:%S')
+                "TransactionID": txn[0],
+                "QuantityDeducted": txn[1],
+                "TransactionDate": txn[2].strftime('%Y-%m-%d %H:%M:%S')
             }
-            for trans in db[0].fetchall()
+            for txn in transactions
         ]
 
-        # Determine stock status based on threshold and remaining quantity
-        if remaining_quantity <= 0:
-            status = "Out of Stock"
-        elif remaining_quantity <= threshold:
-            status = "Low Stock"
-        else:
-            status = "In Stock"
-
+        # Return the complete response
         return {
             "ProductID": product[0],
             "ProductName": product[1],
             "Quantity": remaining_quantity,
             "ProcessType": product[3],
-            "Image": f"{base_url}{product[4]}" if product[4] else None,
+            "Image": product_image,
             "CurrentSupplier": product[6],
+            "Threshold": threshold,
             "Status": status,
             "StockDetails": stock_list,
-            "DeductedTransactions": deducted_list
+            "DeductedTransactions": deducted_transactions
         }
 
     except Exception as e:
-        logger.error(f"Error in get_stock_details: {str(e)}")
+        logger.error(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
-    
-@StockRouter.get("/inventory-transactions", response_model=list)
-async def get_inventory_transactions(db=Depends(get_db)):
-    """Fetch all inventory transactions, including stock-in and deducted."""
-    try:
-        db[0].execute("""
-            SELECT id, product_name, transaction_type, quantity, created_at
-            FROM inventory_transactions
-            WHERE transaction_type IN ('StockIn', 'Deduct')  -- Include both types
-            ORDER BY created_at DESC
-        """)
-        
-        transactions = db[0].fetchall()
-        
-        # Format the transactions data
-        return [
-            {
-                "id": t[0],
-                "product_name": t[1],
-                "transaction_type": t[2],
-                "quantity": t[3],
-                "created_at": t[4].strftime("%Y-%m-%d %H:%M:%S")
-            }
-            for t in transactions
-        ]
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching transactions: {str(e)}")

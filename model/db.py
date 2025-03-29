@@ -11,9 +11,14 @@ db_config = {
 
 def get_db():
     db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    
+    # Use buffered=True to prevent unread results error
+    cursor = db.cursor(buffered=True)  
+    
     try:
         yield cursor, db
     finally:
-        cursor.close()
-        db.close()
+        if cursor:
+            cursor.close()
+        if db.is_connected():
+            db.close()

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional
 from pydantic import BaseModel
 from model.db import get_db
+from datetime import datetime
 
 OrderSummaryRouter = APIRouter(tags=["OrderSummary"])
 
@@ -91,3 +92,20 @@ async def get_order_history_detail(history_id: int, db=Depends(get_db)):
         "created_at": order[5].strftime("%Y-%m-%d %H:%M:%S") if order[5] else None,
         "items": items
     }
+
+# New Endpoint: Get daily total revenue
+@OrderSummaryRouter.get("/orders/daily-revenue", response_model=dict)
+async def get_daily_total_revenue(db=Depends(get_db)):
+    # Get today's date in 'YYYY-MM-DD' format
+    today_date = datetime.today().strftime('%Y-%m-%d')
+
+    # Query for total sales today
+    db[0].execute("""
+        SELECT SUM(total_amount)
+        FROM order_history
+        WHERE DATE(created_at) = %s
+    """, (today_date,))
+
+    total_sales = db[0].fetchone()[0]
+
+    return {"total_sales_today": float(total_sales) if total_sales else 0.0}
